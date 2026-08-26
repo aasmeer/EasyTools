@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Word Counter - EasyTools</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        .tool-page {
+            min-height: 100vh;
+            padding: 60px 20px;
+            background: #f7faff;
+        }
+
+        .tool-container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        /* TITLE */
+
+        .tool-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .tool-title h1 {
+            font-size: 42px;
+            margin: 15px 0 10px;
+        }
+
+        .tool-title p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            background: #eef2ff;
+            color: #4f46e5;
+            border-radius: 30px;
+            font-size: 13px;
+        }
+
+        /* MAIN BOX */
+
+        .counter-box {
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 35px #0000000b;
+        }
+
+        /* TEXTAREA */
+
+        .text-area-wrap {
+            margin-bottom: 25px;
+        }
+
+        .text-area-wrap label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1f2937;
+        }
+
+        #textInput {
+            width: 100%;
+            min-height: 300px;
+            padding: 16px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+
+            resize: vertical;
+
+            outline: none;
+
+            font-size: 15px;
+            line-height: 1.7;
+
+            font-family: inherit;
+
+            transition: 0.2s;
+        }
+
+        #textInput:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px #2563eb12;
+        }
+
+        /* STATS */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2563eb;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* BUTTONS */
+
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .action-btn {
+            padding: 13px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .copy-btn {
+            border: none;
+            background: #2563eb;
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .clear-btn {
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #475569;
+        }
+
+        .clear-btn:hover {
+            background: #f8fafc;
+        }
+
+        /* TIP */
+
+        .tips {
+            margin-top: 28px;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            color: #64748b;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .tips strong {
+            color: #334155;
+        }
+
+        /* AD */
+
+        .ad-container {
+            max-width: 900px;
+            min-height: 90px;
+
+            margin: 35px auto 0;
+
+            border: 1px dashed #cbd5e1;
+
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        /* MOBILE */
+
+        @media(max-width: 700px) {
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .actions {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-title h1 {
+                font-size: 34px;
+            }
+
+            .counter-box {
+                padding: 20px;
+            }
+
+            nav {
+                display: none;
+            }
+        }
+
+        @media(max-width: 450px) {
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+    <div class="logo">
+        ⚙️ EasyTools
+    </div>
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="all-tools.html">
+            All Tools
+        </a>
+
+        <a href="index.html#categories">
+            Categories
+        </a>
+
+        <a href="index.html#pricing">
+            Pricing
+        </a>
+
+    </nav>
+
+
+    <div class="header-buttons">
+
+        <button
+            class="login-btn"
+            onclick="comingSoon()"
+        >
+            Login
+        </button>
+
+        <button
+            class="signup-btn"
+            onclick="comingSoon()"
+        >
+            Sign Up
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     WORD COUNTER
+========================= -->
+
+<main class="tool-page">
+
+    <div class="tool-container">
+
+
+        <!-- TITLE -->
+
+        <div class="tool-title">
+
+            <span class="badge">
+                🎓 Student Tool
+            </span>
+
+            <h1>
+                Word Counter
+            </h1>
+
+            <p>
+                Count words, characters, sentences,
+                paragraphs and reading time instantly.
+            </p>
+
+        </div>
+
+
+        <!-- MAIN BOX -->
+
+        <div class="counter-box">
+
+
+            <!-- TEXT INPUT -->
+
+            <div class="text-area-wrap">
+
+                <label for="textInput">
+                    Enter or paste your text
+                </label>
+
+                <textarea
+                    id="textInput"
+                    placeholder="Start typing or paste your text here..."
+                    spellcheck="true"
+                ></textarea>
+
+            </div>
+
+
+            <!-- COUNTER STATS -->
+
+            <div class="stats-grid">
+
+
+                <!-- WORDS -->
+
+                <div class="stat-card">
+
+                    <div
+                        class="stat-number"
+                        id="wordCount"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-label">
+                        Words
+                    </div>
+
+                </div>
+
+
+                <!-- CHARACTERS -->
+
+                <div class="stat-card">
+
+                    <div
+                        class="stat-number"
+                        id="characterCount"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-label">
+                        Characters
+                    </div>
+
+                </div>
+
+
+                <!-- WITHOUT SPACES -->
+
+                <div class="stat-card">
+
+                    <div
+                        class="stat-number"
+                        id="characterNoSpaceCount"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-label">
+                        Characters Without Spaces
+                    </div>
+
+                </div>
+
+
+                <!-- SENTENCES -->
+
+                <div class="stat-card">
+
+                    <div
+                        class="stat-number"
+                        id="sentenceCount"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-label">
+                        Sentences
+                    </div>
+
+                </div>
+
+
+                <!-- PARAGRAPHS -->
+
+                <div class="stat-card">
+
+                    <div
+                        class="stat-number"
+                        id="paragraphCount"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-label">
+                        Paragraphs
+                    </div>
+
+                </div>
+
+
+                <!-- READING TIME -->
+
+                <div class="stat-card">
+
+                    <div
+                        class="stat-number"
+                        id="readingTime"
+                    >
+                        0 min
+                    </div>
+
+                    <div class="stat-label">
+                        Reading Time
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="actions">
+
+                <button
+                    class="action-btn copy-btn"
+                    id="copyBtn"
+                    type="button"
+                >
+                    📋 Copy Text
+                </button>
+
+
+                <button
+                    class="action-btn clear-btn"
+                    id="clearBtn"
+                    type="button"
+                >
+                    ✕ Clear Text
+                </button>
+
+            </div>
+
+
+            <!-- TIP -->
+
+            <div class="tips">
+
+                <strong>
+                    💡 Tip:
+                </strong>
+
+                Word Counter updates automatically
+                while you type.
+
+                Reading time is estimated using an
+                average reading speed of approximately
+                200 words per minute.
+
+            </div>
+
+
+        </div>
+
+
+        <!-- AD SPACE -->
+
+        <div class="ad-container">
+
+            <span>
+                Advertisement
+            </span>
+
+            <small>
+                728 × 90
+            </small>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+function comingSoon() {
+
+    alert(
+        "This feature will be available soon."
+    );
+
+}
+
+</script>
+
+
+<!-- IMPORTANT: WORD COUNTER JS -->
+
+<script src="js/word-counter.js"></script>
+
+
+</body>
+
+</html>

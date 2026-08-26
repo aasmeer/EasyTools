@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Image Converter - EasyTools</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .tool-page {
+            min-height: 100vh;
+            padding: 60px 20px;
+            background: #f7faff;
+        }
+
+        .tool-container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .tool-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .tool-title h1 {
+            font-size: 42px;
+            margin: 15px 0 10px;
+        }
+
+        .tool-title p {
+            color: #6b7280;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            background: #eff6ff;
+            color: #2563eb;
+            border-radius: 30px;
+            font-size: 13px;
+        }
+
+        .converter-box {
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 35px #0000000b;
+        }
+
+        /* UPLOAD */
+
+        .upload-area {
+            display: block;
+            border: 2px dashed #bfdbfe;
+            border-radius: 15px;
+            padding: 50px 20px;
+            text-align: center;
+            background: #f8fbff;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragging {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .upload-area p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .choose-btn {
+            display: inline-block;
+            margin-top: 16px;
+            background: #2563eb;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 9px;
+        }
+
+        /* FILE INFO */
+
+        .file-info {
+            display: none;
+            margin-top: 20px;
+            padding: 14px;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        .file-info strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* PREVIEW */
+
+        .preview {
+            display: none;
+            margin-top: 24px;
+            text-align: center;
+        }
+
+        .preview img {
+            max-width: 340px;
+            max-height: 280px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* SETTINGS */
+
+        .settings {
+            display: none;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .setting {
+            margin-bottom: 22px;
+        }
+
+        .setting label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .setting select,
+        .setting input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .quality-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        #quality {
+            width: 100%;
+        }
+
+        #qualityValue {
+            color: #2563eb;
+        }
+
+        .note {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 22px;
+        }
+
+        /* GENERATE */
+
+        .generate-btn {
+            width: 100%;
+            padding: 16px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .generate-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .generate-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        /* PROCESSING */
+
+        .processing {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .spinner {
+            width: 38px;
+            height: 38px;
+            border: 4px solid #dbeafe;
+            border-top-color: #2563eb;
+            border-radius: 50%;
+            margin: 0 auto 14px;
+            animation: spin .8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* RESULT */
+
+        .result {
+            display: none;
+            margin-top: 28px;
+            padding: 24px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 14px;
+        }
+
+        .result h3 {
+            color: #15803d;
+            margin-bottom: 18px;
+        }
+
+        .result-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: white;
+            padding: 14px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat span {
+            display: block;
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .download-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: #16a34a;
+            color: white;
+            text-decoration: none;
+            padding: 14px;
+            border-radius: 9px;
+            font-weight: 600;
+        }
+
+        /* AD */
+
+        .ad-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(15,23,42,.75);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .ad-box {
+            width: 100%;
+            max-width: 520px;
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            text-align: center;
+        }
+
+        .ad-placeholder {
+            height: 250px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            margin: 12px 0 18px;
+        }
+
+        @media(max-width:700px) {
+
+            .settings-grid,
+            .result-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-title h1 {
+                font-size: 34px;
+            }
+
+            .converter-box {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<header class="header">
+
+    <div class="logo">
+        ⚙️ EasyTools
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="all-tools.html">All Tools</a>
+        <a href="#">AI Tools</a>
+        <a href="#">PDF Tools</a>
+        <a href="#">Image Tools</a>
+        <a href="index.html#pricing">Pricing</a>
+    </nav>
+
+    <div class="header-buttons">
+        <button class="login-btn">Login</button>
+        <button class="signup-btn">Sign Up</button>
+    </div>
+
+</header>
+
+
+<main class="tool-page">
+
+    <div class="tool-container">
+
+        <div class="tool-title">
+
+            <span class="badge">
+                🖼️ Image Tool
+            </span>
+
+            <h1>
+                Image Converter
+            </h1>
+
+            <p>
+                Convert JPG, PNG and WEBP images instantly in your browser.
+            </p>
+
+        </div>
+
+
+        <div class="converter-box">
+
+
+            <label
+                class="upload-area"
+                id="uploadArea"
+                for="fileInput"
+            >
+
+                <div class="upload-icon">
+                    🔄
+                </div>
+
+                <h3>
+                    Upload your image
+                </h3>
+
+                <p>
+                    JPG, JPEG, PNG or WEBP
+                </p>
+
+                <span class="choose-btn">
+                    Choose Image
+                </span>
+
+            </label>
+
+
+            <input
+                type="file"
+                id="fileInput"
+                accept="image/jpeg,image/png,image/webp"
+            >
+
+
+            <div
+                class="file-info"
+                id="fileInfo"
+            >
+
+                <strong id="fileName"></strong>
+
+                <div id="fileSize"></div>
+
+                <div id="fileFormat"></div>
+
+                <div id="dimensions"></div>
+
+            </div>
+
+
+            <div
+                class="preview"
+                id="preview"
+            >
+
+                <img
+                    id="previewImage"
+                    alt="Image preview"
+                >
+
+            </div>
+
+
+            <div
+                class="settings"
+                id="settings"
+            >
+
+
+                <div class="settings-grid">
+
+
+                    <div class="setting">
+
+                        <label for="outputFormat">
+                            Convert To
+                        </label>
+
+                        <select id="outputFormat">
+
+                            <option value="jpg">
+                                JPG
+                            </option>
+
+                            <option value="png">
+                                PNG
+                            </option>
+
+                            <option value="webp">
+                                WEBP
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="setting">
+
+                        <label for="backgroundColor">
+                            JPG Background
+                        </label>
+
+                        <input
+                            type="color"
+                            id="backgroundColor"
+                            value="#ffffff"
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="setting">
+
+                    <div class="quality-row">
+
+                        <span>
+                            Quality
+                        </span>
+
+                        <span id="qualityValue">
+                            90%
+                        </span>
+
+                    </div>
+
+                    <input
+                        type="range"
+                        id="quality"
+                        min="10"
+                        max="100"
+                        value="90"
+                    >
+
+                </div>
+
+
+                <div class="note">
+
+                    PNG is lossless, so the quality slider may not significantly
+                    reduce PNG file size. When converting a transparent image to JPG,
+                    the selected background color will be used.
+
+                </div>
+
+
+                <button
+                    class="generate-btn"
+                    id="generateBtn"
+                >
+
+                    🚀 Convert Image
+
+                </button>
+
+
+            </div>
+
+
+            <div
+                class="processing"
+                id="processing"
+            >
+
+                <div class="spinner"></div>
+
+                <strong>
+                    Converting your image...
+                </strong>
+
+            </div>
+
+
+            <div
+                class="result"
+                id="result"
+            >
+
+                <h3>
+                    ✅ Your converted image is ready!
+                </h3>
+
+
+                <div class="result-stats">
+
+
+                    <div class="stat">
+
+                        <span>
+                            Original Format
+                        </span>
+
+                        <strong id="originalFormatResult">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <span>
+                            New Format
+                        </span>
+
+                        <strong id="newFormatResult">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <span>
+                            New File Size
+                        </span>
+
+                        <strong id="newFileSize">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+                <a
+                    id="downloadBtn"
+                    class="download-btn"
+                    download
+                >
+
+                    ⬇️ Download Converted Image
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<div
+    class="ad-modal"
+    id="adModal"
+>
+
+    <div class="ad-box">
+
+        <small>
+            Advertisement
+        </small>
+
+        <div class="ad-placeholder">
+            ADVERTISEMENT
+        </div>
+
+        <div>
+
+            Continue in
+
+            <strong id="countdown">
+                5
+            </strong>
+
+            seconds...
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="js/image-converter.js"></script>
+
+</body>
+
+</html>

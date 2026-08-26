@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Image Cropper - EasyTools</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f7faff;
+        }
+
+        .tool-page {
+            min-height: 100vh;
+            padding: 60px 20px 80px;
+        }
+
+        .tool-container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .tool-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .tool-title h1 {
+            font-size: 42px;
+            margin: 15px 0 10px;
+        }
+
+        .tool-title p {
+            color: #6b7280;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            background: #eff6ff;
+            color: #2563eb;
+            border-radius: 30px;
+            font-size: 13px;
+        }
+
+        .crop-box {
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 35px #0000000b;
+        }
+
+        .upload-area {
+            border: 2px dashed #bfdbfe;
+            border-radius: 15px;
+            padding: 50px 20px;
+            text-align: center;
+            background: #f8fbff;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        #imageInput {
+            display: none;
+        }
+
+        .editor {
+            display: none;
+            margin-top: 25px;
+        }
+
+        .canvas-wrap {
+            overflow: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #f8fafc;
+            padding: 15px;
+            text-align: center;
+        }
+
+        #cropCanvas {
+            max-width: 100%;
+            cursor: crosshair;
+            border-radius: 8px;
+        }
+
+        .settings {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .setting label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .setting input,
+        .setting select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .crop-btn,
+        .reset-btn {
+            padding: 14px;
+            border-radius: 9px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .crop-btn {
+            border: none;
+            background: #2563eb;
+            color: white;
+        }
+
+        .reset-btn {
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #475569;
+        }
+
+        .result {
+            display: none;
+            margin-top: 25px;
+            padding: 22px;
+            border: 1px solid #bbf7d0;
+            background: #f0fdf4;
+            border-radius: 14px;
+        }
+
+        .result img {
+            max-width: 100%;
+            border-radius: 10px;
+            display: block;
+            margin: 15px auto;
+        }
+
+        .download-btn {
+            display: block;
+            text-align: center;
+            background: #16a34a;
+            color: white;
+            text-decoration: none;
+            padding: 14px;
+            border-radius: 9px;
+            font-weight: 600;
+        }
+
+        @media(max-width:700px) {
+            nav {
+                display: none;
+            }
+
+            .settings,
+            .buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-title h1 {
+                font-size: 34px;
+            }
+
+            .crop-box {
+                padding: 20px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">⚙️ EasyTools</div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="all-tools.html">All Tools</a>
+        <a href="index.html#categories">Categories</a>
+        <a href="index.html#pricing">Pricing</a>
+    </nav>
+
+    <div class="header-buttons">
+        <button class="login-btn" onclick="comingSoon()">Login</button>
+        <button class="signup-btn" onclick="comingSoon()">Sign Up</button>
+    </div>
+
+</header>
+
+
+<main class="tool-page">
+
+    <div class="tool-container">
+
+        <div class="tool-title">
+
+            <span class="badge">
+                🖼️ Image Tool
+            </span>
+
+            <h1>
+                Image Cropper
+            </h1>
+
+            <p>
+                Upload an image, drag to select the area you want and download the cropped image.
+            </p>
+
+        </div>
+
+
+        <div class="crop-box">
+
+            <div
+                class="upload-area"
+                id="uploadArea"
+            >
+
+                <div class="upload-icon">
+                    ✂️
+                </div>
+
+                <h3>
+                    Upload Image
+                </h3>
+
+                <p>
+                    JPG, PNG or WEBP
+                </p>
+
+            </div>
+
+
+            <input
+                type="file"
+                id="imageInput"
+                accept="image/jpeg,image/png,image/webp"
+            >
+
+
+            <div
+                class="editor"
+                id="editor"
+            >
+
+                <div class="canvas-wrap">
+
+                    <canvas id="cropCanvas"></canvas>
+
+                </div>
+
+
+                <div class="settings">
+
+                    <div class="setting">
+
+                        <label for="outputFormat">
+                            Output Format
+                        </label>
+
+                        <select id="outputFormat">
+
+                            <option value="jpg">
+                                JPG
+                            </option>
+
+                            <option value="png">
+                                PNG
+                            </option>
+
+                            <option value="webp">
+                                WEBP
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="setting">
+
+                        <label for="quality">
+                            Quality
+                        </label>
+
+                        <input
+                            type="range"
+                            id="quality"
+                            min="10"
+                            max="100"
+                            value="90"
+                        >
+
+                    </div>
+
+
+                    <div class="setting">
+
+                        <label>
+                            Selected Area
+                        </label>
+
+                        <input
+                            type="text"
+                            id="selectionInfo"
+                            value="Drag on image"
+                            readonly
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="buttons">
+
+                    <button
+                        class="crop-btn"
+                        id="cropBtn"
+                        type="button"
+                    >
+                        ✂️ Crop Image
+                    </button>
+
+                    <button
+                        class="reset-btn"
+                        id="resetBtn"
+                        type="button"
+                    >
+                        Reset Selection
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="result"
+                id="result"
+            >
+
+                <h3>
+                    ✅ Cropped image is ready!
+                </h3>
+
+                <img
+                    id="resultImage"
+                    alt="Cropped preview"
+                >
+
+                <a
+                    id="downloadBtn"
+                    class="download-btn"
+                    download
+                >
+                    ⬇️ Download Cropped Image
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+
+function comingSoon() {
+    alert("This feature will be available soon.");
+}
+
+</script>
+
+<script src="js/image-cropper.js"></script>
+
+</body>
+
+</html>

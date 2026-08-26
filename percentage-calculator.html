@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Percentage Calculator - EasyTools</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f7faff;
+        }
+
+        .tool-page {
+            min-height: 100vh;
+            padding: 60px 20px 80px;
+        }
+
+        .tool-container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .tool-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .tool-title h1 {
+            font-size: 42px;
+            margin: 15px 0 10px;
+        }
+
+        .tool-title p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            background: #ecfdf5;
+            color: #047857;
+            border-radius: 30px;
+            font-size: 13px;
+        }
+
+        .calculator-box {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 10px 35px #0000000b;
+        }
+
+        .mode-tabs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .mode-btn {
+            padding: 13px 10px;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .mode-btn.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        .calculator-section {
+            display: none;
+        }
+
+        .calculator-section.active {
+            display: block;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        .field label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .field input:focus {
+            border-color: #2563eb;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            background: #2563eb;
+            color: white;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .calculate-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .result-box {
+            margin-top: 22px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 22px;
+            text-align: center;
+        }
+
+        .result-label {
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-size: 34px;
+            font-weight: 700;
+            color: #15803d;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 12px;
+            color: #64748b;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        @media(max-width:700px) {
+            nav {
+                display: none;
+            }
+
+            .mode-tabs {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-title h1 {
+                font-size: 34px;
+            }
+
+            .calculator-box {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">⚙️ EasyTools</div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="all-tools.html">All Tools</a>
+        <a href="index.html#categories">Categories</a>
+        <a href="index.html#pricing">Pricing</a>
+    </nav>
+
+    <div class="header-buttons">
+        <button class="login-btn" onclick="comingSoon()">Login</button>
+        <button class="signup-btn" onclick="comingSoon()">Sign Up</button>
+    </div>
+
+</header>
+
+
+<main class="tool-page">
+
+    <div class="tool-container">
+
+        <div class="tool-title">
+
+            <span class="badge">
+                🧮 Calculator Tool
+            </span>
+
+            <h1>
+                Percentage Calculator
+            </h1>
+
+            <p>
+                Calculate percentages, percentage change and percentage increase or decrease instantly.
+            </p>
+
+        </div>
+
+
+        <div class="calculator-box">
+
+            <div class="mode-tabs">
+
+                <button
+                    class="mode-btn active"
+                    data-mode="percentOf"
+                    type="button"
+                >
+                    X% of Number
+                </button>
+
+                <button
+                    class="mode-btn"
+                    data-mode="whatPercent"
+                    type="button"
+                >
+                    What Percent?
+                </button>
+
+                <button
+                    class="mode-btn"
+                    data-mode="change"
+                    type="button"
+                >
+                    % Change
+                </button>
+
+            </div>
+
+
+            <!-- X% OF NUMBER -->
+
+            <div
+                class="calculator-section active"
+                id="percentOf"
+            >
+
+                <div class="field">
+
+                    <label for="percentValue">
+                        Percentage (%)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="percentValue"
+                        placeholder="Example: 20"
+                    >
+
+                </div>
+
+                <div class="field">
+
+                    <label for="numberValue">
+                        Number
+                    </label>
+
+                    <input
+                        type="number"
+                        id="numberValue"
+                        placeholder="Example: 500"
+                    >
+
+                </div>
+
+                <button
+                    class="calculate-btn"
+                    id="percentOfBtn"
+                    type="button"
+                >
+                    Calculate
+                </button>
+
+                <div class="result-box">
+
+                    <div class="result-label">
+                        Result
+                    </div>
+
+                    <div
+                        class="result-value"
+                        id="percentOfResult"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- WHAT PERCENT -->
+
+            <div
+                class="calculator-section"
+                id="whatPercent"
+            >
+
+                <div class="field">
+
+                    <label for="partValue">
+                        First Number
+                    </label>
+
+                    <input
+                        type="number"
+                        id="partValue"
+                        placeholder="Example: 50"
+                    >
+
+                </div>
+
+                <div class="field">
+
+                    <label for="wholeValue">
+                        Second Number
+                    </label>
+
+                    <input
+                        type="number"
+                        id="wholeValue"
+                        placeholder="Example: 200"
+                    >
+
+                </div>
+
+                <button
+                    class="calculate-btn"
+                    id="whatPercentBtn"
+                    type="button"
+                >
+                    Calculate
+                </button>
+
+                <div class="result-box">
+
+                    <div class="result-label">
+                        Percentage
+                    </div>
+
+                    <div
+                        class="result-value"
+                        id="whatPercentResult"
+                    >
+                        0%
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CHANGE -->
+
+            <div
+                class="calculator-section"
+                id="change"
+            >
+
+                <div class="field">
+
+                    <label for="oldValue">
+                        Original Value
+                    </label>
+
+                    <input
+                        type="number"
+                        id="oldValue"
+                        placeholder="Example: 100"
+                    >
+
+                </div>
+
+                <div class="field">
+
+                    <label for="newValue">
+                        New Value
+                    </label>
+
+                    <input
+                        type="number"
+                        id="newValue"
+                        placeholder="Example: 125"
+                    >
+
+                </div>
+
+                <button
+                    class="calculate-btn"
+                    id="changeBtn"
+                    type="button"
+                >
+                    Calculate Change
+                </button>
+
+                <div class="result-box">
+
+                    <div class="result-label">
+                        Percentage Change
+                    </div>
+
+                    <div
+                        class="result-value"
+                        id="changeResult"
+                    >
+                        0%
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="examples">
+
+                <strong>Examples:</strong><br>
+                20% of 500 = 100<br>
+                50 is 25% of 200<br>
+                100 → 125 = 25% increase
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+function comingSoon() {
+    alert("This feature will be available soon.");
+}
+</script>
+
+<script src="js/percentage-calculator.js"></script>
+
+</body>
+
+</html>
