@@ -39,11 +39,11 @@ const countdown =
 
 
 /* ==========================================
-   BACKEND ADDRESS
+   LIVE BACKEND ADDRESS
 ========================================== */
 
 const BACKEND_URL =
-    "http://127.0.0.1:8000";
+    "https://easytools-backend.onrender.com";
 
 
 /* ==========================================
@@ -58,8 +58,6 @@ rewriteBtn.addEventListener(
             inputText.value.trim();
 
 
-        /* CHECK EMPTY TEXT */
-
         if (!text) {
 
             alert(
@@ -72,8 +70,6 @@ rewriteBtn.addEventListener(
 
         }
 
-
-        /* MINIMUM TEXT CHECK */
 
         if (text.length < 3) {
 
@@ -200,14 +196,6 @@ async function rewriteText() {
             );
 
 
-        /*
-            Try reading JSON response.
-
-            Even when backend returns
-            an error, FastAPI normally
-            sends JSON containing detail.
-        */
-
         let data;
 
 
@@ -224,10 +212,6 @@ async function rewriteText() {
 
         }
 
-
-        /* =================================
-           BACKEND / API ERROR
-        ================================= */
 
         if (!response.ok) {
 
@@ -270,10 +254,6 @@ async function rewriteText() {
         }
 
 
-        /* =================================
-           RESULT VALIDATION
-        ================================= */
-
         if (
             !data.success ||
             !data.result
@@ -285,10 +265,6 @@ async function rewriteText() {
 
         }
 
-
-        /* =================================
-           SHOW RESULT
-        ================================= */
 
         resultText.textContent =
             data.result;
@@ -305,8 +281,6 @@ async function rewriteText() {
         rewriteBtn.disabled =
             false;
 
-
-        /* SCROLL TO RESULT */
 
         result.scrollIntoView({
 
@@ -335,12 +309,6 @@ async function rewriteText() {
             false;
 
 
-        /*
-            If fetch itself failed,
-            browser usually gives:
-            Failed to fetch
-        */
-
         if (
             error.message ===
             "Failed to fetch"
@@ -348,19 +316,14 @@ async function rewriteText() {
 
             alert(
                 "Could not connect to EasyTools backend.\n\n" +
-                "Make sure Uvicorn is running on:\n" +
-                "http://127.0.0.1:8000"
+                "Please try again in a few seconds.\n" +
+                "The free server may be waking up."
             );
 
             return;
 
         }
 
-
-        /*
-            Otherwise show actual
-            backend/OpenAI error.
-        */
 
         alert(
             "Error:\n\n" +
@@ -423,10 +386,6 @@ copyBtn.addEventListener(
                 error
             );
 
-
-            /*
-                Fallback copy method
-            */
 
             const temporaryTextarea =
                 document.createElement(
