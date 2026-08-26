@@ -186,27 +186,49 @@ Requirements:
 
 
         return {
-
             "success": True,
-
             "result": rewritten_text
-
         }
 
 
     except Exception as error:
 
-        print("\n")
-        print("========== OPENAI ERROR ==========")
-        print(repr(error))
-        print("==================================")
-        print("\n")
+        error_text = str(error).lower()
 
+        print(
+            "EasyTools AI Error:",
+            repr(error)
+        )
+
+
+        # ==================================
+        # NO API CREDITS / QUOTA
+        # ==================================
+
+        if (
+            "429" in error_text
+            or "insufficient_quota" in error_text
+            or "credit_balance_exhausted" in error_text
+            or "no credits remaining" in error_text
+        ):
+
+            raise HTTPException(
+                status_code=503,
+                detail=(
+                    "AI Rewriter is temporarily unavailable. "
+                    "Please try again later."
+                )
+            )
+
+
+        # ==================================
+        # OTHER AI ERRORS
+        # ==================================
 
         raise HTTPException(
-
             status_code=500,
-
-            detail=str(error)
-
+            detail=(
+                "AI service is temporarily unavailable. "
+                "Please try again later."
+            )
         )
