@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://aasmeer.github.io/EasyTools/sitemap.xml
