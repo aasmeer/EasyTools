@@ -1,0 +1,32 @@
+<svg width="220" height="52" viewBox="0 0 220 52" xmlns="http://www.w3.org/2000/svg">
+
+    <rect
+        x="2"
+        y="2"
+        width="48"
+        height="48"
+        rx="13"
+        fill="#2563EB"
+    />
+
+    <path
+        d="M18 26L24 32L35 20"
+        fill="none"
+        stroke="white"
+        stroke-width="4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    />
+
+    <text
+        x="62"
+        y="34"
+        font-family="Arial, sans-serif"
+        font-size="26"
+        font-weight="700"
+        fill="#111827"
+    >
+        Easy<tspan fill="#2563EB">Tools</tspan>
+    </text>
+
+</svg>

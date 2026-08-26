@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Text Rewriter - EasyTools</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .ai-page {
+            min-height: 100vh;
+            background: #f7faff;
+            padding: 60px 20px;
+        }
+
+        .ai-container {
+            max-width: 950px;
+            margin: auto;
+        }
+
+        .tool-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .tool-title h1 {
+            font-size: 42px;
+            margin: 15px 0 10px;
+        }
+
+        .tool-title p {
+            color: #6b7280;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #eef2ff;
+            color: #4f46e5;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 13px;
+        }
+
+        .ai-box {
+            background: white;
+            padding: 30px;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            box-shadow: 0 10px 35px #0000000b;
+        }
+
+        .setting {
+            margin-bottom: 22px;
+        }
+
+        .setting label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        textarea,
+        select {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            padding: 13px;
+            font-family: inherit;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        textarea {
+            min-height: 180px;
+            resize: vertical;
+        }
+
+        textarea:focus,
+        select:focus {
+            border-color: #2563eb;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .rewrite-btn {
+            width: 100%;
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .rewrite-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .rewrite-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .processing {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .result {
+            display: none;
+            margin-top: 28px;
+            padding: 22px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 14px;
+        }
+
+        .result h3 {
+            color: #15803d;
+            margin-bottom: 12px;
+        }
+
+        #resultText {
+            white-space: pre-wrap;
+            line-height: 1.7;
+            color: #374151;
+        }
+
+        .copy-btn {
+            margin-top: 18px;
+            width: 100%;
+            border: none;
+            background: #16a34a;
+            color: white;
+            padding: 13px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .ad-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(15, 23, 42, .75);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .ad-box {
+            width: 100%;
+            max-width: 520px;
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            text-align: center;
+        }
+
+        .ad-placeholder {
+            height: 250px;
+            border: 1px dashed #cbd5e1;
+            background: #f8fafc;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            margin: 12px 0 18px;
+        }
+
+        @media(max-width:700px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-title h1 {
+                font-size: 34px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        ⚙️ EasyTools
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="all-tools.html">All Tools</a>
+        <a href="#">AI Tools</a>
+        <a href="#">PDF Tools</a>
+        <a href="#">Image Tools</a>
+        <a href="index.html#pricing">Pricing</a>
+    </nav>
+
+    <div class="header-buttons">
+        <button class="login-btn">Login</button>
+        <button class="signup-btn">Sign Up</button>
+    </div>
+
+</header>
+
+<main class="ai-page">
+
+    <div class="ai-container">
+
+        <div class="tool-title">
+
+            <span class="badge">
+                🤖 AI Tool
+            </span>
+
+            <h1>
+                AI Text Rewriter
+            </h1>
+
+            <p>
+                Rewrite text in a cleaner, simpler or more professional style.
+            </p>
+
+        </div>
+
+        <div class="ai-box">
+
+            <div class="setting">
+
+                <label for="inputText">
+                    Your Text
+                </label>
+
+                <textarea
+                    id="inputText"
+                    placeholder="Paste or type your text here..."
+                ></textarea>
+
+            </div>
+
+            <div class="settings-grid">
+
+                <div class="setting">
+
+                    <label for="tone">
+                        Tone
+                    </label>
+
+                    <select id="tone">
+                        <option value="Professional">Professional</option>
+                        <option value="Simple">Simple</option>
+                        <option value="Friendly">Friendly</option>
+                        <option value="Formal">Formal</option>
+                    </select>
+
+                </div>
+
+                <div class="setting">
+
+                    <label for="length">
+                        Length
+                    </label>
+
+                    <select id="length">
+                        <option value="Same">Same Length</option>
+                        <option value="Shorter">Shorter</option>
+                        <option value="Longer">Longer</option>
+                    </select>
+
+                </div>
+
+            </div>
+
+            <button
+                class="rewrite-btn"
+                id="rewriteBtn"
+            >
+                ✨ Rewrite Text
+            </button>
+
+            <div
+                class="processing"
+                id="processing"
+            >
+                <strong>
+                    Rewriting your text...
+                </strong>
+            </div>
+
+            <div
+                class="result"
+                id="result"
+            >
+
+                <h3>
+                    ✅ Rewritten Text
+                </h3>
+
+                <div id="resultText"></div>
+
+                <button
+                    class="copy-btn"
+                    id="copyBtn"
+                >
+                    Copy Result
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+<div
+    class="ad-modal"
+    id="adModal"
+>
+
+    <div class="ad-box">
+
+        <small>
+            Advertisement
+        </small>
+
+        <div class="ad-placeholder">
+            ADVERTISEMENT
+        </div>
+
+        <div>
+            Continue in
+            <strong id="countdown">5</strong>
+            seconds...
+        </div>
+
+    </div>
+
+</div>
+
+<script src="js/ai-rewriter.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PDF Compressor - EasyTools</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+
+        .pdf-page {
+            min-height: 80vh;
+            padding: 60px 20px;
+            background: #f7faff;
+        }
+
+        .pdf-container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .tool-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .tool-title h1 {
+            font-size: 42px;
+            margin: 15px 0 10px;
+        }
+
+        .tool-title p {
+            color: #6b7280;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            background: #fef2f2;
+            color: #dc2626;
+            border-radius: 30px;
+            font-size: 13px;
+        }
+
+        .pdf-box {
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 35px #0000000b;
+        }
+
+        .upload-area {
+            display: block;
+            border: 2px dashed #fecaca;
+            border-radius: 15px;
+            padding: 55px 20px;
+            text-align: center;
+            background: #fffafa;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .upload-area:hover {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .upload-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .upload-area p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        #pdfInput {
+            display: none;
+        }
+
+        .choose-btn {
+            display: inline-block;
+            margin-top: 18px;
+            background: #dc2626;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 9px;
+        }
+
+        .file-info {
+            display: none;
+            margin-top: 22px;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        .file-info strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .settings {
+            display: none;
+            margin-top: 30px;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 25px;
+        }
+
+        .setting {
+            margin-bottom: 22px;
+        }
+
+        .setting label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .compression-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .compression-card {
+            border: 1px solid #e5e7eb;
+            padding: 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: .2s;
+        }
+
+        .compression-card:hover {
+            border-color: #ef4444;
+        }
+
+        .compression-card.active {
+            border-color: #dc2626;
+            background: #fef2f2;
+        }
+
+        .compression-card strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .compression-card span {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .quality-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        #quality {
+            width: 100%;
+        }
+
+        #qualityValue {
+            color: #dc2626;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 16px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .generate-btn:hover {
+            background: #b91c1c;
+        }
+
+        .generate-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .processing {
+            display: none;
+            text-align: center;
+            padding: 35px 10px;
+        }
+
+        .spinner {
+            width: 38px;
+            height: 38px;
+            border: 4px solid #fee2e2;
+            border-top-color: #dc2626;
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .progress-text {
+            color: #64748b;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+
+        .result {
+            display: none;
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+        }
+
+        .result h3 {
+            color: #15803d;
+            margin-bottom: 18px;
+        }
+
+        .result-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat span {
+            display: block;
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .download-btn {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            padding: 14px;
+            border-radius: 9px;
+            background: #16a34a;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .ad-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,.72);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .ad-box {
+            width: 100%;
+            max-width: 520px;
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .ad-label {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+
+        .ad-placeholder {
+            height: 250px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        .ad-countdown {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        @media(max-width:700px) {
+
+            .compression-options {
+                grid-template-columns: 1fr;
+            }
+
+            .result-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-title h1 {
+                font-size: 34px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        ⚙️ EasyTools
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="index.html#tools">All Tools</a>
+        <a href="#">AI Tools</a>
+        <a href="#">PDF Tools</a>
+        <a href="#">Image Tools</a>
+        <a href="index.html#pricing">Pricing</a>
+    </nav>
+
+    <div class="header-buttons">
+        <button class="login-btn">Login</button>
+        <button class="signup-btn">Sign Up</button>
+    </div>
+
+</header>
+
+
+<main class="pdf-page">
+
+    <div class="pdf-container">
+
+        <div class="tool-title">
+
+            <span class="badge">
+                📄 PDF Tool
+            </span>
+
+            <h1>
+                PDF Compressor
+            </h1>
+
+            <p>
+                Reduce PDF file size directly in your browser.
+            </p>
+
+        </div>
+
+
+        <div class="pdf-box">
+
+            <label
+                class="upload-area"
+                for="pdfInput"
+            >
+
+                <div class="upload-icon">
+                    📄
+                </div>
+
+                <h3>
+                    Upload your PDF
+                </h3>
+
+                <p>
+                    Select one PDF file
+                </p>
+
+                <span class="choose-btn">
+                    Choose PDF
+                </span>
+
+            </label>
+
+
+            <input
+                type="file"
+                id="pdfInput"
+                accept="application/pdf"
+            >
+
+
+            <div
+                class="file-info"
+                id="fileInfo"
+            >
+
+                <strong id="fileName"></strong>
+
+                <span id="fileSize"></span>
+
+            </div>
+
+
+            <div
+                class="settings"
+                id="settings"
+            >
+
+                <div class="setting">
+
+                    <label>
+                        Compression Level
+                    </label>
+
+
+                    <div class="compression-options">
+
+                        <div
+                            class="compression-card"
+                            data-quality="0.85"
+                            data-scale="1.5"
+                        >
+
+                            <strong>
+                                Low
+                            </strong>
+
+                            <span>
+                                Better quality
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="compression-card active"
+                            data-quality="0.65"
+                            data-scale="1.2"
+                        >
+
+                            <strong>
+                                Medium
+                            </strong>
+
+                            <span>
+                                Balanced
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="compression-card"
+                            data-quality="0.4"
+                            data-scale="0.9"
+                        >
+
+                            <strong>
+                                High
+                            </strong>
+
+                            <span>
+                                Smaller file
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="setting">
+
+                    <div class="quality-row">
+
+                        <span>
+                            Image Quality
+                        </span>
+
+                        <span id="qualityValue">
+                            65%
+                        </span>
+
+                    </div>
+
+                    <input
+                        type="range"
+                        id="quality"
+                        min="25"
+                        max="95"
+                        value="65"
+                    >
+
+                </div>
+
+
+                <button
+                    class="generate-btn"
+                    id="generateBtn"
+                >
+
+                    🚀 Compress PDF
+
+                </button>
+
+            </div>
+
+
+            <div
+                class="processing"
+                id="processing"
+            >
+
+                <div class="spinner"></div>
+
+                <strong>
+                    Compressing PDF...
+                </strong>
+
+                <div
+                    class="progress-text"
+                    id="progressText"
+                >
+                    Please wait...
+                </div>
+
+            </div>
+
+
+            <div
+                class="result"
+                id="result"
+            >
+
+                <h3>
+                    ✅ Your PDF is ready!
+                </h3>
+
+
+                <div class="result-stats">
+
+                    <div class="stat">
+
+                        <span>
+                            Original Size
+                        </span>
+
+                        <strong id="originalSize">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <span>
+                            Compressed Size
+                        </span>
+
+                        <strong id="compressedSize">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <span>
+                            Saved
+                        </span>
+
+                        <strong id="savedPercent">
+                            -
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <a
+                    id="downloadBtn"
+                    class="download-btn"
+                    download="compressed-easytools.pdf"
+                >
+
+                    ⬇️ Download PDF
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<div
+    class="ad-modal"
+    id="adModal"
+>
+
+    <div class="ad-box">
+
+        <div class="ad-label">
+            Advertisement
+        </div>
+
+        <div class="ad-placeholder">
+            ADVERTISEMENT
+        </div>
+
+        <div class="ad-countdown">
+
+            Compression will continue in
+
+            <strong id="countdown">
+                5
+            </strong>
+
+            seconds...
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script
+    type="module"
+    src="js/pdf-compressor.js"
+></script>
+
+</body>
+
+</html>

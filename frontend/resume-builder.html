@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Resume Builder - EasyTools</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- HTML TO CANVAS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/4.2.1/jspdf.umd.min.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .resume-page {
+            background: #f7faff;
+            padding: 50px 20px;
+            min-height: 100vh;
+        }
+
+        .resume-container {
+            max-width: 1250px;
+            margin: auto;
+        }
+
+        .tool-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .tool-title h1 {
+            font-size: 42px;
+            margin: 15px 0 10px;
+        }
+
+        .tool-title p {
+            color: #6b7280;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #eef2ff;
+            color: #4f46e5;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 13px;
+        }
+
+
+        /* MAIN LAYOUT */
+
+        .builder-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+
+        /* FORM */
+
+        .form-panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .input-group input,
+        .input-group textarea,
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .input-group textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus,
+        .input-group select:focus {
+            border-color: #2563eb;
+        }
+
+
+        /* TEMPLATE */
+
+        .template-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .template-card {
+            border: 2px solid #e5e7eb;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .template-card.active {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+
+        /* BUTTON */
+
+        .generate-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .generate-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .generate-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+
+        /* PREVIEW PANEL */
+
+        .preview-panel {
+            position: sticky;
+            top: 20px;
+        }
+
+        .preview-label {
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .resume-preview {
+            background: white;
+            width: 100%;
+            min-height: 850px;
+            border: 1px solid #d1d5db;
+            box-shadow: 0 10px 30px #00000012;
+        }
+
+
+        /* TEMPLATE 1 */
+
+        .template-modern .resume-header {
+            background: #1e3a8a;
+            color: white;
+            padding: 35px;
+        }
+
+        .template-modern .resume-header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .template-modern .job-title {
+            font-size: 17px;
+            opacity: .9;
+        }
+
+        .template-modern .contact-line {
+            margin-top: 14px;
+            font-size: 13px;
+            opacity: .9;
+        }
+
+        .template-modern .resume-body {
+            padding: 32px;
+        }
+
+        .template-modern .resume-section-title {
+            color: #1e3a8a;
+            text-transform: uppercase;
+            font-size: 15px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #dbeafe;
+            padding-bottom: 5px;
+        }
+
+
+        /* TEMPLATE 2 */
+
+        .template-clean {
+            padding: 40px;
+        }
+
+        .template-clean .resume-header {
+            border-bottom: 3px solid #111827;
+            padding-bottom: 18px;
+            margin-bottom: 25px;
+        }
+
+        .template-clean .resume-header h1 {
+            font-size: 34px;
+            color: #111827;
+        }
+
+        .template-clean .job-title {
+            color: #64748b;
+            margin-top: 7px;
+        }
+
+        .template-clean .contact-line {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .template-clean .resume-section-title {
+            color: #111827;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+
+        /* COMMON RESUME */
+
+        .resume-section {
+            margin-bottom: 24px;
+        }
+
+        .resume-section p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #374151;
+            white-space: pre-line;
+        }
+
+        .resume-entry {
+            margin-bottom: 15px;
+        }
+
+        .resume-entry h3 {
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .resume-entry small {
+            color: #6b7280;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill {
+            padding: 6px 10px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+
+        /* PROCESSING */
+
+        .processing {
+            display: none;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .spinner {
+            width: 38px;
+            height: 38px;
+            border: 4px solid #dbeafe;
+            border-top-color: #2563eb;
+            border-radius: 50%;
+            margin: auto auto 12px;
+            animation: spin .8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        /* AD */
+
+        .ad-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(15,23,42,.75);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .ad-box {
+            width: 100%;
+            max-width: 520px;
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            text-align: center;
+        }
+
+        .ad-label {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+
+        .ad-placeholder {
+            height: 250px;
+            border: 1px dashed #cbd5e1;
+            background: #f8fafc;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        .ad-countdown {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+
+        @media(max-width:900px) {
+
+            .builder-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-panel {
+                position: static;
+            }
+
+        }
+
+
+        @media(max-width:600px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .template-options {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-title h1 {
+                font-size: 34px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="header">
+
+    <div class="logo">
+        ⚙️ EasyTools
+    </div>
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="index.html#tools">
+            All Tools
+        </a>
+
+        <a href="#">
+            AI Tools
+        </a>
+
+        <a href="#">
+            PDF Tools
+        </a>
+
+        <a href="#">
+            Image Tools
+        </a>
+
+        <a href="index.html#pricing">
+            Pricing
+        </a>
+
+    </nav>
+
+    <div class="header-buttons">
+
+        <button class="login-btn">
+            Login
+        </button>
+
+        <button class="signup-btn">
+            Sign Up
+        </button>
+
+    </div>
+
+</header>
+
+
+<main class="resume-page">
+
+    <div class="resume-container">
+
+
+        <div class="tool-title">
+
+            <span class="badge">
+                🎓 Student Tool
+            </span>
+
+            <h1>
+                Resume Builder
+            </h1>
+
+            <p>
+                Create a clean professional resume and download it as PDF.
+            </p>
+
+        </div>
+
+
+        <div class="builder-layout">
+
+
+            <!-- LEFT FORM -->
+
+            <div class="form-panel">
+
+
+                <!-- PERSONAL -->
+
+                <div class="form-section">
+
+                    <h2 class="section-title">
+                        Personal Details
+                    </h2>
+
+
+                    <div class="form-grid">
+
+                        <div class="input-group">
+
+                            <label>
+                                Full Name
+                            </label>
+
+                            <input
+                                id="fullName"
+                                type="text"
+                                placeholder="Aman Sharma"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>
+                                Job Title
+                            </label>
+
+                            <input
+                                id="jobTitle"
+                                type="text"
+                                placeholder="Web Developer"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>
+                                Email
+                            </label>
+
+                            <input
+                                id="email"
+                                type="email"
+                                placeholder="aman@email.com"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>
+                                Phone
+                            </label>
+
+                            <input
+                                id="phone"
+                                type="text"
+                                placeholder="+91 9876543210"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>
+                                Location
+                            </label>
+
+                            <input
+                                id="location"
+                                type="text"
+                                placeholder="Delhi, India"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>
+                                Website / LinkedIn
+                            </label>
+
+                            <input
+                                id="website"
+                                type="text"
+                                placeholder="linkedin.com/in/..."
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SUMMARY -->
+
+                <div class="form-section">
+
+                    <h2 class="section-title">
+                        Professional Summary
+                    </h2>
+
+                    <div class="input-group">
+
+                        <textarea
+                            id="summary"
+                            placeholder="Write a short professional summary..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EDUCATION -->
+
+                <div class="form-section">
+
+                    <h2 class="section-title">
+                        Education
+                    </h2>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Degree / Course
+                        </label>
+
+                        <input
+                            id="degree"
+                            type="text"
+                            placeholder="B.Tech Computer Science"
+                        >
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+                        <div class="input-group">
+
+                            <label>
+                                College / University
+                            </label>
+
+                            <input
+                                id="college"
+                                type="text"
+                                placeholder="ABC University"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>
+                                Year
+                            </label>
+
+                            <input
+                                id="educationYear"
+                                type="text"
+                                placeholder="2022 - 2026"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EXPERIENCE -->
+
+                <div class="form-section">
+
+                    <h2 class="section-title">
+                        Work Experience
+                    </h2>
+
+
+                    <div class="form-grid">
+
+                        <div class="input-group">
+
+                            <label>
+                                Position
+                            </label>
+
+                            <input
+                                id="position"
+                                type="text"
+                                placeholder="Frontend Developer"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>
+                                Company
+                            </label>
+
+                            <input
+                                id="company"
+                                type="text"
+                                placeholder="ABC Technologies"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Duration
+                        </label>
+
+                        <input
+                            id="experienceYear"
+                            type="text"
+                            placeholder="2024 - Present"
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Experience Details
+                        </label>
+
+                        <textarea
+                            id="experience"
+                            placeholder="Describe your responsibilities and achievements..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SKILLS -->
+
+                <div class="form-section">
+
+                    <h2 class="section-title">
+                        Skills
+                    </h2>
+
+                    <div class="input-group">
+
+                        <label>
+                            Skills
+                        </label>
+
+                        <input
+                            id="skills"
+                            type="text"
+                            placeholder="HTML, CSS, JavaScript, Python"
+                        >
+
+                        <small style="color:#6b7280;">
+                            Separate skills using commas.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TEMPLATE -->
+
+                <div class="form-section">
+
+                    <h2 class="section-title">
+                        Choose Template
+                    </h2>
+
+
+                    <div class="template-options">
+
+                        <div
+                            class="template-card active"
+                            data-template="modern"
+                        >
+
+                            <strong>
+                                🔵 Modern
+                            </strong>
+
+                        </div>
+
+
+                        <div
+                            class="template-card"
+                            data-template="clean"
+                        >
+
+                            <strong>
+                                ⚫ Clean
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="generate-btn"
+                    id="generateBtn"
+                >
+                    🚀 Generate & Download PDF
+                </button>
+
+
+                <div
+                    class="processing"
+                    id="processing"
+                >
+
+                    <div class="spinner"></div>
+
+                    <strong>
+                        Creating your resume...
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- RIGHT PREVIEW -->
+
+            <div class="preview-panel">
+
+                <div class="preview-label">
+                    Live Preview
+                </div>
+
+
+                <div
+                    class="resume-preview template-modern"
+                    id="resumePreview"
+                >
+
+
+                    <div class="resume-header">
+
+                        <h1 id="previewName">
+                            Your Name
+                        </h1>
+
+                        <div
+                            class="job-title"
+                            id="previewJob"
+                        >
+                            Job Title
+                        </div>
+
+                        <div
+                            class="contact-line"
+                            id="previewContact"
+                        >
+                            Email • Phone • Location
+                        </div>
+
+                    </div>
+
+
+                    <div class="resume-body">
+
+
+                        <div class="resume-section">
+
+                            <div class="resume-section-title">
+                                Professional Summary
+                            </div>
+
+                            <p id="previewSummary">
+                                Your professional summary will appear here.
+                            </p>
+
+                        </div>
+
+
+                        <div class="resume-section">
+
+                            <div class="resume-section-title">
+                                Experience
+                            </div>
+
+                            <div class="resume-entry">
+
+                                <h3 id="previewPosition">
+                                    Position
+                                </h3>
+
+                                <small id="previewCompany">
+                                    Company • Duration
+                                </small>
+
+                                <p id="previewExperience">
+                                    Your work experience will appear here.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="resume-section">
+
+                            <div class="resume-section-title">
+                                Education
+                            </div>
+
+                            <div class="resume-entry">
+
+                                <h3 id="previewDegree">
+                                    Degree
+                                </h3>
+
+                                <small id="previewCollege">
+                                    College • Year
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="resume-section">
+
+                            <div class="resume-section-title">
+                                Skills
+                            </div>
+
+                            <div
+                                class="skills-list"
+                                id="previewSkills"
+                            >
+
+                                <span class="skill">
+                                    Your Skills
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- AD -->
+
+<div
+    class="ad-modal"
+    id="adModal"
+>
+
+    <div class="ad-box">
+
+        <div class="ad-label">
+            Advertisement
+        </div>
+
+        <div class="ad-placeholder">
+            ADVERTISEMENT
+        </div>
+
+        <div class="ad-countdown">
+
+            Your resume will continue in
+
+            <strong id="countdown">
+                5
+            </strong>
+
+            seconds...
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="js/resume-builder.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GST Calculator - EasyTools</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        .tool-page {
+            min-height: 100vh;
+            padding: 60px 20px;
+            background: #f7faff;
+        }
+
+        .tool-container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .tool-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .tool-title h1 {
+            font-size: 42px;
+            margin: 15px 0 10px;
+        }
+
+        .tool-title p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            background: #ecfdf5;
+            color: #047857;
+            border-radius: 30px;
+            font-size: 13px;
+        }
+
+        .calculator-box {
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 35px #0000000b;
+        }
+
+        .mode-switch {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .mode-btn {
+            padding: 14px;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .mode-btn.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .setting {
+            margin-bottom: 22px;
+        }
+
+        .setting label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .setting input,
+        .setting select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .setting input:focus,
+        .setting select:focus {
+            border-color: #2563eb;
+        }
+
+        .custom-rate-wrap {
+            display: none;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 16px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .calculate-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .result {
+            margin-top: 28px;
+            padding: 24px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+        }
+
+        .result h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .result-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 18px;
+        }
+
+        .result-card span {
+            display: block;
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .result-card strong {
+            font-size: 22px;
+            color: #111827;
+        }
+
+        .total-card {
+            grid-column: 1 / -1;
+            background: #eff6ff;
+            border-color: #bfdbfe;
+        }
+
+        .total-card strong {
+            color: #2563eb;
+            font-size: 28px;
+        }
+
+        .note {
+            margin-top: 20px;
+            padding: 14px;
+            border-radius: 10px;
+            background: #fffbeb;
+            color: #92400e;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        @media(max-width:700px) {
+            .settings-grid,
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-title h1 {
+                font-size: 34px;
+            }
+
+            .calculator-box {
+                padding: 20px;
+            }
+
+            nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        ⚙️ EasyTools
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="all-tools.html">All Tools</a>
+        <a href="index.html#categories">Categories</a>
+        <a href="index.html#pricing">Pricing</a>
+    </nav>
+
+    <div class="header-buttons">
+        <button class="login-btn" onclick="comingSoon()">Login</button>
+        <button class="signup-btn" onclick="comingSoon()">Sign Up</button>
+    </div>
+
+</header>
+
+
+<main class="tool-page">
+
+    <div class="tool-container">
+
+        <div class="tool-title">
+
+            <span class="badge">
+                💼 Business Tool
+            </span>
+
+            <h1>
+                GST Calculator
+            </h1>
+
+            <p>
+                Add GST or remove GST from an amount and see the tax breakup instantly.
+            </p>
+
+        </div>
+
+
+        <div class="calculator-box">
+
+            <div class="mode-switch">
+
+                <button
+                    class="mode-btn active"
+                    id="addModeBtn"
+                    type="button"
+                >
+                    + Add GST
+                </button>
+
+                <button
+                    class="mode-btn"
+                    id="removeModeBtn"
+                    type="button"
+                >
+                    − Remove GST
+                </button>
+
+            </div>
+
+
+            <div class="settings-grid">
+
+                <div class="setting">
+
+                    <label for="amountInput">
+                        Amount (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="amountInput"
+                        min="0"
+                        step="0.01"
+                        placeholder="Enter amount"
+                    >
+
+                </div>
+
+
+                <div class="setting">
+
+                    <label for="gstRate">
+                        GST Rate
+                    </label>
+
+                    <select id="gstRate">
+
+                        <option value="5">5%</option>
+                        <option value="12">12%</option>
+                        <option value="18" selected>18%</option>
+                        <option value="28">28%</option>
+                        <option value="custom">Custom</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="setting custom-rate-wrap"
+                id="customRateWrap"
+            >
+
+                <label for="customRate">
+                    Custom GST Rate (%)
+                </label>
+
+                <input
+                    type="number"
+                    id="customRate"
+                    min="0"
+                    max="100"
+                    step="0.01"
+                    placeholder="Example: 7.5"
+                >
+
+            </div>
+
+
+            <button
+                class="calculate-btn"
+                id="calculateBtn"
+                type="button"
+            >
+                Calculate GST
+            </button>
+
+
+            <div class="result">
+
+                <h3>
+                    Calculation Result
+                </h3>
+
+
+                <div class="result-grid">
+
+                    <div class="result-card">
+
+                        <span>
+                            Base Amount
+                        </span>
+
+                        <strong id="baseAmount">
+                            ₹0.00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-card">
+
+                        <span>
+                            GST Amount
+                        </span>
+
+                        <strong id="gstAmount">
+                            ₹0.00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-card">
+
+                        <span>
+                            CGST
+                        </span>
+
+                        <strong id="cgstAmount">
+                            ₹0.00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-card">
+
+                        <span>
+                            SGST
+                        </span>
+
+                        <strong id="sgstAmount">
+                            ₹0.00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-card total-card">
+
+                        <span id="totalLabel">
+                            Final Amount
+                        </span>
+
+                        <strong id="finalAmount">
+                            ₹0.00
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="note">
+
+                    This calculator shows a simple equal CGST/SGST split for convenience.
+                    Actual tax treatment can vary depending on the transaction type and place of supply.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+
+function comingSoon() {
+    alert("This feature will be available soon.");
+}
+
+</script>
+
+<script src="js/gst-calculator.js"></script>
+
+</body>
+
+</html>
