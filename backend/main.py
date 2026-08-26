@@ -13,13 +13,11 @@ from pydantic import BaseModel
 
 load_dotenv()
 
-
 api_key = os.getenv("OPENAI_API_KEY")
-
 
 if not api_key:
     raise RuntimeError(
-        "OPENAI_API_KEY not found in .env file."
+        "OPENAI_API_KEY not found."
     )
 
 
@@ -41,11 +39,16 @@ app = FastAPI(
 )
 
 
+# ==========================================
+# CORS
+# ==========================================
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://127.0.0.1:5500",
-        "http://localhost:5500"
+        "http://localhost:5500",
+        "https://aasmeer.github.io"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -87,7 +90,6 @@ def home():
 def rewrite_text(data: RewriteRequest):
 
     text = data.text.strip()
-
 
     if not text:
 
@@ -194,7 +196,6 @@ Requirements:
 
     except Exception as error:
 
-        # Print full error in terminal
         print("\n")
         print("========== OPENAI ERROR ==========")
         print(repr(error))
@@ -202,8 +203,6 @@ Requirements:
         print("\n")
 
 
-        # TEMPORARY DEBUGGING:
-        # return exact error to browser
         raise HTTPException(
 
             status_code=500,
