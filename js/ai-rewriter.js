@@ -3,7 +3,9 @@
 ========================================== */
 
 
-/* ELEMENTS */
+/* ==========================================
+   ELEMENTS
+========================================== */
 
 const inputText =
     document.getElementById("inputText");
@@ -36,13 +38,17 @@ const countdown =
     document.getElementById("countdown");
 
 
-/* LIVE BACKEND */
+/* ==========================================
+   LIVE BACKEND ADDRESS
+========================================== */
 
 const BACKEND_URL =
     "https://easytools-backend.onrender.com";
 
 
-/* REWRITE BUTTON */
+/* ==========================================
+   REWRITE BUTTON
+========================================== */
 
 rewriteBtn.addEventListener(
     "click",
@@ -61,6 +67,7 @@ rewriteBtn.addEventListener(
             inputText.focus();
 
             return;
+
         }
 
 
@@ -70,7 +77,10 @@ rewriteBtn.addEventListener(
                 "Please enter a little more text."
             );
 
+            inputText.focus();
+
             return;
+
         }
 
 
@@ -82,13 +92,19 @@ rewriteBtn.addEventListener(
             "none";
 
 
+        processing.style.display =
+            "none";
+
+
         showAdvertisement();
 
     }
 );
 
 
-/* AD */
+/* ==========================================
+   DEMO ADVERTISEMENT
+========================================== */
 
 function showAdvertisement() {
 
@@ -97,6 +113,7 @@ function showAdvertisement() {
 
 
     let seconds = 5;
+
 
     countdown.textContent =
         seconds;
@@ -108,32 +125,42 @@ function showAdvertisement() {
 
                 seconds--;
 
+
                 countdown.textContent =
                     seconds;
 
 
                 if (seconds <= 0) {
 
-                    clearInterval(timer);
+                    clearInterval(
+                        timer
+                    );
+
 
                     adModal.style.display =
                         "none";
 
+
                     rewriteText();
+
                 }
 
             },
             1000
         );
+
 }
 
 
-/* REWRITE */
+/* ==========================================
+   AI REWRITE REQUEST
+========================================== */
 
 async function rewriteText() {
 
     processing.style.display =
         "block";
+
 
     result.style.display =
         "none";
@@ -162,7 +189,9 @@ async function rewriteText() {
 
                         length:
                             length.value
+
                     })
+
                 }
             );
 
@@ -175,24 +204,53 @@ async function rewriteText() {
             data =
                 await response.json();
 
-        } catch {
+        } catch (jsonError) {
 
             throw new Error(
-                "AI service is temporarily unavailable."
+                "Backend returned an invalid response."
             );
+
         }
 
 
         if (!response.ok) {
 
-            const message =
-                data.detail ||
-                "AI service is temporarily unavailable.";
+            console.error(
+                "Backend Error:",
+                data
+            );
+
+
+            let errorMessage =
+                "Something went wrong.";
+
+
+            if (data.detail) {
+
+                if (
+                    typeof data.detail ===
+                    "string"
+                ) {
+
+                    errorMessage =
+                        data.detail;
+
+                } else {
+
+                    errorMessage =
+                        JSON.stringify(
+                            data.detail
+                        );
+
+                }
+
+            }
 
 
             throw new Error(
-                message
+                errorMessage
             );
+
         }
 
 
@@ -202,8 +260,9 @@ async function rewriteText() {
         ) {
 
             throw new Error(
-                "AI service is temporarily unavailable."
+                "AI did not return a valid result."
             );
+
         }
 
 
@@ -224,8 +283,13 @@ async function rewriteText() {
 
 
         result.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
+
+            behavior:
+                "smooth",
+
+            block:
+                "center"
+
         });
 
 
@@ -251,22 +315,29 @@ async function rewriteText() {
         ) {
 
             alert(
-                "AI service is waking up.\n\n" +
-                "Please wait a few seconds and try again."
+                "Could not connect to EasyTools backend.\n\n" +
+                "Please try again in a few seconds.\n" +
+                "The free server may be waking up."
             );
 
             return;
+
         }
 
 
         alert(
+            "Error:\n\n" +
             error.message
         );
+
     }
+
 }
 
 
-/* COPY */
+/* ==========================================
+   COPY RESULT
+========================================== */
 
 copyBtn.addEventListener(
     "click",
@@ -283,6 +354,7 @@ copyBtn.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -307,7 +379,13 @@ copyBtn.addEventListener(
             );
 
 
-        } catch {
+        } catch (error) {
+
+            console.error(
+                "Copy Error:",
+                error
+            );
+
 
             const temporaryTextarea =
                 document.createElement(
@@ -350,28 +428,61 @@ copyBtn.addEventListener(
                 },
                 1500
             );
+
         }
+
     }
 );
 
 
-/* BACKEND CHECK */
+/* ==========================================
+   BACKEND STATUS CHECK
+========================================== */
 
 async function checkBackend() {
 
     try {
 
-        await fetch(
-            BACKEND_URL + "/"
+        const response =
+            await fetch(
+                BACKEND_URL + "/"
+            );
+
+
+        if (!response.ok) {
+
+            console.warn(
+                "EasyTools backend returned an error."
+            );
+
+            return;
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "EasyTools Backend:",
+            data.message
         );
 
-    } catch {
+
+    } catch (error) {
 
         console.warn(
-            "EasyTools backend unavailable."
+            "EasyTools backend is currently unavailable."
         );
+
     }
+
 }
 
+
+/* ==========================================
+   RUN STATUS CHECK
+========================================== */
 
 checkBackend();
