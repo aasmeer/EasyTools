@@ -60,11 +60,7 @@ const pagesGrid =
 const downloadAllBtn =
     document.getElementById("downloadAllBtn");
 
-const adModal =
-    document.getElementById("adModal");
 
-const countdown =
-    document.getElementById("countdown");
 
 
 let selectedFile = null;
@@ -195,10 +191,19 @@ uploadArea.addEventListener(
    LOAD PDF
 ========================= */
 
-async function loadPDF(file) {
+let pdfLoadVersion = 0;
 
-    selectedFile =
-        file;
+async function loadPDF(file) {
+    const loadVersion = ++pdfLoadVersion;
+    const previousDocument = pdfDocument;
+    let loadingTask;
+    selectedFile = null;
+    pdfDocument = null;
+    settings.style.display = "none";
+    fileInfo.style.display = "none";
+    generateBtn.disabled = true;
+
+
 
 
     result.style.display =
@@ -221,19 +226,27 @@ async function loadPDF(file) {
 
 
     try {
+        if (previousDocument) await previousDocument.destroy();
+        if (loadVersion !== pdfLoadVersion) return;
 
         const buffer =
             await file.arrayBuffer();
 
 
-        const loadingTask =
+        loadingTask =
             pdfjsLib.getDocument({
                 data: buffer
             });
 
 
-        pdfDocument =
-            await loadingTask.promise;
+        const loadedPDF = await loadingTask.promise;
+        if (loadVersion !== pdfLoadVersion) {
+            if (loadedPDF.destroy) await loadedPDF.destroy();
+            return;
+        }
+        pdfDocument = loadedPDF;
+        selectedFile = file;
+        generateBtn.disabled = false;
 
 
         pageCount.textContent =
@@ -246,6 +259,14 @@ async function loadPDF(file) {
 
 
     } catch(error) {
+        if (loadingTask) {
+            try { await loadingTask.destroy(); } catch { /* Preserve the load error. */ }
+        }
+        if (loadVersion !== pdfLoadVersion) return;
+        selectedFile = null;
+        pdfDocument = null;
+        settings.style.display = "none";
+        fileInfo.style.display = "none";
 
         console.error(error);
 
@@ -320,51 +341,8 @@ generateBtn.addEventListener(
 ========================= */
 
 function showAdvertisement() {
-
-    adModal.style.display =
-        "flex";
-
-
-    let seconds =
-        5;
-
-
-    countdown.textContent =
-        seconds;
-
-
-    const timer =
-        setInterval(
-            function () {
-
-                seconds--;
-
-
-                countdown.textContent =
-                    seconds;
-
-
-                if (
-                    seconds <= 0
-                ) {
-
-                    clearInterval(
-                        timer
-                    );
-
-
-                    adModal.style.display =
-                        "none";
-
-
-                    convertPDF();
-
-                }
-
-            },
-            1000
-        );
-
+    // Tool use never depends on viewing or interacting with an advertisement.
+    return convertPDF();
 }
 
 
@@ -373,6 +351,11 @@ function showAdvertisement() {
 ========================= */
 
 async function convertPDF() {
+    let activeCanvas = null;
+    let activePage = null;
+    const releaseJob = EasyTools.beginJob(generateBtn);
+    try {
+
 
     processing.style.display =
         "block";
@@ -403,6 +386,9 @@ async function convertPDF() {
             ) / 100;
 
 
+        EasyTools.checkPages(pdfDocument.numPages);
+        let renderedPixels = 0;
+
         for (
             let pageNumber = 1;
             pageNumber <= pdfDocument.numPages;
@@ -423,17 +409,26 @@ async function convertPDF() {
                 );
 
 
+            activePage = page;
+
             const viewport =
                 page.getViewport({
                     scale: scale
                 });
 
 
+            renderedPixels += EasyTools.checkPixels(viewport.width, viewport.height);
+            if (renderedPixels > 64000000) {
+                throw new Error("This job exceeds the 64 megapixel limit. Use fewer pages or a lower resolution.");
+            }
+
             const canvas =
                 document.createElement(
                     "canvas"
                 );
 
+
+            activeCanvas = canvas;
 
             const context =
                 canvas.getContext(
@@ -453,6 +448,8 @@ async function convertPDF() {
                 );
 
 
+            if (!context) throw new Error("Your browser could not create an image canvas.");
+
             context.fillStyle =
                 background.value;
 
@@ -471,7 +468,9 @@ async function convertPDF() {
                     context,
 
                 viewport:
-                    viewport
+                    viewport,
+
+                background: background.value
 
             }).promise;
 
@@ -499,6 +498,10 @@ async function convertPDF() {
                 blob,
                 pageNumber
             );
+            canvas.width = canvas.height = 0;
+            activeCanvas = null;
+            page.cleanup();
+            activePage = null;
 
         }
 
@@ -590,6 +593,9 @@ async function convertPDF() {
 
 
     } catch(error) {
+        revokeOldURLs();
+        pagesGrid.innerHTML = "";
+        result.style.display = "none";
 
         console.error(error);
 
@@ -608,6 +614,17 @@ async function convertPDF() {
 
     }
 
+
+    } finally {
+        try {
+            if (activeCanvas) activeCanvas.width = activeCanvas.height = 0;
+            if (activePage) activePage.cleanup();
+        } catch (error) {
+            console.warn("PDF page resources could not be fully released.");
+        } finally {
+            releaseJob();
+        }
+    }
 }
 
 
@@ -806,6 +823,10 @@ function addPageCard(
 ========================= */
 
 function revokeOldURLs() {
+    if (zipURL) {
+        URL.revokeObjectURL(zipURL);
+        zipURL = null;
+    }
 
     pageURLs.forEach(
         function(url) {

@@ -37,11 +37,7 @@ const resultInfo =
 const downloadBtn =
     document.getElementById("downloadBtn");
 
-const adModal =
-    document.getElementById("adModal");
 
-const countdown =
-    document.getElementById("countdown");
 
 
 let selectedFile = null;
@@ -157,7 +153,15 @@ uploadArea.addEventListener(
    LOAD PDF
 ========================= */
 
+let pdfLoadVersion = 0;
+
 async function loadPDF(file) {
+    const loadVersion = ++pdfLoadVersion;
+    selectedFile = null;
+    sourcePDF = null;
+    settings.style.display = "none";
+    fileInfo.style.display = "none";
+    splitBtn.disabled = true;
 
     if (
         file.type !== "application/pdf" &&
@@ -172,7 +176,7 @@ async function loadPDF(file) {
     }
 
 
-    selectedFile = file;
+
 
     result.style.display =
         "none";
@@ -184,10 +188,16 @@ async function loadPDF(file) {
             await file.arrayBuffer();
 
 
-        sourcePDF =
-            await PDFLib.PDFDocument.load(
+        const loadedPDF = await PDFLib.PDFDocument.load(
                 bytes
             );
+        if (loadVersion !== pdfLoadVersion) {
+            if (loadedPDF.destroy) await loadedPDF.destroy();
+            return;
+        }
+        sourcePDF = loadedPDF;
+        selectedFile = file;
+        splitBtn.disabled = false;
 
 
         totalPages =
@@ -224,6 +234,11 @@ async function loadPDF(file) {
 
 
     } catch(error) {
+        if (loadVersion !== pdfLoadVersion) return;
+        selectedFile = null;
+        sourcePDF = null;
+        settings.style.display = "none";
+        fileInfo.style.display = "none";
 
         console.error(error);
 
@@ -435,56 +450,9 @@ splitBtn.addEventListener(
    DEMO AD
 ========================= */
 
-function showAdvertisement(
-    selectedPages
-) {
-
-    adModal.style.display =
-        "flex";
-
-
-    let seconds =
-        5;
-
-
-    countdown.textContent =
-        seconds;
-
-
-    const timer =
-        setInterval(
-            function() {
-
-                seconds--;
-
-
-                countdown.textContent =
-                    seconds;
-
-
-                if (
-                    seconds <= 0
-                ) {
-
-                    clearInterval(
-                        timer
-                    );
-
-
-                    adModal.style.display =
-                        "none";
-
-
-                    createSplitPDF(
-                        selectedPages
-                    );
-
-                }
-
-            },
-            1000
-        );
-
+function showAdvertisement(selectedPages) {
+    // Tool use never depends on viewing or interacting with an advertisement.
+    return createSplitPDF(selectedPages);
 }
 
 
@@ -495,6 +463,9 @@ function showAdvertisement(
 async function createSplitPDF(
     selectedPages
 ) {
+    const releaseJob = EasyTools.beginJob(splitBtn);
+    try {
+
 
     processing.style.display =
         "block";
@@ -611,7 +582,6 @@ async function createSplitPDF(
 
 
     } catch(error) {
-
         console.error(error);
 
 
@@ -629,4 +599,8 @@ async function createSplitPDF(
 
     }
 
+
+    } finally {
+        releaseJob();
+    }
 }

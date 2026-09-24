@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="css/style.css">
 
     <!-- PDF Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/4.2.1/jspdf.umd.min.js" integrity="sha384-qovJwSBbRDPP5cEjCp8S0UP66wrvnjaa60XMOGzTNanrThcrGfXfnZkvgY8N1KT3" crossorigin="anonymous" defer></script>
 
 
     <style>
@@ -595,6 +595,11 @@
 
     </style>
 
+<!-- Google tag (gtag.js) -->
+<script type="text/plain" data-easytools-consent="analytics" data-src="https://www.googletagmanager.com/gtag/js?id=G-013MVTXVKJ"></script>
+
+<!-- Advertising stays blocked until a certified CMP is configured and verified. -->
+<script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
 </head>
 
 
@@ -613,15 +618,15 @@
 
         <a href="index.html">Home</a>
 
-        <a href="#">All Tools</a>
+        <a href="all-tools.html">All Tools</a>
 
-        <a href="#">AI Tools</a>
+        <a href="ai-rewriter.html">AI Tools</a>
 
-        <a href="#">PDF Tools</a>
+        <a href="all-tools.html#pdf-tools">PDF Tools</a>
 
-        <a href="#">Image Tools</a>
+        <a href="all-tools.html#image-tools">Image Tools</a>
 
-        <a href="#">Pricing</a>
+        <a href="pricing.html">Pricing</a>
 
     </nav>
 
@@ -744,7 +749,7 @@
 
                     <div class="setting">
 
-                        <label>
+                        <label for="format">
                             Output Format
                         </label>
 
@@ -775,7 +780,7 @@
 
                     <div class="setting">
 
-                        <label>
+                        <label for="targetSize">
                             Target File Size
                         </label>
 
@@ -788,7 +793,7 @@
                                 min="1"
                             >
 
-                            <select id="sizeUnit">
+                            <select id="sizeUnit" aria-label="Target file size unit">
 
                                 <option value="KB">
                                     KB
@@ -830,7 +835,7 @@
                         min="10"
                         max="100"
                         value="75"
-                    >
+                     aria-label="Quality">
 
                 </div>
 
@@ -849,13 +854,13 @@
                             type="number"
                             id="width"
                             placeholder="Width"
-                        >
+                         aria-label="Width in pixels">
 
                         <input
                             type="number"
                             id="height"
                             placeholder="Height"
-                        >
+                         aria-label="Height in pixels">
 
                     </div>
 
@@ -865,7 +870,7 @@
                             type="checkbox"
                             id="maintainRatio"
                             checked
-                        >
+                         aria-label="Maintain aspect ratio">
 
                         Maintain aspect ratio
 
@@ -1031,7 +1036,7 @@
 </div>
 
 
-<script src="js/compressor.js"></script>
+<script src="js/compressor-backup.js" defer></script>
 
 </body>
 

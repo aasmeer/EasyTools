@@ -20,10 +20,10 @@
 <link rel="stylesheet" href="css/style.css">
 
     <!-- PDF Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/4.2.1/jspdf.umd.min.js" integrity="sha384-qovJwSBbRDPP5cEjCp8S0UP66wrvnjaa60XMOGzTNanrThcrGfXfnZkvgY8N1KT3" crossorigin="anonymous" defer></script>
 
     <!-- ZIP Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha384-+mbV2IY1Zk/X1p/nWllGySJSUN8uMs+gUAN10Or95UBH0fpj6GfKgPmgC5EXieXG" crossorigin="anonymous" defer></script>
 
 
     <style>
@@ -683,6 +683,11 @@
 
     </style>
 
+<!-- Google tag (gtag.js) -->
+<script type="text/plain" data-easytools-consent="analytics" data-src="https://www.googletagmanager.com/gtag/js?id=G-013MVTXVKJ"></script>
+
+<!-- Advertising stays blocked until a certified CMP is configured and verified. -->
+<script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
 </head>
 
 
@@ -707,15 +712,15 @@
             All Tools
         </a>
 
-        <a href="#">
+        <a href="ai-rewriter.html">
             AI Tools
         </a>
 
-        <a href="#">
+        <a href="all-tools.html#pdf-tools">
             PDF Tools
         </a>
 
-        <a href="#">
+        <a href="all-tools.html#image-tools">
             Image Tools
         </a>
 
@@ -822,7 +827,7 @@
 
                     <div class="setting">
 
-                        <label>
+                        <label for="format">
                             Output Format
                         </label>
 
@@ -853,7 +858,7 @@
 
                     <div class="setting">
 
-                        <label>
+                        <label for="targetSize">
                             Target File Size
                         </label>
 
@@ -866,7 +871,7 @@
                                 min="1"
                             >
 
-                            <select id="sizeUnit">
+                            <select id="sizeUnit" aria-label="Target file size unit">
 
                                 <option value="KB">
                                     KB
@@ -908,7 +913,7 @@
                         min="10"
                         max="100"
                         value="75"
-                    >
+                     aria-label="Quality">
 
                 </div>
 
@@ -927,13 +932,13 @@
                             type="number"
                             id="width"
                             placeholder="Width"
-                        >
+                         aria-label="Width in pixels">
 
                         <input
                             type="number"
                             id="height"
                             placeholder="Height"
-                        >
+                         aria-label="Height in pixels">
 
                     </div>
 
@@ -944,7 +949,7 @@
                             type="checkbox"
                             id="maintainRatio"
                             checked
-                        >
+                         aria-label="Maintain aspect ratio">
 
                         Maintain aspect ratio
 
@@ -1068,6 +1073,36 @@
                     ⬇️ Download ZIP
 
                 </a>
+                 <section class="tool-guide">
+
+        <h2>Compress Images Online for Free</h2>
+
+        <p>
+            EasyTools Image Compressor helps you reduce image size
+            without installing any software. Compress JPG, PNG and
+            WEBP images quickly while maintaining good quality.
+        </p>
+
+        <h3>How to Use</h3>
+
+        <ol>
+            <li>Select your image.</li>
+            <li>Choose settings.</li>
+            <li>Click Generate.</li>
+            <li>Download the compressed image.</li>
+        </ol>
+
+        <h3>Benefits</h3>
+
+        <ul>
+            <li>Reduce image size.</li>
+            <li>Faster uploads.</li>
+            <li>Save storage.</li>
+            <li>Works on mobile.</li>
+        </ul>
+
+    </section>
+
 
             </div>
 
@@ -1079,41 +1114,9 @@
 </main>
 
 
-<!-- AD MODAL -->
-
-<div
-    class="ad-modal"
-    id="adModal"
->
-
-    <div class="ad-box">
-
-        <div class="ad-label">
-            Advertisement
-        </div>
-
-        <div class="ad-placeholder">
-            ADVERTISEMENT
-        </div>
-
-        <div class="ad-countdown">
-
-            Your tool will continue in
-
-            <strong id="countdown">
-                5
-            </strong>
-
-            seconds...
-
-        </div>
-
-    </div>
-
-</div>
 
 
-<script src="js/compressor.js"></script>
+<script src="js/compressor.js" defer></script>
 
 </body>
 

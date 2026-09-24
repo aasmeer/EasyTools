@@ -65,18 +65,35 @@ setToday();
    PARSE DATE SAFELY
 ========================= */
 
+// Treat date inputs as calendar dates, independent of daylight-saving offsets.
+function calendarDate(year, month, day) {
+    const date = new Date(0);
+    date.setUTCFullYear(year, month, day);
+    return date;
+}
+
 function parseDate(value) {
+    const parts = /^(\d{4,})-(\d{2})-(\d{2})$/.exec(value);
+    if (!parts) return new Date(NaN);
+    const year = Number(parts[1]);
+    const month = Number(parts[2]) - 1;
+    const day = Number(parts[3]);
+    const date = calendarDate(year, month, day);
+    if (year < 1 || date.getUTCFullYear() !== year ||
+        date.getUTCMonth() !== month || date.getUTCDate() !== day) return new Date(NaN);
+    return date;
+}
 
-    const parts =
-        value.split("-");
+// Month-end anniversaries use the last day when a month is shorter.
+// This also treats February 28 as a leap-day birthday's non-leap anniversary.
+function addCalendarMonths(date, count) {
+    const first = calendarDate(date.getUTCFullYear(), date.getUTCMonth() + count, 1);
+    const lastDay = calendarDate(first.getUTCFullYear(), first.getUTCMonth() + 1, 0).getUTCDate();
+    return calendarDate(first.getUTCFullYear(), first.getUTCMonth(), Math.min(date.getUTCDate(), lastDay));
+}
 
-
-    return new Date(
-        Number(parts[0]),
-        Number(parts[1]) - 1,
-        Number(parts[2])
-    );
-
+function calendarDaysBetween(start, end) {
+    return (end.getTime() - start.getTime()) / 86400000;
 }
 
 
@@ -84,65 +101,16 @@ function parseDate(value) {
    EXACT AGE
 ========================= */
 
-function getExactAge(
-    birth,
-    target
-) {
-
-    let years =
-        target.getFullYear() -
-        birth.getFullYear();
-
-
-    let months =
-        target.getMonth() -
-        birth.getMonth();
-
-
-    let days =
-        target.getDate() -
-        birth.getDate();
-
-
-    if (
-        days < 0
-    ) {
-
-        months--;
-
-
-        const previousMonth =
-            new Date(
-                target.getFullYear(),
-                target.getMonth(),
-                0
-            );
-
-
-        days +=
-            previousMonth.getDate();
-
-    }
-
-
-    if (
-        months < 0
-    ) {
-
-        years--;
-
-        months +=
-            12;
-
-    }
-
-
+function getExactAge(birth, target) {
+    let wholeMonths = (target.getUTCFullYear() - birth.getUTCFullYear()) * 12 +
+        target.getUTCMonth() - birth.getUTCMonth();
+    if (addCalendarMonths(birth, wholeMonths) > target) wholeMonths--;
+    const anniversary = addCalendarMonths(birth, wholeMonths);
     return {
-        years,
-        months,
-        days
+        years: Math.floor(wholeMonths / 12),
+        months: wholeMonths % 12,
+        days: calendarDaysBetween(anniversary, target)
     };
-
 }
 
 
@@ -150,48 +118,11 @@ function getExactAge(
    NEXT BIRTHDAY
 ========================= */
 
-function getNextBirthdayDays(
-    birth,
-    target
-) {
-
-    let next =
-        new Date(
-            target.getFullYear(),
-            birth.getMonth(),
-            birth.getDate()
-        );
-
-
-    if (
-        next < target
-    ) {
-
-        next =
-            new Date(
-                target.getFullYear() + 1,
-                birth.getMonth(),
-                birth.getDate()
-            );
-
-    }
-
-
-    const difference =
-        next -
-        target;
-
-
-    return Math.ceil(
-        difference /
-        (
-            1000 *
-            60 *
-            60 *
-            24
-        )
-    );
-
+function getNextBirthdayDays(birth, target) {
+    const yearMonths = (target.getUTCFullYear() - birth.getUTCFullYear()) * 12;
+    let next = addCalendarMonths(birth, yearMonths);
+    if (next < target) next = addCalendarMonths(birth, yearMonths + 12);
+    return calendarDaysBetween(target, next);
 }
 
 
@@ -227,6 +158,12 @@ function calculateAge() {
         );
 
 
+    if (!Number.isFinite(birth.getTime()) || !Number.isFinite(target.getTime())) {
+        result.style.display = "none";
+        alert("Please select valid calendar dates.");
+        return;
+    }
+
     if (
         birth > target
     ) {
@@ -260,21 +197,7 @@ function calculateAge() {
         age.years;
 
 
-    const milliseconds =
-        target.getTime() -
-        birth.getTime();
-
-
-    const days =
-        Math.floor(
-            milliseconds /
-            (
-                1000 *
-                60 *
-                60 *
-                24
-            )
-        );
+    const days = calendarDaysBetween(birth, target);
 
 
     totalDays.textContent =
@@ -320,7 +243,8 @@ function calculateAge() {
             "en-IN",
             {
                 weekday:
-                    "long"
+                    "long",
+                timeZone: "UTC"
             }
         );
 

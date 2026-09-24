@@ -98,6 +98,7 @@ let items = [];
 ========================= */
 
 function money(value) {
+    if (!Number.isFinite(value) || value < 0) return "Invalid values";
 
     return new Intl.NumberFormat(
         "en-IN",
@@ -120,16 +121,30 @@ function setToday() {
     const today =
         new Date();
 
-    const formatted =
-        today
-            .toISOString()
-            .split("T")[0];
+    const formatted = [
+        String(today.getFullYear()).padStart(4, "0"),
+        String(today.getMonth() + 1).padStart(2, "0"),
+        String(today.getDate()).padStart(2, "0")
+    ].join("-");
 
     invoiceDate.value =
         formatted;
 
 }
 
+
+function readInvoiceNumber(input, maximum = Infinity) {
+    const value = Number(input.value);
+    const valid = !input.validity.badInput && Number.isFinite(value) && value >= 0 && value <= maximum;
+    input.setCustomValidity(valid ? "" : maximum === 100
+        ? "Enter a discount between 0 and 100 percent."
+        : "Enter a finite number of zero or more.");
+    input.setAttribute("aria-invalid", String(!valid));
+    return valid ? value : NaN;
+}
+
+// Enforce the percentage bound without changing the form's layout.
+discountRate.max = "100";
 
 /* =========================
    ADD ITEM
@@ -225,6 +240,9 @@ function renderItems() {
                 item.rate;
 
 
+            items[index].qty = readInvoiceNumber(qtyInput);
+            items[index].rate = readInvoiceNumber(rateInput);
+
             const removeBtn =
                 document.createElement(
                     "button"
@@ -258,9 +276,7 @@ function renderItems() {
                 function() {
 
                     items[index].qty =
-                        Number(
-                            qtyInput.value
-                        ) || 0;
+                        readInvoiceNumber(qtyInput);
 
                     updatePreview();
 
@@ -273,9 +289,7 @@ function renderItems() {
                 function() {
 
                     items[index].rate =
-                        Number(
-                            rateInput.value
-                        ) || 0;
+                        readInvoiceNumber(rateInput);
 
                     updatePreview();
 
@@ -404,8 +418,9 @@ function updatePreview() {
         function(item) {
 
             const amount =
-                item.qty *
-                item.rate;
+                Number.isFinite(item.qty) && item.qty >= 0 &&
+                Number.isFinite(item.rate) && item.rate >= 0
+                    ? item.qty * item.rate : NaN;
 
 
             subtotal +=
@@ -437,7 +452,7 @@ function updatePreview() {
                 "num";
 
             qtyCell.textContent =
-                item.qty;
+                Number.isFinite(item.qty) && item.qty >= 0 ? item.qty : "Invalid";
 
 
             const rateCell =
@@ -493,28 +508,11 @@ function updatePreview() {
     );
 
 
-    const discountPercent =
-        Math.max(
-            0,
-            Number(
-                discountRate.value
-            ) || 0
-        );
-
-
-    const gstPercent =
-        Math.max(
-            0,
-            Number(
-                gstRate.value
-            ) || 0
-        );
-
+    const discountPercent = readInvoiceNumber(discountRate, 100);
+    const gstPercent = readInvoiceNumber(gstRate);
 
     const discount =
-        subtotal *
-        discountPercent /
-        100;
+        subtotal * (discountPercent / 100);
 
 
     const taxableAmount =
@@ -523,9 +521,7 @@ function updatePreview() {
 
 
     const gst =
-        taxableAmount *
-        gstPercent /
-        100;
+        taxableAmount * (gstPercent / 100);
 
 
     const total =
@@ -556,6 +552,13 @@ function updatePreview() {
             total
         );
 
+    const valid = [subtotal, discount, gst, total].every(value => Number.isFinite(value) && value >= 0);
+    if (!valid) {
+        for (const field of [previewSubtotal, previewDiscount, previewGST, previewTotal]) {
+            field.textContent = "Invalid values";
+        }
+    }
+    return valid;
 }
 
 
@@ -665,6 +668,13 @@ printBtn.addEventListener(
     "click",
     function() {
 
+        if (!updatePreview()) {
+            const invalid = itemsContainer.querySelector("input:invalid") ||
+                [discountRate, gstRate].find(input => !input.checkValidity());
+            if (invalid) invalid.reportValidity();
+            else alert("Invoice values exceed the supported numeric range. Please reduce the quantities or rates.");
+            return;
+        }
         window.print();
 
     }

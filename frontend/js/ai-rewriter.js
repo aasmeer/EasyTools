@@ -31,11 +31,7 @@ const resultText =
 const copyBtn =
     document.getElementById("copyBtn");
 
-const adModal =
-    document.getElementById("adModal");
 
-const countdown =
-    document.getElementById("countdown");
 
 
 /* ==========================================
@@ -70,6 +66,12 @@ rewriteBtn.addEventListener(
 
         }
 
+
+        if (inputText.value.length > 10000) {
+            alert("Please limit your text to 10,000 characters per rewrite.");
+            inputText.focus();
+            return;
+        }
 
         if (text.length < 3) {
 
@@ -107,48 +109,8 @@ rewriteBtn.addEventListener(
 ========================================== */
 
 function showAdvertisement() {
-
-    adModal.style.display =
-        "flex";
-
-
-    let seconds = 5;
-
-
-    countdown.textContent =
-        seconds;
-
-
-    const timer =
-        setInterval(
-            function () {
-
-                seconds--;
-
-
-                countdown.textContent =
-                    seconds;
-
-
-                if (seconds <= 0) {
-
-                    clearInterval(
-                        timer
-                    );
-
-
-                    adModal.style.display =
-                        "none";
-
-
-                    rewriteText();
-
-                }
-
-            },
-            1000
-        );
-
+    // Tool use never depends on viewing or interacting with an advertisement.
+    return rewriteText();
 }
 
 
@@ -157,6 +119,8 @@ function showAdvertisement() {
 ========================================== */
 
 async function rewriteText() {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 45000);
 
     processing.style.display =
         "block";
@@ -173,6 +137,7 @@ async function rewriteText() {
                 BACKEND_URL + "/rewrite",
                 {
                     method: "POST",
+                    signal: controller.signal,
 
                     headers: {
                         "Content-Type":
@@ -205,6 +170,7 @@ async function rewriteText() {
                 await response.json();
 
         } catch (jsonError) {
+            if (controller.signal.aborted) throw jsonError;
 
             throw new Error(
                 "Backend returned an invalid response."
@@ -255,8 +221,8 @@ async function rewriteText() {
 
 
         if (
-            !data.success ||
-            !data.result
+            !data || !data.success ||
+            typeof data.result !== "string" || !data.result.trim()
         ) {
 
             throw new Error(
@@ -309,6 +275,11 @@ async function rewriteText() {
             false;
 
 
+        if (controller.signal.aborted) {
+            alert("The rewrite request timed out. Please try again.");
+            return;
+        }
+
         if (
             error.message ===
             "Failed to fetch"
@@ -330,6 +301,10 @@ async function rewriteText() {
             error.message
         );
 
+    } finally {
+        clearTimeout(timeout);
+        processing.style.display = "none";
+        rewriteBtn.disabled = false;
     }
 
 }
@@ -339,100 +314,25 @@ async function rewriteText() {
    COPY RESULT
 ========================================== */
 
-copyBtn.addEventListener(
-    "click",
-    async function () {
-
-        const text =
-            resultText.textContent.trim();
-
-
-        if (!text) {
-
-            alert(
-                "There is no result to copy."
-            );
-
-            return;
-
-        }
-
-
-        try {
-
-            await navigator.clipboard
-                .writeText(text);
-
-
-            copyBtn.textContent =
-                "Copied ✓";
-
-
-            setTimeout(
-                function () {
-
-                    copyBtn.textContent =
-                        "Copy Result";
-
-                },
-                1500
-            );
-
-
-        } catch (error) {
-
-            console.error(
-                "Copy Error:",
-                error
-            );
-
-
-            const temporaryTextarea =
-                document.createElement(
-                    "textarea"
-                );
-
-
-            temporaryTextarea.value =
-                text;
-
-
-            document.body.appendChild(
-                temporaryTextarea
-            );
-
-
-            temporaryTextarea.select();
-
-
-            document.execCommand(
-                "copy"
-            );
-
-
-            document.body.removeChild(
-                temporaryTextarea
-            );
-
-
-            copyBtn.textContent =
-                "Copied ✓";
-
-
-            setTimeout(
-                function () {
-
-                    copyBtn.textContent =
-                        "Copy Result";
-
-                },
-                1500
-            );
-
-        }
-
+const originalCopyLabel = copyBtn.textContent;
+let copyResetTimer;
+copyBtn.addEventListener("click", async function() {
+    const text = resultText.textContent.trim();
+    if (!text.trim()) {
+        alert("There is no result to copy.");
+        return;
     }
-);
+    try {
+        await EasyTools.copyText(text);
+        clearTimeout(copyResetTimer);
+        copyBtn.textContent = "Copied \u2713";
+        copyResetTimer = setTimeout(() => { copyBtn.textContent = originalCopyLabel; }, 1500);
+    } catch (error) {
+        clearTimeout(copyResetTimer);
+        copyBtn.textContent = originalCopyLabel;
+        alert("Copy could not be completed. Please select the text and copy it manually.");
+    }
+});
 
 
 /* ==========================================
@@ -440,12 +340,15 @@ copyBtn.addEventListener(
 ========================================== */
 
 async function checkBackend() {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
 
     try {
 
         const response =
             await fetch(
-                BACKEND_URL + "/"
+                BACKEND_URL + "/",
+                { signal: controller.signal }
             );
 
 
@@ -476,6 +379,8 @@ async function checkBackend() {
             "EasyTools backend is currently unavailable."
         );
 
+    } finally {
+        clearTimeout(timeout);
     }
 
 }

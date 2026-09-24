@@ -34,11 +34,7 @@ const qrCanvas =
 const downloadBtn =
     document.getElementById("downloadBtn");
 
-const adModal =
-    document.getElementById("adModal");
 
-const countdown =
-    document.getElementById("countdown");
 
 
 /* ==============================
@@ -111,51 +107,32 @@ generateBtn.addEventListener(
 ============================== */
 
 function showAdvertisement() {
-
-    adModal.style.display =
-        "flex";
-
-
-    let seconds = 5;
-
-
-    countdown.textContent =
-        seconds;
-
-
-    const timer =
-        setInterval(
-            function () {
-
-                seconds--;
-
-                countdown.textContent =
-                    seconds;
-
-
-                if (seconds <= 0) {
-
-                    clearInterval(timer);
-
-
-                    adModal.style.display =
-                        "none";
-
-
-                    generateQRCode();
-
-                }
-
-            },
-            1000
-        );
-
+    // Tool use never depends on viewing or interacting with an advertisement.
+    return generateQRCode();
 }
 
 
 /* ==============================
    QR GENERATION
 ============================== */
+
+function validateQRColors(dark, light) {
+    function luminance(color) {
+        if (!/^#[0-9a-f]{6}$/i.test(color)) {
+            throw new RangeError("Please choose valid QR and background colors.");
+        }
+        const channels = [1, 3, 5].map(offset => {
+            const value = parseInt(color.slice(offset, offset + 2), 16) / 255;
+            return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+        });
+        return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+    }
+    const foreground = luminance(dark);
+    const background = luminance(light);
+    if (foreground >= background || (background + 0.05) / (foreground + 0.05) < 4.5) {
+        throw new RangeError("Choose a dark QR color and a light background with at least 4.5:1 contrast so the code can be scanned.");
+    }
+}
 
 async function generateQRCode() {
 
@@ -168,6 +145,7 @@ async function generateQRCode() {
 
 
     try {
+        validateQRColors(darkColor.value, lightColor.value);
 
         const size =
             Number(qrSize.value);
@@ -249,7 +227,7 @@ async function generateQRCode() {
 
 
         alert(
-            "QR Code could not be generated."
+            error instanceof RangeError ? error.message : "QR Code could not be generated."
         );
 
     }

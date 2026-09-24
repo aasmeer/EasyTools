@@ -80,6 +80,8 @@ function calculateEMI() {
         tenure <= 0
     ) {
 
+        result.style.display = "none";
+
         alert(
             "Please enter valid loan details."
         );
@@ -108,6 +110,12 @@ function calculateEMI() {
     }
 
 
+    if (!Number.isFinite(months) || months <= 0) {
+        result.style.display = "none";
+        alert("Loan duration is outside the supported numeric range.");
+        return;
+    }
+
     const monthlyRate =
         annualRate /
         12 /
@@ -127,20 +135,10 @@ function calculateEMI() {
 
     } else {
 
-        const factor =
-            Math.pow(
-                1 + monthlyRate,
-                months
-            );
-
-
-        emi =
-            principal *
-            monthlyRate *
-            factor /
-            (
-                factor - 1
-            );
+        // Equivalent amortization formula without an overflowing positive power.
+        // log1p/expm1 also retain precision when the interest rate is very small.
+        const denominator = -Math.expm1(-months * Math.log1p(monthlyRate));
+        emi = principal * (monthlyRate / denominator);
 
     }
 
@@ -150,9 +148,13 @@ function calculateEMI() {
         months;
 
 
-    const interest =
-        payment -
-        principal;
+    const interest = Math.max(0, payment - principal);
+
+    if (![emi, payment, interest].every(Number.isFinite) || emi <= 0 || payment <= 0) {
+        result.style.display = "none";
+        alert("These loan values exceed the supported numeric range. Please use smaller values.");
+        return;
+    }
 
 
     monthlyEmi.textContent =

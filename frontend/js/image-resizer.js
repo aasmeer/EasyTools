@@ -64,14 +64,12 @@ const newFileSize =
 const downloadBtn =
     document.getElementById("downloadBtn");
 
-const adModal =
-    document.getElementById("adModal");
 
-const countdown =
-    document.getElementById("countdown");
 
 
 let selectedFile = null;
+let loadedImage = null;
+let imageLoadVersion = 0;
 let originalWidth = 0;
 let originalHeight = 0;
 let downloadURL = null;
@@ -171,76 +169,44 @@ uploadArea.addEventListener(
 
 /* LOAD FILE */
 
-function loadSelectedFile(file) {
-
-    selectedFile = file;
-
-    fileName.textContent =
-        file.name;
-
-    fileSize.textContent =
-        "File size: " +
-        formatBytes(file.size);
-
-    fileInfo.style.display =
-        "block";
-
-    settings.style.display =
-        "block";
-
-    result.style.display =
-        "none";
-
-
-    const reader =
-        new FileReader();
-
-
-    reader.onload =
-        function (event) {
-
-            previewImage.src =
-                event.target.result;
-
-            preview.style.display =
-                "block";
-
-
-            const img =
-                new Image();
-
-
-            img.onload =
-                function () {
-
-                    originalWidth =
-                        img.width;
-
-                    originalHeight =
-                        img.height;
-
-
-                    widthInput.value =
-                        originalWidth;
-
-                    heightInput.value =
-                        originalHeight;
-
-
-                    originalDimensions.textContent =
-                        "Dimensions: " +
-                        originalWidth +
-                        " × " +
-                        originalHeight;
-                };
-
-
-            img.src =
-                event.target.result;
-        };
-
-
-    reader.readAsDataURL(file);
+async function loadSelectedFile(file) {
+    const version = ++imageLoadVersion;
+    selectedFile = null;
+    loadedImage = null;
+    originalWidth = originalHeight = 0;
+    generateBtn.disabled = true;
+    for (const panel of [fileInfo, preview, settings, result]) panel.style.display = "none";
+    try {
+        const decoded = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onerror = () => reject(new Error("Could not read the selected file."));
+            reader.onabort = () => reject(new Error("Reading the selected file was interrupted."));
+            reader.onload = event => {
+                const image = new Image();
+                image.onerror = () => reject(new Error("Could not open this image. Please choose another file."));
+                image.onload = () => resolve({ image, dataURL: event.target.result });
+                image.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+        if (version !== imageLoadVersion) return;
+        EasyTools.checkPixels(decoded.image.width, decoded.image.height);
+        selectedFile = file;
+        loadedImage = decoded.image;
+        originalWidth = loadedImage.width;
+        originalHeight = loadedImage.height;
+        widthInput.value = originalWidth;
+        heightInput.value = originalHeight;
+        fileName.textContent = file.name;
+        fileSize.textContent = "File size: " + formatBytes(file.size);
+        originalDimensions.textContent = "Dimensions: " + originalWidth + " \u00d7 " + originalHeight;
+        previewImage.src = decoded.dataURL;
+        for (const panel of [fileInfo, preview, settings]) panel.style.display = "block";
+    } catch (error) {
+        if (version === imageLoadVersion) alert(error.message);
+    } finally {
+        if (version === imageLoadVersion) generateBtn.disabled = false;
+    }
 }
 
 
@@ -272,7 +238,7 @@ widthInput.addEventListener(
         const newWidth =
             Number(widthInput.value);
 
-        if (!newWidth) return;
+        if (!Number.isInteger(newWidth) || newWidth <= 0) return;
 
 
         const ratio =
@@ -281,9 +247,7 @@ widthInput.addEventListener(
 
 
         heightInput.value =
-            Math.round(
-                newWidth * ratio
-            );
+            Math.max(1, Math.round(newWidth * ratio));
     }
 );
 
@@ -302,7 +266,7 @@ heightInput.addEventListener(
         const newHeight =
             Number(heightInput.value);
 
-        if (!newHeight) return;
+        if (!Number.isInteger(newHeight) || newHeight <= 0) return;
 
 
         const ratio =
@@ -311,9 +275,7 @@ heightInput.addEventListener(
 
 
         widthInput.value =
-            Math.round(
-                newHeight * ratio
-            );
+            Math.max(1, Math.round(newHeight * ratio));
     }
 );
 
@@ -335,12 +297,12 @@ generateBtn.addEventListener(
 
 
         if (
-            !widthInput.value ||
-            !heightInput.value
+            !Number.isInteger(Number(widthInput.value)) || Number(widthInput.value) <= 0 ||
+            !Number.isInteger(Number(heightInput.value)) || Number(heightInput.value) <= 0
         ) {
 
             alert(
-                "Please enter width and height."
+                "Please enter positive whole-number dimensions."
             );
 
             return;
@@ -359,249 +321,79 @@ generateBtn.addEventListener(
 /* DEMO AD */
 
 function showAdvertisement() {
-
-    adModal.style.display =
-        "flex";
-
-    let seconds = 5;
-
-    countdown.textContent =
-        seconds;
-
-
-    const timer =
-        setInterval(
-            function () {
-
-                seconds--;
-
-                countdown.textContent =
-                    seconds;
-
-
-                if (seconds <= 0) {
-
-                    clearInterval(timer);
-
-                    adModal.style.display =
-                        "none";
-
-                    resizeImage();
-                }
-
-            },
-            1000
-        );
+    // Tool use never depends on viewing or interacting with an advertisement.
+    return resizeImage();
 }
 
 
 /* RESIZE */
 
-function resizeImage() {
-
-    processing.style.display =
-        "block";
-
-    result.style.display =
-        "none";
-
-
-    const reader =
-        new FileReader();
-
-
-    reader.onload =
-        function (event) {
-
-            const img =
-                new Image();
-
-
-            img.onload =
-                function () {
-
-                    const width =
-                        Number(
-                            widthInput.value
-                        );
-
-                    const height =
-                        Number(
-                            heightInput.value
-                        );
-
-
-                    const canvas =
-                        document.createElement(
-                            "canvas"
-                        );
-
-
-                    canvas.width =
-                        width;
-
-                    canvas.height =
-                        height;
-
-
-                    const ctx =
-                        canvas.getContext(
-                            "2d"
-                        );
-
-
-                    if (
-                        format.value === "jpg"
-                    ) {
-
-                        ctx.fillStyle =
-                            "#ffffff";
-
-                        ctx.fillRect(
-                            0,
-                            0,
-                            width,
-                            height
-                        );
-                    }
-
-
-                    ctx.drawImage(
-                        img,
-                        0,
-                        0,
-                        width,
-                        height
-                    );
-
-
-                    const mime =
-                        getMimeType();
-
-
-                    const q =
-                        Number(
-                            quality.value
-                        ) / 100;
-
-
-                    canvas.toBlob(
-                        function (blob) {
-
-                            if (!blob) {
-
-                                processing.style.display =
-                                    "none";
-
-                                generateBtn.disabled =
-                                    false;
-
-                                alert(
-                                    "Image could not be resized."
-                                );
-
-                                return;
-                            }
-
-
-                            if (downloadURL) {
-
-                                URL.revokeObjectURL(
-                                    downloadURL
-                                );
-                            }
-
-
-                            downloadURL =
-                                URL.createObjectURL(
-                                    blob
-                                );
-
-
-                            originalResult.textContent =
-                                originalWidth +
-                                " × " +
-                                originalHeight;
-
-
-                            newDimensions.textContent =
-                                width +
-                                " × " +
-                                height;
-
-
-                            newFileSize.textContent =
-                                formatBytes(
-                                    blob.size
-                                );
-
-
-                            downloadBtn.href =
-                                downloadURL;
-
-
-                            const cleanName =
-                                selectedFile.name
-                                    .replace(
-                                        /\.[^/.]+$/,
-                                        ""
-                                    );
-
-
-                            downloadBtn.download =
-                                cleanName +
-                                "-resized." +
-                                format.value;
-
-
-                            processing.style.display =
-                                "none";
-
-
-                            result.style.display =
-                                "block";
-
-
-                            generateBtn.disabled =
-                                false;
-
-
-                            result.scrollIntoView({
-                                behavior: "smooth",
-                                block: "center"
-                            });
-
-                        },
-                        mime,
-                        q
-                    );
-                };
-
-
-            img.src =
-                event.target.result;
-        };
-
-
-    reader.readAsDataURL(
-        selectedFile
-    );
+async function resizeImage() {
+    let releaseJob;
+    let canvas;
+    try {
+        const image = loadedImage;
+        const file = selectedFile;
+        if (!image || !file) throw new Error("Please select a valid image first.");
+        const width = Number(widthInput.value);
+        const height = Number(heightInput.value);
+        if (!Number.isInteger(width) || width <= 0 || !Number.isInteger(height) || height <= 0) {
+            throw new Error("Please enter positive whole-number dimensions.");
+        }
+        EasyTools.checkPixels(width, height);
+        const extension = format.value;
+        const outputQuality = Number(quality.value) / 100;
+        releaseJob = EasyTools.beginJob(generateBtn);
+        processing.style.display = "block";
+        result.style.display = "none";
+        canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const context = canvas.getContext("2d");
+        if (!context) throw new Error("Your browser could not create an image canvas.");
+        if (extension === "jpg") {
+            context.fillStyle = "#ffffff";
+            context.fillRect(0, 0, width, height);
+        }
+        context.drawImage(image, 0, 0, width, height);
+        const blob = await new Promise((resolve, reject) => {
+            canvas.toBlob(value => value ? resolve(value) : reject(new Error("Image could not be resized.")),
+                getMimeType(extension), outputQuality);
+        });
+        if (downloadURL) URL.revokeObjectURL(downloadURL);
+        downloadURL = URL.createObjectURL(blob);
+        originalResult.textContent = image.width + " \u00d7 " + image.height;
+        newDimensions.textContent = width + " \u00d7 " + height;
+        newFileSize.textContent = formatBytes(blob.size);
+        downloadBtn.href = downloadURL;
+        downloadBtn.download = file.name.replace(/\.[^/.]+$/, "") + "-resized." + extension;
+        result.style.display = "block";
+        result.scrollIntoView({ behavior: "smooth", block: "center" });
+    } catch (error) {
+        result.style.display = "none";
+        alert(error.message || "Image could not be resized. Please try again.");
+    } finally {
+        if (canvas) canvas.width = canvas.height = 0;
+        processing.style.display = "none";
+        if (releaseJob) releaseJob();
+        generateBtn.disabled = false;
+    }
 }
 
 
 /* MIME */
 
-function getMimeType() {
+function getMimeType(extension = format.value) {
 
     if (
-        format.value === "png"
+        extension === "png"
     ) {
 
         return "image/png";
     }
 
     if (
-        format.value === "webp"
+        extension === "webp"
     ) {
 
         return "image/webp";

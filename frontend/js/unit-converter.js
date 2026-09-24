@@ -40,7 +40,7 @@ const units = {
 
     speed: {
         "meter/second": 1,
-        "kilometer/hour": 0.2777777778,
+        "kilometer/hour": 1 / 3.6,
         "mile/hour": 0.44704
     },
 
@@ -98,8 +98,11 @@ function populateUnits() {
             option1.value =
                 unit;
 
-            option1.textContent =
-                unit;
+            const binaryLabels = {
+                kilobyte: "kibibyte (KiB)", megabyte: "mebibyte (MiB)",
+                gigabyte: "gibibyte (GiB)", terabyte: "tebibyte (TiB)"
+            };
+            option1.textContent = type === "data" ? (binaryLabels[unit] || unit) : unit;
 
 
             const option2 =
@@ -204,7 +207,7 @@ function convert() {
     ) {
 
         resultValue.textContent =
-            "0";
+            "Invalid input";
 
         return;
 
@@ -232,28 +235,22 @@ function convert() {
 
     } else {
 
-        const base =
-            value *
-            units[type][
-                fromUnit.value
-            ];
-
-
-        result =
-            base /
-            units[type][
-                toUnit.value
-            ];
+        result = value * (units[type][fromUnit.value] / units[type][toUnit.value]);
 
     }
 
 
-    resultValue.textContent =
-        Number(
-            result.toFixed(8)
-        ).toLocaleString(
-            "en-IN"
-        );
+    if (!Number.isFinite(result) || (type !== "temperature" && value !== 0 && result === 0)) {
+        resultValue.textContent = "Out of range";
+        return;
+    }
+
+    const magnitude = Math.abs(result);
+    resultValue.textContent = result.toLocaleString("en-IN", {
+        maximumSignificantDigits: 12,
+        notation: magnitude !== 0 && (magnitude < 1e-8 || magnitude >= 1e15)
+            ? "scientific" : "standard"
+    });
 
 }
 

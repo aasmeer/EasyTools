@@ -360,3 +360,67 @@ footer p {
 .use-tool-btn:hover {
     background: #dbeafe;
 }
+/* Keep existing navigation available on narrow screens. */
+@media (max-width: 900px) {
+    body .header {
+        height: auto;
+        min-height: 72px;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding-top: 14px;
+        padding-bottom: 14px;
+    }
+    body .header nav {
+        display: flex;
+        flex: 1 0 100%;
+        order: 3;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px 18px;
+    }
+    body .header nav a { padding: 6px 0; }
+}
+[role="button"]:focus-visible, canvas:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 4px;
+}
+
+/* Non-modal privacy controls; existing tool layouts remain independent. */
+.easytools-privacy {
+    max-width: 1100px;
+    margin: 12px auto;
+    padding: 12px 20px;
+    color: #374151;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.easytools-privacy [role="region"] {
+    border: 1px solid #dbeafe;
+    border-radius: 10px;
+    background: #f7faff;
+    padding: 16px;
+    margin-bottom: 10px;
+}
+.easytools-privacy [hidden] { display: none; }
+.easytools-privacy h2 { font-size: 18px; margin: 0 0 8px; }
+.easytools-privacy p { margin: 8px 0; }
+.easytools-privacy a { color: #1d4ed8; text-decoration: underline; }
+.easytools-privacy-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.easytools-privacy button {
+    background: #ffffff;
+    color: #1d4ed8;
+    border: 1px solid #2563eb;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font: inherit;
+    cursor: pointer;
+}
+.easytools-privacy button:hover { background: #eff6ff; }
+.easytools-privacy button:focus-visible,
+.easytools-privacy a:focus-visible,
+.easytools-privacy [role="region"]:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
+}
+.easytools-privacy [role="status"]:empty { display: none; }
+@media print { .easytools-privacy { display: none !important; } }

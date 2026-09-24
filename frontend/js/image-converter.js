@@ -66,14 +66,12 @@ const newFileSize =
 const downloadBtn =
     document.getElementById("downloadBtn");
 
-const adModal =
-    document.getElementById("adModal");
 
-const countdown =
-    document.getElementById("countdown");
 
 
 let selectedFile = null;
+let loadedImage = null;
+let imageLoadVersion = 0;
 
 let originalWidth = 0;
 
@@ -245,116 +243,53 @@ uploadArea.addEventListener(
    LOAD IMAGE
 ========================================= */
 
-function loadFile(file) {
+async function loadFile(file) {
+    const version = ++imageLoadVersion;
+    selectedFile = null;
+    loadedImage = null;
+    originalWidth = 0;
+    originalHeight = 0;
+    fileInfo.style.display = "none";
+    preview.style.display = "none";
+    settings.style.display = "none";
+    result.style.display = "none";
+    generateBtn.disabled = true;
 
-    const allowedTypes = [
-        "image/jpeg",
-        "image/png",
-        "image/webp"
-    ];
-
-
-    if (
-        !allowedTypes.includes(
-            file.type
-        )
-    ) {
-
-        alert(
-            "Only JPG, PNG and WEBP images are supported."
-        );
-
-        return;
-
+    try {
+        if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+            throw new Error("Only JPG, PNG and WEBP images are supported.");
+        }
+        const decoded = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onerror = () => reject(new Error("Could not read the selected image."));
+            reader.onabort = () => reject(new Error("Image loading was interrupted."));
+            reader.onload = event => {
+                const image = new Image();
+                image.onerror = () => reject(new Error("Could not load the selected image."));
+                image.onload = () => resolve({ image, dataURL: event.target.result });
+                image.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+        if (version !== imageLoadVersion) return;
+        EasyTools.checkPixels(decoded.image.width, decoded.image.height);
+        selectedFile = file;
+        loadedImage = decoded.image;
+        originalWidth = loadedImage.width;
+        originalHeight = loadedImage.height;
+        fileName.textContent = file.name;
+        fileSize.textContent = "File size: " + formatBytes(file.size);
+        fileFormat.textContent = "Format: " + getOriginalExtension(file);
+        dimensions.textContent = "Dimensions: " + originalWidth + " \u00d7 " + originalHeight;
+        previewImage.src = decoded.dataURL;
+        fileInfo.style.display = "block";
+        preview.style.display = "block";
+        settings.style.display = "block";
+    } catch (error) {
+        if (version === imageLoadVersion) alert(error.message || "Could not load the selected image.");
+    } finally {
+        if (version === imageLoadVersion) generateBtn.disabled = false;
     }
-
-
-    selectedFile =
-        file;
-
-
-    fileName.textContent =
-        file.name;
-
-
-    fileSize.textContent =
-        "File size: " +
-        formatBytes(
-            file.size
-        );
-
-
-    fileFormat.textContent =
-        "Format: " +
-        getOriginalExtension(
-            file
-        );
-
-
-    fileInfo.style.display =
-        "block";
-
-
-    settings.style.display =
-        "block";
-
-
-    result.style.display =
-        "none";
-
-
-    const reader =
-        new FileReader();
-
-
-    reader.onload =
-        function (event) {
-
-
-            previewImage.src =
-                event.target.result;
-
-
-            preview.style.display =
-                "block";
-
-
-            const image =
-                new Image();
-
-
-            image.onload =
-                function () {
-
-
-                    originalWidth =
-                        image.width;
-
-
-                    originalHeight =
-                        image.height;
-
-
-                    dimensions.textContent =
-                        "Dimensions: " +
-                        originalWidth +
-                        " × " +
-                        originalHeight;
-
-
-                };
-
-
-            image.src =
-                event.target.result;
-
-        };
-
-
-    reader.readAsDataURL(
-        file
-    );
-
 }
 
 
@@ -413,53 +348,8 @@ generateBtn.addEventListener(
 ========================================= */
 
 function showAdvertisement() {
-
-    adModal.style.display =
-        "flex";
-
-
-    let seconds =
-        5;
-
-
-    countdown.textContent =
-        seconds;
-
-
-    const timer =
-        setInterval(
-            function () {
-
-
-                seconds--;
-
-
-                countdown.textContent =
-                    seconds;
-
-
-                if (
-                    seconds <= 0
-                ) {
-
-
-                    clearInterval(
-                        timer
-                    );
-
-
-                    adModal.style.display =
-                        "none";
-
-
-                    convertImage();
-
-                }
-
-            },
-            1000
-        );
-
+    // Tool use never depends on viewing or interacting with an advertisement.
+    return convertImage();
 }
 
 
@@ -467,158 +357,46 @@ function showAdvertisement() {
    CONVERT IMAGE
 ========================================= */
 
-function convertImage() {
-
-    processing.style.display =
-        "block";
-
-
-    const reader =
-        new FileReader();
-
-
-    reader.onload =
-        function (event) {
-
-
-            const image =
-                new Image();
-
-
-            image.onload =
-                function () {
-
-
-                    const canvas =
-                        document.createElement(
-                            "canvas"
-                        );
-
-
-                    canvas.width =
-                        image.width;
-
-
-                    canvas.height =
-                        image.height;
-
-
-                    const ctx =
-                        canvas.getContext(
-                            "2d"
-                        );
-
-
-                    /*
-                        When output is JPG,
-                        transparency must be replaced
-                        with a solid background.
-                    */
-
-                    if (
-                        outputFormat.value ===
-                        "jpg"
-                    ) {
-
-
-                        ctx.fillStyle =
-                            backgroundColor.value;
-
-
-                        ctx.fillRect(
-                            0,
-                            0,
-                            canvas.width,
-                            canvas.height
-                        );
-
-                    }
-
-
-                    ctx.drawImage(
-                        image,
-                        0,
-                        0
-                    );
-
-
-                    const mimeType =
-                        getMimeType();
-
-
-                    const outputQuality =
-                        Number(
-                            quality.value
-                        ) / 100;
-
-
-                    canvas.toBlob(
-                        function (blob) {
-
-
-                            if (!blob) {
-
-
-                                processing.style.display =
-                                    "none";
-
-
-                                generateBtn.disabled =
-                                    false;
-
-
-                                alert(
-                                    "Image conversion failed."
-                                );
-
-
-                                return;
-
-                            }
-
-
-                            showResult(
-                                blob
-                            );
-
-
-                        },
-                        mimeType,
-                        outputQuality
-                    );
-
-                };
-
-
-            image.onerror =
-                function () {
-
-
-                    processing.style.display =
-                        "none";
-
-
-                    generateBtn.disabled =
-                        false;
-
-
-                    alert(
-                        "Could not load the selected image."
-                    );
-
-                };
-
-
-            image.src =
-                event.target.result;
-
-        };
-
-
-    reader.readAsDataURL(
-        selectedFile
-    );
-
+async function convertImage() {
+    let canvas = null;
+    let releaseJob = null;
+    try {
+        const file = selectedFile;
+        const image = loadedImage;
+        if (!file || !image) throw new Error("Please select an image first.");
+        EasyTools.checkPixels(image.width, image.height);
+        const extension = outputFormat.value;
+        const outputQuality = Number(quality.value) / 100;
+        const background = backgroundColor.value;
+        releaseJob = EasyTools.beginJob(generateBtn);
+        processing.style.display = "block";
+        result.style.display = "none";
+        canvas = document.createElement("canvas");
+        canvas.width = image.width;
+        canvas.height = image.height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) throw new Error("Your browser could not create an image canvas.");
+        if (extension === "jpg") {
+            ctx.fillStyle = background;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        ctx.drawImage(image, 0, 0);
+        const blob = await new Promise((resolve, reject) => {
+            canvas.toBlob(value => {
+                if (value) resolve(value);
+                else reject(new Error("Image conversion failed."));
+            }, getMimeType(extension), outputQuality);
+        });
+        showResult(blob, file, extension);
+    } catch (error) {
+        result.style.display = "none";
+        alert(error.message || "Image conversion failed.");
+    } finally {
+        if (canvas) { canvas.width = 0; canvas.height = 0; }
+        processing.style.display = "none";
+        if (releaseJob) releaseJob();
+        generateBtn.disabled = false;
+    }
 }
 
 
@@ -626,11 +404,11 @@ function convertImage() {
    MIME
 ========================================= */
 
-function getMimeType() {
+function getMimeType(extension = outputFormat.value) {
 
 
     if (
-        outputFormat.value ===
+        extension ===
         "png"
     ) {
 
@@ -640,7 +418,7 @@ function getMimeType() {
 
 
     if (
-        outputFormat.value ===
+        extension ===
         "webp"
     ) {
 
@@ -658,7 +436,7 @@ function getMimeType() {
    RESULT
 ========================================= */
 
-function showResult(blob) {
+function showResult(blob, file = selectedFile, extension = outputFormat.value) {
 
 
     if (downloadURL) {
@@ -678,12 +456,12 @@ function showResult(blob) {
 
     originalFormatResult.textContent =
         getOriginalExtension(
-            selectedFile
+            file
         );
 
 
     newFormatResult.textContent =
-        outputFormat.value
+        extension
             .toUpperCase();
 
 
@@ -698,7 +476,7 @@ function showResult(blob) {
 
 
     const cleanName =
-        selectedFile.name.replace(
+        file.name.replace(
             /\.[^/.]+$/,
             ""
         );
@@ -707,7 +485,7 @@ function showResult(blob) {
     downloadBtn.download =
         cleanName +
         "-converted." +
-        outputFormat.value;
+        extension;
 
 
     processing.style.display =

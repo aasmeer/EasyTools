@@ -199,6 +199,11 @@
         }
     </style>
 
+<!-- Google tag (gtag.js) -->
+<script type="text/plain" data-easytools-consent="analytics" data-src="https://www.googletagmanager.com/gtag/js?id=G-013MVTXVKJ"></script>
+
+<!-- Advertising stays blocked until a certified CMP is configured and verified. -->
+<script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
 </head>
 
 <body>
@@ -212,9 +217,9 @@
     <nav>
         <a href="index.html">Home</a>
         <a href="all-tools.html">All Tools</a>
-        <a href="#">AI Tools</a>
-        <a href="#">PDF Tools</a>
-        <a href="#">Image Tools</a>
+        <a href="ai-rewriter.html">AI Tools</a>
+        <a href="all-tools.html#pdf-tools">PDF Tools</a>
+        <a href="all-tools.html#image-tools">Image Tools</a>
         <a href="index.html#pricing">Pricing</a>
     </nav>
 </header>
@@ -249,8 +254,14 @@
 
                 <textarea
                     id="inputText"
+                    maxlength="10000"
+                    aria-describedby="rewriteLimit"
                     placeholder="Paste or type your text here..."
                 ></textarea>
+                <p id="rewriteLimit">Up to 10,000 characters per rewrite. Usage limits apply.
+                    Selecting Rewrite Text sends your text and selected settings to the EasyTools
+                    server, which uses OpenAI to generate the rewrite. Avoid submitting confidential
+                    or sensitive personal information. <a href="privacy.html#ai-processing">AI processing and privacy</a>.</p>
 
             </div>
 

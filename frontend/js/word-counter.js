@@ -17,38 +17,15 @@ function updateCounts() {
     const trimmedText = text.trim();
 
 
-    // WORD COUNT
-    const words = trimmedText
-        ? trimmedText.split(/\s+/).filter(Boolean)
-        : [];
+    const words = EasyTools.countWords(text);
+    wordCount.textContent = words;
+    characterCount.textContent = EasyTools.countCharacters(text);
+    characterNoSpaceCount.textContent = EasyTools.countCharacters(text.replace(/\s/gu, ""));
 
-    wordCount.textContent = words.length;
-
-
-    // CHARACTER COUNT
-    characterCount.textContent = text.length;
-
-
-    // CHARACTER COUNT WITHOUT SPACES
-    characterNoSpaceCount.textContent =
-        text.replace(/\s/g, "").length;
-
-
-    // SENTENCE COUNT
-    let sentences = [];
-
-    if (trimmedText) {
-
-        sentences = trimmedText
-            .split(/[.!?]+/)
-            .map(function(sentence) {
-                return sentence.trim();
-            })
-            .filter(Boolean);
-
-    }
-
-    sentenceCount.textContent = sentences.length;
+    const sentences = typeof Intl.Segmenter === "function"
+        ? Array.from(new Intl.Segmenter(undefined, { granularity: "sentence" }).segment(trimmedText), part => part.segment)
+        : trimmedText.split(/[.!?\u3002\uff01\uff1f]+/u);
+    sentenceCount.textContent = sentences.filter(sentence => /[\p{L}\p{N}]/u.test(sentence)).length;
 
 
     // PARAGRAPH COUNT
@@ -70,9 +47,9 @@ function updateCounts() {
 
     // READING TIME
     const wordsPerMinute = 200;
-    const minutes = words.length / wordsPerMinute;
+    const minutes = words / wordsPerMinute;
 
-    if (words.length === 0) {
+    if (words === 0) {
 
         readingTime.textContent = "0 min";
 
@@ -113,69 +90,25 @@ clearBtn.addEventListener(
 
 
 // COPY BUTTON
-copyBtn.addEventListener(
-    "click",
-    async function() {
-
-        const text = textInput.value;
-
-        if (!text.trim()) {
-
-            alert("There is no text to copy.");
-
-            return;
-
-        }
-
-        try {
-
-            await navigator.clipboard.writeText(text);
-
-            copyBtn.textContent = "Copied ✓";
-
-            setTimeout(
-                function() {
-
-                    copyBtn.textContent = "📋 Copy Text";
-
-                },
-                1500
-            );
-
-        } catch (error) {
-
-            const temporaryTextarea =
-                document.createElement("textarea");
-
-            temporaryTextarea.value = text;
-
-            document.body.appendChild(
-                temporaryTextarea
-            );
-
-            temporaryTextarea.select();
-
-            document.execCommand("copy");
-
-            document.body.removeChild(
-                temporaryTextarea
-            );
-
-            copyBtn.textContent = "Copied ✓";
-
-            setTimeout(
-                function() {
-
-                    copyBtn.textContent = "📋 Copy Text";
-
-                },
-                1500
-            );
-
-        }
-
+const originalCopyLabel = copyBtn.textContent;
+let copyResetTimer;
+copyBtn.addEventListener("click", async function() {
+    const text = textInput.value;
+    if (!text.trim()) {
+        alert("There is no text to copy.");
+        return;
     }
-);
+    try {
+        await EasyTools.copyText(text);
+        clearTimeout(copyResetTimer);
+        copyBtn.textContent = "Copied \u2713";
+        copyResetTimer = setTimeout(() => { copyBtn.textContent = originalCopyLabel; }, 1500);
+    } catch (error) {
+        clearTimeout(copyResetTimer);
+        copyBtn.textContent = originalCopyLabel;
+        alert("Copy could not be completed. Please select the text and copy it manually.");
+    }
+});
 
 
 // INITIAL COUNT

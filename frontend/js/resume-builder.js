@@ -99,15 +99,7 @@ const processing =
         "processing"
     );
 
-const adModal =
-    document.getElementById(
-        "adModal"
-    );
 
-const countdown =
-    document.getElementById(
-        "countdown"
-    );
 
 
 /* ==========================================
@@ -495,50 +487,8 @@ generateBtn.addEventListener(
 ========================================== */
 
 function showAdvertisement() {
-
-    adModal.style.display =
-        "flex";
-
-
-    let seconds = 5;
-
-
-    countdown.textContent =
-        seconds;
-
-
-    const timer =
-        setInterval(
-            function() {
-
-                seconds--;
-
-
-                countdown.textContent =
-                    seconds;
-
-
-                if (
-                    seconds <= 0
-                ) {
-
-                    clearInterval(
-                        timer
-                    );
-
-
-                    adModal.style.display =
-                        "none";
-
-
-                    generatePDF();
-
-                }
-
-            },
-            1000
-        );
-
+    // Tool use never depends on viewing or interacting with an advertisement.
+    return generatePDF();
 }
 
 
@@ -547,182 +497,105 @@ function showAdvertisement() {
 ========================================== */
 
 async function generatePDF() {
-
-    processing.style.display =
-        "block";
-
-
+    const releaseJob = EasyTools.beginJob(generateBtn);
+    processing.style.display = "block";
     try {
-
-        /*
-            Capture the resume preview
-            as high-resolution image.
-        */
-
-        const canvas =
-            await html2canvas(
-                resumePreview,
-                {
-
-                    scale: 2,
-
-                    useCORS: true,
-
-                    backgroundColor:
-                        "#ffffff"
-
-                }
-            );
-
-
-        const imageData =
-            canvas.toDataURL(
-                "image/jpeg",
-                0.95
-            );
-
-
-        const {
-            jsPDF
-        } = window.jspdf;
-
-
-        const pdf =
-            new jsPDF(
-                "p",
-                "mm",
-                "a4"
-            );
-
-
-        const pdfWidth =
-            pdf.internal
-                .pageSize
-                .getWidth();
-
-
-        const pdfHeight =
-            pdf.internal
-                .pageSize
-                .getHeight();
-
-
-        const imageWidth =
-            pdfWidth;
-
-
-        const imageHeight =
-            canvas.height *
-            imageWidth /
-            canvas.width;
-
-
-        /*
-            Multi-page handling.
-        */
-
-        let heightLeft =
-            imageHeight;
-
-
-        let positionY =
-            0;
-
-
-        pdf.addImage(
-            imageData,
-            "JPEG",
-            0,
-            positionY,
-            imageWidth,
-            imageHeight
-        );
-
-
-        heightLeft -=
-            pdfHeight;
-
-
-        while (
-            heightLeft > 0
-        ) {
-
-            positionY =
-                heightLeft -
-                imageHeight;
-
-
-            pdf.addPage();
-
-
-            pdf.addImage(
-                imageData,
-                "JPEG",
-                0,
-                positionY,
-                imageWidth,
-                imageHeight
-            );
-
-
-            heightLeft -=
-                pdfHeight;
-
+        updatePreview();
+        const text = node => node.textContent.trim();
+        const content = [previewName, previewJob, previewContact, previewSummary,
+            previewPosition, previewCompany, previewExperience, previewDegree, previewCollege];
+        const skillText = skills.value.trim() || "Your Skills";
+        // Browser PDF printing preserves scripts unsupported by the built-in PDF font.
+        if ([...content.map(text), skillText].some(value => /[^\x20-\x7e\xa0-\xff\n\r\t\u2022\u2013\u2014\u2018\u2019\u201c\u201d]/.test(value))) {
+            processing.style.display = "none";
+            alert("Choose Save as PDF in the print dialog to preserve all characters in your resume.");
+            window.print();
+            return;
         }
-
-
-        /*
-            File name
-        */
-
-        const fileName =
-            fullName.value
-                .trim()
-                .replace(
-                    /[^a-z0-9]/gi,
-                    "-"
-                )
-                .toLowerCase();
-
-
-        pdf.save(
-            (
-                fileName ||
-                "resume"
-            ) +
-            "-easytools.pdf"
-        );
-
-
-        processing.style.display =
-            "none";
-
-
-        generateBtn.disabled =
-            false;
-
-
-    } catch(error) {
-
-        console.error(
-            error
-        );
-
-
-        processing.style.display =
-            "none";
-
-
-        generateBtn.disabled =
-            false;
-
-
-        alert(
-            "Resume PDF could not be generated. Please try again."
-        );
-
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF("p", "mm", "a4");
+        pdf.setProperties({ title: text(previewName) + " - Resume", subject: "Professional resume" });
+        const modern = resumePreview.classList.contains("template-modern");
+        const margin = modern ? 12 : 15;
+        const width = 210 - margin * 2;
+        const bottom = 282;
+        let y = 16;
+        let pages = 1;
+        function room(height) {
+            if (y + height > bottom) {
+                if (++pages > 100) throw new Error("Resume exceeds 100 pages.");
+                pdf.addPage();
+                y = 16;
+            }
+        }
+        function lines(value, size, bold = false, color = "#374151") {
+            pdf.setFont("helvetica", bold ? "bold" : "normal");
+            pdf.setFontSize(size);
+            pdf.setTextColor(color);
+            const rows = pdf.splitTextToSize(value || " ", width);
+            const height = size * 0.352778 * 1.5;
+            for (const row of rows) {
+                room(height);
+                pdf.text(row, margin, y);
+                y += height;
+            }
+        }
+        const name = text(previewName);
+        if (modern) {
+            // Size the header from wrapped text rather than the current browser viewport.
+            pdf.setFont("helvetica", "bold"); pdf.setFontSize(24);
+            const nameRows = pdf.splitTextToSize(name, width);
+            pdf.setFont("helvetica", "normal"); pdf.setFontSize(12);
+            const jobRows = pdf.splitTextToSize(text(previewJob), width);
+            pdf.setFontSize(9);
+            const contactRows = pdf.splitTextToSize(text(previewContact), width);
+            const headerHeight = 20 + nameRows.length * 12.7 + jobRows.length * 6.35 + contactRows.length * 4.7625;
+            // Very long header fields are paginated as normal text.
+            if (headerHeight <= 100) {
+                pdf.setFillColor("#1e3a8a"); pdf.rect(0, 0, 210, headerHeight, "F");
+                lines(name, 24, true, "#ffffff");
+                lines(text(previewJob), 12, false, "#ffffff");
+                y += 3;
+                lines(text(previewContact), 9, false, "#ffffff");
+                y = headerHeight + 12;
+            } else {
+                lines(name, 24, true, "#1e3a8a");
+                lines(text(previewJob), 12);
+                lines(text(previewContact), 9);
+                y += 10;
+            }
+        } else {
+            lines(name, 24, true, "#111827");
+            lines(text(previewJob), 12);
+            lines(text(previewContact), 9);
+            y += 3;
+            room(8);
+            pdf.setDrawColor("#111827"); pdf.line(margin, y, 210 - margin, y);
+            y += 10;
+        }
+        function section(title, entries) {
+            room(28);
+            lines(title.toUpperCase(), 11, true, modern ? "#1e3a8a" : "#111827");
+            if (modern) {
+                pdf.setDrawColor("#dbeafe"); pdf.line(margin, y - 2, 210 - margin, y - 2);
+            }
+            y += 3;
+            for (const [value, size, bold] of entries) lines(value, size, bold);
+            y += 8;
+        }
+        section("Professional Summary", [[text(previewSummary), 10, false]]);
+        section("Experience", [[text(previewPosition), 11, true], [text(previewCompany), 9, false], [text(previewExperience), 10, false]]);
+        section("Education", [[text(previewDegree), 11, true], [text(previewCollege), 9, false]]);
+        section("Skills", [[skillText, 10, false]]);
+        const fileName = fullName.value.trim().replace(/[^a-z0-9]/gi, "-").toLowerCase();
+        pdf.save((fileName || "resume") + "-easytools.pdf");
+    } catch (error) {
+        console.error(error);
+        alert("Resume PDF could not be generated. Please try again.");
+    } finally {
+        processing.style.display = "none";
+        releaseJob();
     }
-
 }
 
 

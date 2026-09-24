@@ -74,15 +74,7 @@ const downloadBtn =
         "downloadBtn"
     );
 
-const adModal =
-    document.getElementById(
-        "adModal"
-    );
 
-const countdown =
-    document.getElementById(
-        "countdown"
-    );
 
 
 let selectedFile = null;
@@ -288,47 +280,8 @@ generateBtn.addEventListener(
 ============================ */
 
 function showAdvertisement() {
-
-    adModal.style.display =
-        "flex";
-
-
-    let seconds = 5;
-
-
-    countdown.textContent =
-        seconds;
-
-
-    const timer =
-        setInterval(
-            function () {
-
-                seconds--;
-
-                countdown.textContent =
-                    seconds;
-
-
-                if (seconds <= 0) {
-
-                    clearInterval(
-                        timer
-                    );
-
-
-                    adModal.style.display =
-                        "none";
-
-
-                    compressPDF();
-
-                }
-
-            },
-            1000
-        );
-
+    // Tool use never depends on viewing or interacting with an advertisement.
+    return compressPDF();
 }
 
 
@@ -337,6 +290,12 @@ function showAdvertisement() {
 ============================ */
 
 async function compressPDF() {
+    let loadingTask = null;
+    let activeCanvas = null;
+    let activePage = null;
+    const releaseJob = EasyTools.beginJob(generateBtn);
+    try {
+
 
     processing.style.display =
         "block";
@@ -353,7 +312,7 @@ async function compressPDF() {
                 .arrayBuffer();
 
 
-        const loadingTask =
+        loadingTask =
             pdfjsLib.getDocument({
                 data: arrayBuffer
             });
@@ -377,6 +336,9 @@ async function compressPDF() {
             ) / 100;
 
 
+        EasyTools.checkPages(pdfDocument.numPages);
+        let renderedPixels = 0;
+
         for (
             let pageNumber = 1;
             pageNumber <=
@@ -399,17 +361,26 @@ async function compressPDF() {
                     );
 
 
+            activePage = page;
+
             const viewport =
                 page.getViewport({
                     scale: renderScale
                 });
 
 
+            renderedPixels += EasyTools.checkPixels(viewport.width, viewport.height);
+            if (renderedPixels > 64000000) {
+                throw new Error("This job exceeds the 64 megapixel limit. Use fewer pages or a lower resolution.");
+            }
+
             const canvas =
                 document.createElement(
                     "canvas"
                 );
 
+
+            activeCanvas = canvas;
 
             const context =
                 canvas.getContext(
@@ -428,6 +399,8 @@ async function compressPDF() {
                     viewport.height
                 );
 
+
+            if (!context) throw new Error("Your browser could not create an image canvas.");
 
             await page.render({
 
@@ -448,13 +421,11 @@ async function compressPDF() {
 
 
             const pageWidth =
-                viewport.width *
-                0.75;
+                page.getViewport({ scale: 1 }).width;
 
 
             const pageHeight =
-                viewport.height *
-                0.75;
+                page.getViewport({ scale: 1 }).height;
 
 
             const orientation =
@@ -519,6 +490,10 @@ async function compressPDF() {
                 "FAST"
 
             );
+            canvas.width = canvas.height = 0;
+            activeCanvas = null;
+            page.cleanup();
+            activePage = null;
 
         }
 
@@ -557,6 +532,21 @@ async function compressPDF() {
 
     }
 
+
+    } finally {
+        try {
+            if (activeCanvas) activeCanvas.width = activeCanvas.height = 0;
+            try {
+                if (activePage) activePage.cleanup();
+            } finally {
+                if (loadingTask) await loadingTask.destroy();
+            }
+        } catch (error) {
+            console.warn("PDF resources could not be fully released.");
+        } finally {
+            releaseJob();
+        }
+    }
 }
 
 
@@ -600,11 +590,6 @@ function showResult(blob) {
         ) * 100;
 
 
-    if (saved < 0) {
-
-        saved = 0;
-
-    }
 
 
     originalSize.textContent =
@@ -620,9 +605,7 @@ function showResult(blob) {
 
 
     savedPercent.textContent =
-        Math.round(
-            saved
-        ) + "%";
+        original > 0 ? Math.round(saved) + "%" : "N/A";
 
 
     downloadBtn.href =

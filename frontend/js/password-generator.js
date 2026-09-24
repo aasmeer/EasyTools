@@ -367,58 +367,25 @@ function updateStrength(password) {
    COPY
 ========================= */
 
-copyBtn.addEventListener(
-    "click",
-    async function() {
-
-        if (
-            !passwordOutput.value
-        ) {
-
-            alert(
-                "Generate a password first."
-            );
-
-            return;
-
-        }
-
-
-        try {
-
-            await navigator.clipboard
-                .writeText(
-                    passwordOutput.value
-                );
-
-
-            copyBtn.textContent =
-                "Copied ✓";
-
-
-            setTimeout(
-                function() {
-
-                    copyBtn.textContent =
-                        "📋 Copy";
-
-                },
-                1500
-            );
-
-
-        } catch(error) {
-
-            passwordOutput.select();
-
-            document.execCommand(
-                "copy"
-            );
-
-        }
-
+const originalCopyLabel = copyBtn.textContent;
+let copyResetTimer;
+copyBtn.addEventListener("click", async function() {
+    const text = passwordOutput.value;
+    if (!text.trim()) {
+        alert("Generate a password first.");
+        return;
     }
-);
+    try {
+        await EasyTools.copyText(text);
+        clearTimeout(copyResetTimer);
+        copyBtn.textContent = "Copied \u2713";
+        copyResetTimer = setTimeout(() => { copyBtn.textContent = originalCopyLabel; }, 1500);
+    } catch (error) {
+        clearTimeout(copyResetTimer);
+        copyBtn.textContent = originalCopyLabel;
+        alert("Copy could not be completed. Please select the text and copy it manually.");
+    }
+});
 
 
 /* =========================

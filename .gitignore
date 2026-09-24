@@ -1,2 +1,9 @@
+.vscode/
+frontend.zip
+
+.env
 backend/.env
+
+__pycache__/
 backend/__pycache__/
+*.pyc

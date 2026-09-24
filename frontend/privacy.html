@@ -206,6 +206,11 @@
 
     </style>
 
+<!-- Google tag (gtag.js) -->
+<script type="text/plain" data-easytools-consent="analytics" data-src="https://www.googletagmanager.com/gtag/js?id=G-013MVTXVKJ"></script>
+
+<!-- Advertising stays blocked until a certified CMP is configured and verified. -->
+<script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
 </head>
 
 
@@ -254,7 +259,7 @@
             </p>
 
             <div class="updated">
-                Last updated: August 2026
+                Last updated: September 23, 2026
             </div>
 
         </section>
@@ -278,23 +283,33 @@
             </section>
 
 
-            <section class="policy-section">
+            <section class="policy-section" id="ai-processing">
 
                 <h2>
                     2. Files and Tool Processing
                 </h2>
 
                 <p>
-                    Some EasyTools features process files directly
-                    inside your browser. Other tools may use
-                    server-side processing depending on how the
-                    feature is implemented.
+                    The PDF, image and other browser-based tools process their inputs
+                    on your device. The AI Text Rewriter is different: selecting
+                    Rewrite Text sends your text and chosen tone and length to the
+                    EasyTools server, which sends the text and rewrite instructions
+                    to OpenAI. The generated response is returned to your browser.
                 </p>
-
+                <p>
+                    OpenAI may retain submitted content and responses under its API
+                    data policies. Its Responses API has a default application-state
+                    retention period of at least 30 days, and separate abuse-monitoring
+                    retention can apply. Provider settings and legal requirements can
+                    affect retention. EasyTools does not promise zero retention.
+                    See <a href="https://developers.openai.com/api/docs/guides/your-data">OpenAI's API data controls</a>
+                    for the provider's current training, retention and data-control policies.
+                </p>
                 <div class="highlight">
-                    EasyTools aims to avoid retaining uploaded files
-                    longer than necessary for the requested tool
-                    operation.
+                    Submit only text you are authorized to share with an external AI
+                    service. Avoid passwords, confidential documents and sensitive
+                    personal information. Review AI output before relying on it.
+                    Analytics preferences do not control this requested AI processing.
                 </div>
 
             </section>
@@ -331,9 +346,18 @@
                 </h2>
 
                 <p>
-                    EasyTools may use cookies or similar technologies
-                    for website functionality, analytics,
-                    advertising and user preferences.
+                    We store your analytics preference in your browser's local
+                    storage for up to 180 days. This preference lets us remember
+                    your choice; it is not sent to an analytics provider.
+                    If browser storage is unavailable, your choice applies only
+                    to the current page. Tools remain available when you decline.
+                </p>
+                <p>
+                    Use the Privacy settings button below the navigation on any
+                    page to change your analytics choice. Declining disables
+                    further collection by our Google Analytics tag and clears
+                    its accessible first-party analytics cookies. Advertising
+                    consent is separate and is not granted by this control.
                 </p>
 
             </section>
@@ -346,10 +370,25 @@
                 </h2>
 
                 <p>
-                    EasyTools may display advertisements to support
-                    website operation. Advertising providers may use
-                    cookies or similar technologies to measure ad
-                    performance and, where permitted, personalize ads.
+                    EasyTools uses Google AdSense to support the website when
+                    advertising is enabled. Google and other third-party vendors
+                    may use cookies to serve ads based on your visits to this
+                    website and other websites. Google's advertising cookies
+                    allow Google and its partners to personalize those ads.
+                </p>
+                <p>
+                    Advertising scripts remain blocked until an appropriate
+                    consent-provider integration is configured. Where consent is
+                    required, ads must wait for the choices recorded by that provider.
+                    Analytics permission does not give permission for advertising.
+                </p>
+                <p>
+                    You can manage Google's personalized advertising at
+                    <a href="https://myadcenter.google.com/">Google My Ad Center</a>,
+                    learn how Google uses information from partner sites at
+                    <a href="https://policies.google.com/technologies/partner-sites">Google's partner-site privacy information</a>,
+                    or opt out of participating vendors' personalized ads through
+                    <a href="https://www.aboutads.info/choices/">YourAdChoices</a>.
                 </p>
 
             </section>
@@ -362,9 +401,12 @@
                 </h2>
 
                 <p>
-                    We may use analytics services to understand how
-                    visitors use EasyTools, identify problems and
-                    improve website performance and usability.
+                    Google Analytics loads only after you allow analytics,
+                    including when a valid saved choice exists. It helps us
+                    understand page usage and improve the website. Analytics
+                    cookies may last up to 180 days. Google advertising signals
+                    and ad-personalization signals are disabled for this tag.
+                    You can decline or withdraw permission in Privacy settings.
                 </p>
 
             </section>
@@ -489,15 +531,6 @@
     </div>
 
 </footer>
-
-
-<script>
-
-function comingSoon() {
-    alert("This feature will be available soon.");
-}
-
-</script>
 
 
 </body>

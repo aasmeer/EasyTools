@@ -45,11 +45,7 @@ const resultSize =
 const downloadBtn =
     document.getElementById("downloadBtn");
 
-const adModal =
-    document.getElementById("adModal");
 
-const countdown =
-    document.getElementById("countdown");
 
 
 let selectedFiles = [];
@@ -163,6 +159,8 @@ uploadArea.addEventListener(
 ========================================= */
 
 function addFiles(files) {
+    try { EasyTools.checkFiles([...selectedFiles, ...Array.from(files)]); }
+    catch (error) { alert(error.message); return; }
 
     const pdfFiles =
         files.filter(
@@ -702,52 +700,8 @@ generateBtn.addEventListener(
 ========================================= */
 
 function showAdvertisement() {
-
-    adModal.style.display =
-        "flex";
-
-
-    let seconds =
-        5;
-
-
-    countdown.textContent =
-        seconds;
-
-
-    const timer =
-        setInterval(
-            function() {
-
-                seconds--;
-
-
-                countdown.textContent =
-                    seconds;
-
-
-                if (
-                    seconds <= 0
-                ) {
-
-
-                    clearInterval(
-                        timer
-                    );
-
-
-                    adModal.style.display =
-                        "none";
-
-
-                    mergePDFs();
-
-                }
-
-            },
-            1000
-        );
-
+    // Tool use never depends on viewing or interacting with an advertisement.
+    return mergePDFs();
 }
 
 
@@ -756,6 +710,9 @@ function showAdvertisement() {
 ========================================= */
 
 async function mergePDFs() {
+    const releaseJob = EasyTools.beginJob(generateBtn);
+    try {
+
 
     processing.style.display =
         "block";
@@ -881,6 +838,10 @@ async function mergePDFs() {
 
     }
 
+
+    } finally {
+        releaseJob();
+    }
 }
 
 

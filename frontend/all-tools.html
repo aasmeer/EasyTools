@@ -309,6 +309,11 @@
             }
         }
     </style>
+<!-- Google tag (gtag.js) -->
+<script type="text/plain" data-easytools-consent="analytics" data-src="https://www.googletagmanager.com/gtag/js?id=G-013MVTXVKJ"></script>
+
+<!-- Advertising stays blocked until a certified CMP is configured and verified. -->
+<script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
 </head>
 
 <body>
@@ -347,7 +352,7 @@
             id="toolSearch"
             placeholder="Search tools..."
             autocomplete="off"
-        >
+         aria-label="Search tools">
 
         <button
             type="button"
@@ -385,7 +390,7 @@
 
     <!-- PDF TOOLS -->
 
-    <section class="category-section">
+    <section class="category-section" id="pdf-tools">
 
         <div class="category-title">
             <span>📄</span>
@@ -442,7 +447,7 @@
 
     <!-- IMAGE TOOLS -->
 
-    <section class="category-section">
+    <section class="category-section" id="image-tools">
 
         <div class="category-title">
             <span>🖼️</span>
@@ -491,7 +496,7 @@
 
     <!-- BUSINESS -->
 
-    <section class="category-section">
+    <section class="category-section" id="business-tools">
 
         <div class="category-title">
             <span>💼</span>
@@ -532,7 +537,7 @@
 
     <!-- TEXT -->
 
-    <section class="category-section">
+    <section class="category-section" id="text-tools">
 
         <div class="category-title">
             <span>🎓</span>
@@ -573,7 +578,7 @@
 
     <!-- UTILITIES -->
 
-    <section class="category-section">
+    <section class="category-section" id="utilities">
 
         <div class="category-title">
             <span>🧮</span>
@@ -666,11 +671,6 @@
 
 
 <script>
-
-function comingSoon() {
-    alert("This feature will be available soon.");
-}
-
 
 const searchInput =
     document.getElementById("toolSearch");

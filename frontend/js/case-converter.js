@@ -38,70 +38,30 @@ function updateStats() {
         textInput.value;
 
 
-    const words =
-        text.trim()
-            ? text.trim()
-                .split(/\s+/)
-                .filter(Boolean)
-            : [];
-
-
-    wordCount.textContent =
-        words.length;
-
-
-    characterCount.textContent =
-        text.length;
-
-}
-
-
-function titleCase(text) {
-
-    return text
-        .toLowerCase()
-        .replace(
-            /\b\w/g,
-            function(letter) {
-                return letter.toUpperCase();
-            }
-        );
-
-}
-
-
-function sentenceCase(text) {
-
-    const lower =
-        text.toLowerCase();
-
-
-    return lower.replace(
-        /(^\s*[a-z])|([.!?]\s+[a-z])/g,
-        function(match) {
-            return match.toUpperCase();
-        }
-    );
+    wordCount.textContent = EasyTools.countWords(text);
+    characterCount.textContent = EasyTools.countCharacters(text);
 
 }
 
 
 function capitalizeWords(text) {
+    return text.replace(/(^|[^\p{L}\p{M}\p{N}_])([\p{L}])/gu,
+        (match, prefix, letter) => prefix + letter.toUpperCase());
+}
 
-    return text.replace(
-        /\b[a-zA-Z]/g,
-        function(letter) {
-            return letter.toUpperCase();
-        }
-    );
+function titleCase(text) {
+    return capitalizeWords(text.toLowerCase());
+}
 
+function sentenceCase(text) {
+    return text.toLowerCase().replace(/(^\s*["'\u201c\u2018(\[]*|[.!?\u3002\uff01\uff1f]\s*["'\u201c\u2018(\[]*)(\p{L})/gu,
+        (match, prefix, letter) => prefix + letter.toUpperCase());
 }
 
 
 function toggleCase(text) {
 
-    return text
-        .split("")
+    return Array.from(text)
         .map(
             function(character) {
 
@@ -219,58 +179,25 @@ toggleBtn.addEventListener(
 );
 
 
-copyBtn.addEventListener(
-    "click",
-    async function() {
-
-        if (
-            !textInput.value.trim()
-        ) {
-
-            alert(
-                "There is no text to copy."
-            );
-
-            return;
-
-        }
-
-
-        try {
-
-            await navigator.clipboard
-                .writeText(
-                    textInput.value
-                );
-
-
-            copyBtn.textContent =
-                "Copied ✓";
-
-
-            setTimeout(
-                function() {
-
-                    copyBtn.textContent =
-                        "📋 Copy Text";
-
-                },
-                1500
-            );
-
-
-        } catch(error) {
-
-            textInput.select();
-
-            document.execCommand(
-                "copy"
-            );
-
-        }
-
+const originalCopyLabel = copyBtn.textContent;
+let copyResetTimer;
+copyBtn.addEventListener("click", async function() {
+    const text = textInput.value;
+    if (!text.trim()) {
+        alert("There is no text to copy.");
+        return;
     }
-);
+    try {
+        await EasyTools.copyText(text);
+        clearTimeout(copyResetTimer);
+        copyBtn.textContent = "Copied \u2713";
+        copyResetTimer = setTimeout(() => { copyBtn.textContent = originalCopyLabel; }, 1500);
+    } catch (error) {
+        clearTimeout(copyResetTimer);
+        copyBtn.textContent = originalCopyLabel;
+        alert("Copy could not be completed. Please select the text and copy it manually.");
+    }
+});
 
 
 clearBtn.addEventListener(

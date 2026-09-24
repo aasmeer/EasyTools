@@ -20,10 +20,10 @@
 <link rel="stylesheet" href="css/style.css">
 
     <!-- HTML TO CANVAS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous" defer></script>
 
     <!-- jsPDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/4.2.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/4.2.1/jspdf.umd.min.js" integrity="sha384-qovJwSBbRDPP5cEjCp8S0UP66wrvnjaa60XMOGzTNanrThcrGfXfnZkvgY8N1KT3" crossorigin="anonymous" defer></script>
 
     <style>
 
@@ -420,8 +420,28 @@
 
         }
 
+
+        @page { size: A4; margin: 12mm; }
+        @media print {
+            body > :not(.resume-page), .tool-title, .form-panel, .preview-label { display: none !important; }
+            body, .resume-page, .resume-container, .builder-layout, .preview-panel {
+                display: block !important; padding: 0 !important; margin: 0 !important;
+                width: auto !important; max-width: none !important; position: static !important;
+            }
+            .resume-preview { width: 186mm; min-height: 0; border: 0; box-shadow: none; }
+            .resume-header { break-inside: avoid; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+            .resume-section-title, .resume-entry h3 { break-after: avoid; }
+            .resume-section p { orphans: 3; widows: 3; overflow-wrap: anywhere; }
+            .skills-list { display: block; }
+            .skill { display: inline-block; margin: 3px; }
+        }
     </style>
 
+<!-- Google tag (gtag.js) -->
+<script type="text/plain" data-easytools-consent="analytics" data-src="https://www.googletagmanager.com/gtag/js?id=G-013MVTXVKJ"></script>
+
+<!-- Advertising stays blocked until a certified CMP is configured and verified. -->
+<script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
 </head>
 
 
@@ -444,15 +464,15 @@
             All Tools
         </a>
 
-        <a href="#">
+        <a href="ai-rewriter.html">
             AI Tools
         </a>
 
-        <a href="#">
+        <a href="all-tools.html#pdf-tools">
             PDF Tools
         </a>
 
-        <a href="#">
+        <a href="all-tools.html#image-tools">
             Image Tools
         </a>
 
@@ -507,7 +527,7 @@
 
                         <div class="input-group">
 
-                            <label>
+                            <label for="fullName">
                                 Full Name
                             </label>
 
@@ -522,7 +542,7 @@
 
                         <div class="input-group">
 
-                            <label>
+                            <label for="jobTitle">
                                 Job Title
                             </label>
 
@@ -537,7 +557,7 @@
 
                         <div class="input-group">
 
-                            <label>
+                            <label for="email">
                                 Email
                             </label>
 
@@ -552,7 +572,7 @@
 
                         <div class="input-group">
 
-                            <label>
+                            <label for="phone">
                                 Phone
                             </label>
 
@@ -567,7 +587,7 @@
 
                         <div class="input-group">
 
-                            <label>
+                            <label for="location">
                                 Location
                             </label>
 
@@ -582,7 +602,7 @@
 
                         <div class="input-group">
 
-                            <label>
+                            <label for="website">
                                 Website / LinkedIn
                             </label>
 
@@ -612,7 +632,7 @@
                         <textarea
                             id="summary"
                             placeholder="Write a short professional summary..."
-                        ></textarea>
+                         aria-label="Professional summary"></textarea>
 
                     </div>
 
@@ -630,7 +650,7 @@
 
                     <div class="input-group">
 
-                        <label>
+                        <label for="degree">
                             Degree / Course
                         </label>
 
@@ -647,7 +667,7 @@
 
                         <div class="input-group">
 
-                            <label>
+                            <label for="college">
                                 College / University
                             </label>
 
@@ -662,7 +682,7 @@
 
                         <div class="input-group">
 
-                            <label>
+                            <label for="educationYear">
                                 Year
                             </label>
 
@@ -692,7 +712,7 @@
 
                         <div class="input-group">
 
-                            <label>
+                            <label for="position">
                                 Position
                             </label>
 
@@ -707,7 +727,7 @@
 
                         <div class="input-group">
 
-                            <label>
+                            <label for="company">
                                 Company
                             </label>
 
@@ -724,7 +744,7 @@
 
                     <div class="input-group">
 
-                        <label>
+                        <label for="experienceYear">
                             Duration
                         </label>
 
@@ -739,7 +759,7 @@
 
                     <div class="input-group">
 
-                        <label>
+                        <label for="experience">
                             Experience Details
                         </label>
 
@@ -763,7 +783,7 @@
 
                     <div class="input-group">
 
-                        <label>
+                        <label for="skills">
                             Skills
                         </label>
 
@@ -1014,7 +1034,7 @@
 </div>
 
 
-<script src="js/resume-builder.js"></script>
+<script src="js/resume-builder.js" defer></script>
 
 </body>
 

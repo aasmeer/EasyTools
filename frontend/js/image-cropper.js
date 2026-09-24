@@ -41,6 +41,9 @@ const downloadBtn =
 let image = null;
 
 let imageFile = null;
+let imageLoadVersion = 0;
+let cropExportBusy = false;
+let downloadURL = null;
 
 let isDragging = false;
 
@@ -88,107 +91,55 @@ imageInput.addEventListener(
    LOAD IMAGE
 ========================= */
 
-function loadImage(file) {
+async function loadImage(file) {
+    const version = ++imageLoadVersion;
+    image = null;
+    imageFile = null;
+    isDragging = false;
+    cropX = cropY = cropWidth = cropHeight = 0;
+    canvas.width = canvas.height = 0;
+    editor.style.display = "none";
+    result.style.display = "none";
+    cropBtn.disabled = true;
+    resetBtn.disabled = true;
 
-    if (
-        !file.type.startsWith("image/")
-    ) {
-
-        alert(
-            "Please select an image file."
-        );
-
-        return;
-
+    try {
+        if (!file.type.startsWith("image/")) {
+            throw new Error("Please select an image file.");
+        }
+        if (!ctx) throw new Error("Your browser could not create an image canvas.");
+        const decoded = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onerror = () => reject(new Error("Could not read the selected image."));
+            reader.onabort = () => reject(new Error("Image loading was interrupted."));
+            reader.onload = event => {
+                const candidate = new Image();
+                candidate.onerror = () => reject(new Error("Could not load the selected image."));
+                candidate.onload = () => resolve(candidate);
+                candidate.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+        if (version !== imageLoadVersion) return;
+        const scale = Math.min(1, 850 / decoded.width);
+        canvas.width = Math.max(1, Math.round(decoded.width * scale));
+        canvas.height = Math.max(1, Math.round(decoded.height * scale));
+        image = decoded;
+        imageFile = file;
+        resetSelection();
+        editor.style.display = "block";
+    } catch (error) {
+        if (version !== imageLoadVersion) return;
+        image = null;
+        imageFile = null;
+        canvas.width = canvas.height = 0;
+        alert(error.message || "Could not load the selected image.");
+    } finally {
+        if (version === imageLoadVersion) {
+            cropBtn.disabled = !image;
+            resetBtn.disabled = !image;
+        }
     }
-
-
-    imageFile =
-        file;
-
-
-    const reader =
-        new FileReader();
-
-
-    reader.onload =
-        function(event) {
-
-            image =
-                new Image();
-
-
-            image.onload =
-                function() {
-
-                    const maxWidth =
-                        850;
-
-
-                    let displayWidth =
-                        image.width;
-
-
-                    let displayHeight =
-                        image.height;
-
-
-                    if (
-                        displayWidth >
-                        maxWidth
-                    ) {
-
-                        const ratio =
-                            maxWidth /
-                            displayWidth;
-
-
-                        displayWidth =
-                            maxWidth;
-
-
-                        displayHeight =
-                            image.height *
-                            ratio;
-
-                    }
-
-
-                    canvas.width =
-                        Math.round(
-                            displayWidth
-                        );
-
-
-                    canvas.height =
-                        Math.round(
-                            displayHeight
-                        );
-
-
-                    resetSelection();
-
-
-                    editor.style.display =
-                        "block";
-
-
-                    result.style.display =
-                        "none";
-
-                };
-
-
-            image.src =
-                event.target.result;
-
-        };
-
-
-    reader.readAsDataURL(
-        file
-    );
-
 }
 
 
@@ -332,115 +283,56 @@ function getPosition(event) {
    SELECT AREA
 ========================= */
 
-canvas.addEventListener(
-    "mousedown",
-    function(event) {
+canvas.style.touchAction = "none";
+canvas.tabIndex = 0;
+canvas.setAttribute("aria-label", "Crop selection. Drag to select; arrow keys move selection, Shift plus arrows resize it.");
 
-        const pos =
-            getPosition(event);
-
-
-        isDragging =
-            true;
-
-
-        startX =
-            pos.x;
-
-
-        startY =
-            pos.y;
-
-
-        cropX =
-            startX;
-
-
-        cropY =
-            startY;
-
-
-        cropWidth =
-            0;
-
-
-        cropHeight =
-            0;
-
+function boundedPosition(event) {
+    const pos = getPosition(event);
+    return { x: Math.max(0, Math.min(canvas.width, pos.x)),
+             y: Math.max(0, Math.min(canvas.height, pos.y)) };
+}
+canvas.addEventListener("pointerdown", event => {
+    if (!image || !event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
+    event.preventDefault();
+    canvas.setPointerCapture(event.pointerId);
+    const pos = boundedPosition(event);
+    isDragging = true;
+    startX = cropX = pos.x;
+    startY = cropY = pos.y;
+    cropWidth = cropHeight = 0;
+});
+canvas.addEventListener("pointermove", event => {
+    if (!isDragging || !canvas.hasPointerCapture(event.pointerId)) return;
+    const pos = boundedPosition(event);
+    cropX = Math.min(startX, pos.x);
+    cropY = Math.min(startY, pos.y);
+    cropWidth = Math.abs(pos.x - startX);
+    cropHeight = Math.abs(pos.y - startY);
+    updateSelectionInfo();
+    drawCanvas();
+});
+for (const eventName of ["pointerup", "pointercancel", "lostpointercapture"]) {
+    canvas.addEventListener(eventName, event => {
+        isDragging = false;
+        if (canvas.hasPointerCapture(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
+    });
+}
+canvas.addEventListener("keydown", event => {
+    if (!image || !["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) return;
+    event.preventDefault();
+    const dx = event.key === "ArrowRight" ? 5 : event.key === "ArrowLeft" ? -5 : 0;
+    const dy = event.key === "ArrowDown" ? 5 : event.key === "ArrowUp" ? -5 : 0;
+    if (event.shiftKey) {
+        cropWidth = Math.max(1, Math.min(canvas.width - cropX, cropWidth + dx));
+        cropHeight = Math.max(1, Math.min(canvas.height - cropY, cropHeight + dy));
+    } else {
+        cropX = Math.max(0, Math.min(canvas.width - cropWidth, cropX + dx));
+        cropY = Math.max(0, Math.min(canvas.height - cropHeight, cropY + dy));
     }
-);
-
-
-canvas.addEventListener(
-    "mousemove",
-    function(event) {
-
-        if (!isDragging) {
-            return;
-        }
-
-
-        const pos =
-            getPosition(event);
-
-
-        cropX =
-            Math.min(
-                startX,
-                pos.x
-            );
-
-
-        cropY =
-            Math.min(
-                startY,
-                pos.y
-            );
-
-
-        cropWidth =
-            Math.abs(
-                pos.x -
-                startX
-            );
-
-
-        cropHeight =
-            Math.abs(
-                pos.y -
-                startY
-            );
-
-
-        updateSelectionInfo();
-
-        drawCanvas();
-
-    }
-);
-
-
-canvas.addEventListener(
-    "mouseup",
-    function() {
-
-        isDragging =
-            false;
-
-    }
-);
-
-
-canvas.addEventListener(
-    "mouseleave",
-    function() {
-
-        isDragging =
-            false;
-
-    }
-);
-
+    updateSelectionInfo();
+    drawCanvas();
+});
 
 /* =========================
    SELECTION INFO
@@ -492,6 +384,8 @@ function updateSelectionInfo() {
 
 function resetSelection() {
 
+    if (!image) return;
+
     cropX =
         0;
 
@@ -525,196 +419,79 @@ resetBtn.addEventListener(
    CROP
 ========================= */
 
-cropBtn.addEventListener(
-    "click",
-    function() {
-
-        if (!image) {
-
-            alert(
-                "Please upload an image first."
-            );
-
-            return;
-
-        }
-
-
-        if (
-            cropWidth < 5 ||
-            cropHeight < 5
-        ) {
-
-            alert(
-                "Please select an area to crop."
-            );
-
-            return;
-
-        }
-
-
-        const sourceX =
-            cropX /
-            canvas.width *
-            image.width;
-
-
-        const sourceY =
-            cropY /
-            canvas.height *
-            image.height;
-
-
-        const sourceWidth =
-            cropWidth /
-            canvas.width *
-            image.width;
-
-
-        const sourceHeight =
-            cropHeight /
-            canvas.height *
-            image.height;
-
-
-        const outputCanvas =
-            document.createElement(
-                "canvas"
-            );
-
-
-        outputCanvas.width =
-            Math.round(
-                sourceWidth
-            );
-
-
-        outputCanvas.height =
-            Math.round(
-                sourceHeight
-            );
-
-
-        const outputCtx =
-            outputCanvas.getContext(
-                "2d"
-            );
-
-
-        if (
-            outputFormat.value ===
-            "jpg"
-        ) {
-
-            outputCtx.fillStyle =
-                "#ffffff";
-
-
-            outputCtx.fillRect(
-                0,
-                0,
-                outputCanvas.width,
-                outputCanvas.height
-            );
-
-        }
-
-
-        outputCtx.drawImage(
-            image,
-
-            sourceX,
-            sourceY,
-            sourceWidth,
-            sourceHeight,
-
-            0,
-            0,
-            outputCanvas.width,
-            outputCanvas.height
-        );
-
-
-        const mime =
-            getMimeType();
-
-
-        const outputQuality =
-            Number(
-                quality.value
-            ) / 100;
-
-
-        outputCanvas.toBlob(
-            function(blob) {
-
-                if (!blob) {
-
-                    alert(
-                        "Could not crop image."
-                    );
-
-                    return;
-
-                }
-
-
-                const url =
-                    URL.createObjectURL(
-                        blob
-                    );
-
-
-                resultImage.src =
-                    url;
-
-
-                downloadBtn.href =
-                    url;
-
-
-                const cleanName =
-                    imageFile.name.replace(
-                        /\.[^/.]+$/,
-                        ""
-                    );
-
-
-                downloadBtn.download =
-                    cleanName +
-                    "-cropped." +
-                    outputFormat.value;
-
-
-                result.style.display =
-                    "block";
-
-
-                result.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-
-            },
-
-            mime,
-
-            outputQuality
-        );
-
+cropBtn.addEventListener("click", async function() {
+    if (cropExportBusy) return;
+    if (!image) {
+        alert("Please upload an image first.");
+        return;
     }
-);
+    if (cropWidth < 5 || cropHeight < 5) {
+        alert("Please select an area to crop.");
+        return;
+    }
+
+    const version = imageLoadVersion;
+    const sourceImage = image;
+    const file = imageFile;
+    const extension = outputFormat.value;
+    const outputQuality = Number(quality.value) / 100;
+    let outputCanvas;
+    cropExportBusy = true;
+    cropBtn.disabled = true;
+    result.style.display = "none";
+    try {
+        const sourceX = cropX / canvas.width * sourceImage.width;
+        const sourceY = cropY / canvas.height * sourceImage.height;
+        const sourceWidth = cropWidth / canvas.width * sourceImage.width;
+        const sourceHeight = cropHeight / canvas.height * sourceImage.height;
+        outputCanvas = document.createElement("canvas");
+        outputCanvas.width = Math.round(sourceWidth);
+        outputCanvas.height = Math.round(sourceHeight);
+        const outputCtx = outputCanvas.getContext("2d");
+        if (!outputCtx) throw new Error("Your browser could not create an image canvas.");
+        if (extension === "jpg") {
+            outputCtx.fillStyle = "#ffffff";
+            outputCtx.fillRect(0, 0, outputCanvas.width, outputCanvas.height);
+        }
+        outputCtx.drawImage(sourceImage,
+            sourceX, sourceY, sourceWidth, sourceHeight,
+            0, 0, outputCanvas.width, outputCanvas.height);
+        const blob = await new Promise((resolve, reject) => {
+            outputCanvas.toBlob(value => {
+                if (value) resolve(value);
+                else reject(new Error("Could not crop image."));
+            }, getMimeType(extension), outputQuality);
+        });
+        if (version !== imageLoadVersion) return;
+        const url = URL.createObjectURL(blob);
+        if (downloadURL) URL.revokeObjectURL(downloadURL);
+        downloadURL = url;
+        resultImage.src = url;
+        downloadBtn.href = url;
+        downloadBtn.download = file.name.replace(/\.[^/.]+$/, "") + "-cropped." + extension;
+        result.style.display = "block";
+        result.scrollIntoView({ behavior: "smooth", block: "center" });
+    } catch (error) {
+        if (version === imageLoadVersion) {
+            result.style.display = "none";
+            alert(error.message || "Could not crop image.");
+        }
+    } finally {
+        if (outputCanvas) outputCanvas.width = outputCanvas.height = 0;
+        cropExportBusy = false;
+        cropBtn.disabled = !image;
+    }
+});
 
 
 /* =========================
    MIME
 ========================= */
 
-function getMimeType() {
+function getMimeType(extension = outputFormat.value) {
 
     if (
-        outputFormat.value ===
+        extension ===
         "png"
     ) {
 
@@ -724,7 +501,7 @@ function getMimeType() {
 
 
     if (
-        outputFormat.value ===
+        extension ===
         "webp"
     ) {
 

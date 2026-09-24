@@ -120,6 +120,8 @@ uploadArea.addEventListener(
 ========================= */
 
 function addFiles(files) {
+    try { EasyTools.checkFiles([...selectedImages.map(item => item.file), ...Array.from(files)]); }
+    catch (error) { alert(error.message); return; }
 
     const validFiles =
         files.filter(
@@ -484,6 +486,8 @@ generateBtn.addEventListener(
         }
 
 
+        const releaseJob = EasyTools.beginJob(generateBtn);
+
         generateBtn.disabled =
             true;
 
@@ -501,6 +505,14 @@ generateBtn.addEventListener(
 
 
         try {
+            const files = selectedImages.map(image => image.file);
+            const options = Object.freeze({
+                pageSize: pageSize.value,
+                orientation: orientation.value,
+                margin: Number(marginSelect.value)
+            });
+            const budget = EasyTools.createImageBudget();
+            EasyTools.checkFiles(files);
 
             const {
                 jsPDF
@@ -511,14 +523,12 @@ generateBtn.addEventListener(
 
 
             const margin =
-                Number(
-                    marginSelect.value
-                );
+                options.margin;
 
 
             for (
                 let i = 0;
-                i < selectedImages.length;
+                i < files.length;
                 i++
             ) {
 
@@ -526,12 +536,12 @@ generateBtn.addEventListener(
                     "Processing image " +
                     (i + 1) +
                     " of " +
-                    selectedImages.length +
+                    files.length +
                     "...";
 
 
                 const file =
-                    selectedImages[i].file;
+                    files[i];
 
 
                 const dataURL =
@@ -546,8 +556,10 @@ generateBtn.addEventListener(
                     );
 
 
+                budget.reserveImage(img.width, img.height);
+
                 let currentOrientation =
-                    orientation.value;
+                    options.orientation;
 
 
                 if (
@@ -571,13 +583,13 @@ generateBtn.addEventListener(
                                 currentOrientation,
                             unit: "mm",
                             format:
-                                pageSize.value
+                                options.pageSize
                         });
 
                 } else {
 
                     pdf.addPage(
-                        pageSize.value,
+                        options.pageSize,
                         currentOrientation
                     );
 
@@ -691,35 +703,6 @@ generateBtn.addEventListener(
             }
 
 
-            /*
-            ==========================
-            AD BEFORE DOWNLOAD
-            ==========================
-            Real ad code can replace
-            this demo ad box later.
-            */
-
-
-            adBox.style.display =
-                "flex";
-
-
-            statusBox.textContent =
-                "PDF ready! Download starting...";
-
-
-            await new Promise(
-                function (resolve) {
-
-                    setTimeout(
-                        resolve,
-                        1000
-                    );
-
-                }
-            );
-
-
             pdf.save(
                 "EasyTools-images.pdf"
             );
@@ -735,14 +718,17 @@ generateBtn.addEventListener(
 
 
             statusBox.textContent =
-                "Something went wrong while creating the PDF.";
+                error instanceof RangeError ? error.message :
+                    "Something went wrong while creating the PDF.";
 
 
             alert(
-                "Unable to create PDF. Please try again."
+                error instanceof RangeError ? error.message :
+                    "Unable to create PDF. Please try again."
             );
 
         } finally {
+            releaseJob();
 
             generateBtn.disabled =
                 false;

@@ -73,7 +73,7 @@ function formatNumber(value) {
     if (
         !Number.isFinite(value)
     ) {
-        return "0";
+        return "Out of range";
     }
 
 
@@ -131,7 +131,7 @@ function calculatePercentOf() {
     ) {
 
         percentOfResult.textContent =
-            "0";
+            "Invalid input";
 
         return;
 
@@ -213,17 +213,21 @@ function calculateWhatPercent() {
 
     if (
         !Number.isFinite(part) ||
-        !Number.isFinite(whole) ||
-        whole === 0
+        !Number.isFinite(whole)
     ) {
 
         whatPercentResult.textContent =
-            "0%";
+            "Invalid input";
 
         return;
 
     }
 
+
+    if (whole === 0) {
+        whatPercentResult.textContent = "Undefined";
+        return;
+    }
 
     const result =
         (
@@ -232,6 +236,11 @@ function calculateWhatPercent() {
         ) *
         100;
 
+
+    if (!Number.isFinite(result)) {
+        whatPercentResult.textContent = "Out of range";
+        return;
+    }
 
     whatPercentResult.textContent =
         formatNumber(
@@ -301,17 +310,21 @@ function calculateChange() {
 
     if (
         !Number.isFinite(oldNumber) ||
-        !Number.isFinite(newNumber) ||
-        oldNumber === 0
+        !Number.isFinite(newNumber)
     ) {
 
         changeResult.textContent =
-            "0%";
+            "Invalid input";
 
         return;
 
     }
 
+
+    if (oldNumber === 0) {
+        changeResult.textContent = "Undefined";
+        return;
+    }
 
     const change =
         (
@@ -325,6 +338,11 @@ function calculateChange() {
         ) *
         100;
 
+
+    if (!Number.isFinite(change)) {
+        changeResult.textContent = "Out of range";
+        return;
+    }
 
     let label =
         "";
