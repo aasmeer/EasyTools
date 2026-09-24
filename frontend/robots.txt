@@ -1,6 +1,3 @@
-# Serve this file at https://aasmeer.github.io/robots.txt.
-# A robots.txt file under /EasyTools/ does not control host-wide crawling.
-# If the host root is managed separately, merge the Sitemap directive there.
 User-agent: *
 Allow: /
 
