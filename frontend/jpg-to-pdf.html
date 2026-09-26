@@ -299,9 +299,62 @@
 
 <!-- Advertising stays blocked until a certified CMP is configured and verified. -->
 <script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
+
+<link rel="stylesheet" href="css/tool-guide.css">
+<script src="js/tool-accessibility.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://easytools-app.netlify.app/jpg-to-pdf.html#application",
+  "name": "JPG to PDF Converter",
+  "url": "https://easytools-app.netlify.app/jpg-to-pdf.html",
+  "description": "The EasyTools JPG to PDF Converter places selected images into a single PDF document.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any operating system with a supported web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "featureList": [
+    "Choose multiple JPG, JPEG or PNG files for one PDF.",
+    "Review selected-image previews, remove unwanted images and change their order.",
+    "Select A4 or Letter paper size and portrait, landscape or image-based orientation.",
+    "Choose page margins before generating the combined document in your browser."
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://easytools-app.netlify.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://easytools-app.netlify.app/all-tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "JPG to PDF Converter",
+      "item": "https://easytools-app.netlify.app/jpg-to-pdf.html"
+    }
+  ]
+}
+</script>
 </head>
 
-<body>
+<body data-easytools-tool="jpg-to-pdf">
 
 <header class="header">
 
@@ -327,6 +380,7 @@
             </span>
 
             <h1>JPG to PDF Converter</h1>
+            <h2 class="easytools-sr-only">JPG to PDF Converter controls and results</h2>
 
             <p>
                 Convert multiple JPG, JPEG or PNG images into
@@ -355,7 +409,7 @@
                 id="imageInput"
                 accept="image/jpeg,image/png"
                 multiple
-            >
+             aria-label="Choose an image">
 
 
             <h3 class="selected-title" id="selectedTitle">
@@ -436,26 +490,55 @@
         </div>
 
 
-        <div class="info-section">
 
-            <h2>How to convert JPG to PDF?</h2>
-
-            <ol>
-                <li>Upload one or multiple JPG, JPEG or PNG images.</li>
-                <li>Arrange the images in the order you want.</li>
-                <li>Select PDF page size, orientation and margin.</li>
-                <li>Click “Convert Images to PDF”.</li>
-                <li>Your PDF will be generated automatically.</li>
-            </ol>
-
-            <p>
-                Images are processed directly in your browser for this tool.
-            </p>
-
-        </div>
 
     </div>
 
+
+<section class="easytools-guide" id="tool-guide" aria-label="JPG to PDF Converter guide">
+  <nav class="easytools-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="all-tools.html">All Tools</a></li><li aria-current="page">JPG to PDF Converter</li></ol></nav>
+  <h2>What is this tool?</h2>
+  <p>The EasyTools JPG to PDF Converter places selected images into a single PDF document. It is useful for grouping photographs, scans or screenshots into a file that can be shared and reviewed in page order. The tool accepts multiple JPG, JPEG and PNG images and offers paper size, orientation and margin controls. Each image becomes visual page content, so the result is not the same as a document typed in a text editor. Text visible inside a photograph remains part of that image.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Choose multiple JPG, JPEG or PNG files for one PDF.</li>
+    <li>Review selected-image previews, remove unwanted images and change their order.</li>
+    <li>Select A4 or Letter paper size and portrait, landscape or image-based orientation.</li>
+    <li>Choose page margins before generating the combined document in your browser.</li>
+</ul>
+  <h2>Benefits</h2>
+  <p>A single PDF is often easier to handle than a folder of numbered attachments. For example, several photographed instruction sheets can be arranged in reading order and delivered together. Paper and margin choices help keep the result suitable for the intended screen or print workflow. Before converting, rotate or crop source images if necessary, and inspect small writing at a useful zoom level. Combining blurry photographs will not make their contents clearer.</p>
+  <h2>How to use</h2>
+  <ol>
+    <li>Upload the images and check that every required page is present.</li>
+    <li>Arrange previews in reading order and remove duplicates or unrelated pictures.</li>
+    <li>Choose page size, orientation and margins, considering the shape of the source images.</li>
+    <li>Select Convert Images to PDF, then open the downloaded file to inspect its pages.</li>
+</ol>
+  <h2>Examples and limitations</h2>
+  <p>The conversion fits images onto the selected page layout rather than recognising text. A photographed paragraph therefore does not automatically become searchable or selectable. Keep source images when you may need a different layout later. Shared upload limits allow up to 100 files, 25 MB each and 100 MB combined, while pixel and output budgets may require smaller batches. Reduce oversized source images when a limit message explains that processing cannot continue.</p>
+  <h2>Frequently asked questions</h2>
+  <div class="easytools-faq">
+    <h3>Does the result contain editable text?</h3>
+    <p>No optical character recognition is provided. Words within a source image remain pixels in the PDF. Use a dedicated text-recognition workflow if you need searchable text or an accessible document transcript.</p>
+    <h3>Can I choose the order of the pages?</h3>
+    <p>Yes. Review and reorder the selected images before conversion. Open the completed PDF afterwards to confirm that cover pages, numbered sheets and supplementary images appear in the intended sequence.</p>
+    <h3>Which orientation should I choose?</h3>
+    <p>Portrait suits taller pages, landscape suits wider material, and Auto by Image follows the image&#x27;s shape. Choose based on the source content, then check the generated PDF rather than relying only on the setting name.</p>
+    <h3>Why is there white space around an image?</h3>
+    <p>The source proportions may differ from the chosen paper shape, and the selected margin also reserves space. Cropping the image or changing orientation can produce a better fit without stretching the content.</p>
+    <h3>Can I combine the result with another PDF?</h3>
+    <p>Yes. After downloading this document, use Merge PDF to combine it with an existing PDF. Review the combined page order and retain the original files until you have checked the final document.</p>
+  </div>
+  <h2>Related tools</h2>
+  <p>Continue your workflow with these EasyTools utilities:</p>
+  <ul class="easytools-related">
+    <li><a href="pdf-to-jpg.html">PDF to JPG</a></li>
+    <li><a href="merge-pdf.html">Merge PDF</a></li>
+    <li><a href="pdf-compressor.html">PDF Compressor</a></li>
+  </ul>
+</section>
+<p id="tool-accessibility-status" class="easytools-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </main>
 
 

@@ -192,9 +192,62 @@
 
 <!-- Advertising stays blocked until a certified CMP is configured and verified. -->
 <script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
+
+<link rel="stylesheet" href="css/tool-guide.css">
+<script src="js/tool-accessibility.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://easytools-app.netlify.app/age-calculator.html#application",
+  "name": "Age Calculator",
+  "url": "https://easytools-app.netlify.app/age-calculator.html",
+  "description": "The EasyTools Age Calculator measures the calendar time between a date of birth and a chosen reference date.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any operating system with a supported web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "featureList": [
+    "Choose both the birth date and the date on which age is measured.",
+    "Read completed years, months and days together in one result.",
+    "See total days, approximate month and week summaries, and the next birthday countdown.",
+    "Review the birth weekday without looking through an old calendar."
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://easytools-app.netlify.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://easytools-app.netlify.app/all-tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Age Calculator",
+      "item": "https://easytools-app.netlify.app/age-calculator.html"
+    }
+  ]
+}
+</script>
 </head>
 
-<body>
+<body data-easytools-tool="age-calculator">
 
 <header class="header">
 
@@ -379,6 +432,50 @@
 
     </div>
 
+
+<section class="easytools-guide" id="tool-guide" aria-label="Age Calculator guide">
+  <nav class="easytools-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="all-tools.html">All Tools</a></li><li aria-current="page">Age Calculator</li></ol></nav>
+  <h2>What is this tool?</h2>
+  <p>The EasyTools Age Calculator measures the calendar time between a date of birth and a chosen reference date. Instead of dividing a day count by 365, it reports completed years, remaining months and days. You can use today&#x27;s date or select another day to explore a past milestone or upcoming birthday. The extra statistics offer different views of the same interval, including elapsed days and the weekday of birth. These views are useful for personal planning, birthday messages and checking dates before completing a form.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Choose both the birth date and the date on which age is measured.</li>
+    <li>Read completed years, months and days together in one result.</li>
+    <li>See total days, approximate month and week summaries, and the next birthday countdown.</li>
+    <li>Review the birth weekday without looking through an old calendar.</li>
+</ul>
+  <h2>Benefits</h2>
+  <p>A calendar-based result is easier to interpret than a long number of days. For example, someone born on 15 June 2000 is 25 years old on 15 June 2025, while the day before is still before that anniversary. Changing the reference date lets you compare milestones without changing the birth date. The calculation uses calendar dates independently of daylight-saving clock changes, so a seasonal change in the length of a day does not add an unwanted hour to the result.</p>
+  <h2>How to use</h2>
+  <ol>
+    <li>Enter the date of birth using the date field, checking the year carefully.</li>
+    <li>Choose Calculate Age On; leave the initial date for an age measured today.</li>
+    <li>Select Calculate Age and read the exact age before the summary statistics.</li>
+    <li>For a different milestone, change the reference date and calculate again.</li>
+</ol>
+  <h2>Examples and limitations</h2>
+  <p>Use the exact age field when you need completed years and months. Total months and weeks are approximate summaries and should not be substituted for calendar anniversaries. This is a date calculation, not a decision about eligibility: an organisation may apply its own cutoff date or birthday convention. Check the dates and rules requested by that organisation before transferring a result.</p>
+  <h2>Frequently asked questions</h2>
+  <div class="easytools-faq">
+    <h3>Can I calculate age on a future date?</h3>
+    <p>Yes. Set Calculate Age On to the future date you want to inspect. The birth date must be on or before that reference date; an earlier target would not represent an elapsed age.</p>
+    <h3>How are leap-day birthdays handled?</h3>
+    <p>The calculator uses the last day of a shorter month for an anniversary. A 29 February birthday therefore uses 28 February in a non-leap year. Other systems may use a different convention.</p>
+    <h3>Why do the week and month totals differ from exact age?</h3>
+    <p>Exact age follows calendar anniversaries. The additional totals summarise elapsed time approximately, so multiplying those figures back into days will not always reproduce the calendar result.</p>
+    <h3>Does the calculation include the time of birth?</h3>
+    <p>No. The inputs represent dates rather than hours, minutes or time zones. Use a specialist time-interval calculation if you need an age measured down to a particular moment.</p>
+    <h3>Is my birth date sent away for calculation?</h3>
+    <p>The age calculation runs in your browser using the entered dates. It does not need a remote age-calculation service. Site analytics preferences are handled separately from the calculator.</p>
+  </div>
+  <h2>Related tools</h2>
+  <p>Continue your workflow with these EasyTools utilities:</p>
+  <ul class="easytools-related">
+    <li><a href="percentage-calculator.html">Percentage Calculator</a></li>
+    <li><a href="unit-converter.html">Unit Converter</a></li>
+  </ul>
+</section>
+<p id="tool-accessibility-status" class="easytools-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </main>
 
 

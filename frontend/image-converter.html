@@ -352,9 +352,62 @@
 
 <!-- Advertising stays blocked until a certified CMP is configured and verified. -->
 <script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
+
+<link rel="stylesheet" href="css/tool-guide.css">
+<script src="js/tool-accessibility.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://easytools-app.netlify.app/image-converter.html#application",
+  "name": "Image Converter",
+  "url": "https://easytools-app.netlify.app/image-converter.html",
+  "description": "The EasyTools Image Converter changes an image between JPG, PNG and WEBP formats in your browser.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any operating system with a supported web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "featureList": [
+    "Open a JPG, JPEG, PNG or WEBP image and select a supported output type.",
+    "Adjust encoding quality for formats that support lossy quality control.",
+    "Choose the background used when a transparent image is converted to JPG.",
+    "Read the original format, new format and generated file size before downloading."
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://easytools-app.netlify.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://easytools-app.netlify.app/all-tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Image Converter",
+      "item": "https://easytools-app.netlify.app/image-converter.html"
+    }
+  ]
+}
+</script>
 </head>
 
-<body>
+<body data-easytools-tool="image-converter">
 
 
 <header class="header">
@@ -387,6 +440,7 @@
             <h1>
                 Image Converter
             </h1>
+            <h2 class="easytools-sr-only">Image Converter controls and results</h2>
 
             <p>
                 Convert JPG, PNG and WEBP images instantly in your browser.
@@ -531,7 +585,7 @@
                         min="10"
                         max="100"
                         value="90"
-                    >
+                     aria-label="Image quality">
 
                 </div>
 
@@ -644,6 +698,51 @@
 
     </div>
 
+
+<section class="easytools-guide" id="tool-guide" aria-label="Image Converter guide">
+  <nav class="easytools-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="all-tools.html">All Tools</a></li><li aria-current="page">Image Converter</li></ol></nav>
+  <h2>What is this tool?</h2>
+  <p>The EasyTools Image Converter changes an image between JPG, PNG and WEBP formats in your browser. It is helpful when a website accepts only one file type or when you need a format better suited to the image&#x27;s content. Conversion creates a new encoded file; merely changing a filename extension would not do the same thing. Start with the highest-quality original you have, choose the destination format and inspect the resulting image before replacing any delivery copies.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Open a JPG, JPEG, PNG or WEBP image and select a supported output type.</li>
+    <li>Adjust encoding quality for formats that support lossy quality control.</li>
+    <li>Choose the background used when a transparent image is converted to JPG.</li>
+    <li>Read the original format, new format and generated file size before downloading.</li>
+</ul>
+  <h2>Benefits</h2>
+  <p>Different formats suit different tasks. JPG is often convenient for photographic content, PNG is useful when lossless pixels or transparency matter, and WEBP can be a practical delivery format when the receiving application supports it. For example, a transparent product graphic converted to JPG needs a deliberate background choice so its edges remain readable. The converter makes that choice explicit instead of leaving you to discover an unexpected background after uploading the result.</p>
+  <h2>How to use</h2>
+  <ol>
+    <li>Choose the source image and check that it opens correctly.</li>
+    <li>Select JPG, PNG or WEBP under Convert To.</li>
+    <li>If converting to JPG, choose an appropriate background; adjust quality where relevant.</li>
+    <li>Select Convert Image, download the result and inspect it in the destination application.</li>
+</ol>
+  <h2>Examples and limitations</h2>
+  <p>Changing formats does not restore detail already lost to earlier compression. Converting a low-quality JPG to PNG preserves the decoded pixels, including any existing compression artefacts; it does not reconstruct the original photograph. Repeated conversions between lossy formats may introduce further changes. Keep an unchanged source and create separate output copies for each destination instead of repeatedly converting an already converted file.</p>
+  <h2>Frequently asked questions</h2>
+  <div class="easytools-faq">
+    <h3>What happens to transparency when I choose JPG?</h3>
+    <p>JPG does not support a transparent background. The converter uses the selected JPG background colour to fill transparent areas, so choose a colour that works with the surrounding design.</p>
+    <h3>Why does PNG remain large when I lower quality?</h3>
+    <p>PNG uses lossless encoding, so the quality slider does not behave as it does for JPG. Resizing the image or choosing another appropriate format may have more effect on file size.</p>
+    <h3>Will conversion change width and height?</h3>
+    <p>This page is intended for changing format and encoding settings. Use the related Image Resizer when you need explicit width and height controls rather than assuming format conversion will shrink dimensions.</p>
+    <h3>Can every website accept WEBP?</h3>
+    <p>Acceptance depends on the receiving service or application. Check its upload requirements first. A valid WEBP file can still be rejected by a service that only allows JPG or PNG.</p>
+    <h3>Are the image contents sent to a conversion server?</h3>
+    <p>The conversion is performed by browser image and canvas processing. It does not need a remote image-conversion API. Browser memory and supported image dimensions can still limit what can be processed.</p>
+  </div>
+  <h2>Related tools</h2>
+  <p>Continue your workflow with these EasyTools utilities:</p>
+  <ul class="easytools-related">
+    <li><a href="image-compressor.html">Image Compressor</a></li>
+    <li><a href="image-resizer.html">Image Resizer</a></li>
+    <li><a href="image-cropper.html">Image Cropper</a></li>
+  </ul>
+</section>
+<p id="tool-accessibility-status" class="easytools-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </main>
 
 

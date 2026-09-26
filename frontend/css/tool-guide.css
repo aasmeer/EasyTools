@@ -1,0 +1,40 @@
+/* Guide styles are scoped so existing tool layouts keep their dimensions. */
+.easytools-guide {
+    max-width: 1000px;
+    margin: 48px auto 0;
+    padding: 28px 20px;
+    color: #111827;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    line-height: 1.75;
+    overflow-wrap: anywhere;
+}
+.easytools-guide h2 { font-size: 1.5rem; line-height: 1.35; margin: 28px 0 12px; }
+.easytools-guide h3 { font-size: 1.125rem; line-height: 1.5; margin: 22px 0 8px; }
+.easytools-guide p { margin: 0 0 16px; color: #374151; }
+.easytools-guide ul, .easytools-guide ol { padding-left: 24px; margin: 0 0 16px; }
+.easytools-guide li { margin-bottom: 8px; }
+.easytools-guide a { color: #1d4ed8; text-decoration: underline; text-underline-offset: 3px; }
+.easytools-guide .easytools-breadcrumb { display: block; }
+.easytools-guide .easytools-breadcrumb ol { display: flex; flex-wrap: wrap; gap: 8px 16px; list-style: none; padding: 0; }
+.easytools-guide .easytools-breadcrumb li:not(:last-child)::after { content: "/"; margin-left: 16px; color: #6b7280; }
+.easytools-guide .easytools-breadcrumb a { font-size: inherit; }
+.easytools-sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip-path: inset(50%) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+body[data-easytools-tool] :is(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 3px solid #1d4ed8;
+    outline-offset: 3px;
+}
+@media print {
+    .easytools-guide, #tool-accessibility-status { display: none !important; }
+}

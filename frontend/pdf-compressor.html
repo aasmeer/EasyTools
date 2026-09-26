@@ -347,9 +347,62 @@
 
 <!-- Advertising stays blocked until a certified CMP is configured and verified. -->
 <script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
+
+<link rel="stylesheet" href="css/tool-guide.css">
+<script src="js/tool-accessibility.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://easytools-app.netlify.app/pdf-compressor.html#application",
+  "name": "PDF Compressor",
+  "url": "https://easytools-app.netlify.app/pdf-compressor.html",
+  "description": "The EasyTools PDF Compressor reduces some PDF files by rendering their pages as images and placing those images into a new PDF.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any operating system with a supported web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "featureList": [
+    "Select one PDF and choose a low, medium or high compression preset.",
+    "Adjust the image quality used when rebuilding the pages.",
+    "Compare original size, generated size and the reported saving.",
+    "Preserve page dimensions while creating a new downloadable image-only PDF."
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://easytools-app.netlify.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://easytools-app.netlify.app/all-tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "PDF Compressor",
+      "item": "https://easytools-app.netlify.app/pdf-compressor.html"
+    }
+  ]
+}
+</script>
 </head>
 
-<body>
+<body data-easytools-tool="pdf-compressor">
 
 <header class="header">
 
@@ -359,7 +412,7 @@
 
     <nav>
         <a href="index.html">Home</a>
-        <a href="index.html#tools">All Tools</a>
+        <a href="all-tools.html">All Tools</a>
         <a href="ai-rewriter.html">AI Tools</a>
         <a href="all-tools.html#pdf-tools">PDF Tools</a>
         <a href="all-tools.html#image-tools">Image Tools</a>
@@ -381,6 +434,7 @@
             <h1>
                 PDF Compressor
             </h1>
+            <h2 class="easytools-sr-only">PDF Compressor controls and results</h2>
 
             <p>
                 Reduce PDF file size directly in your browser.
@@ -419,7 +473,7 @@
                 type="file"
                 id="pdfInput"
                 accept="application/pdf"
-            >
+             aria-label="Choose a PDF">
 
 
             <div
@@ -525,7 +579,7 @@
                         min="25"
                         max="95"
                         value="65"
-                    >
+                     aria-label="Image quality">
 
                 </div>
 
@@ -632,6 +686,51 @@
 
     </div>
 
+
+<section class="easytools-guide" id="tool-guide" aria-label="PDF Compressor guide">
+  <nav class="easytools-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="all-tools.html">All Tools</a></li><li aria-current="page">PDF Compressor</li></ol></nav>
+  <h2>What is this tool?</h2>
+  <p>The EasyTools PDF Compressor reduces some PDF files by rendering their pages as images and placing those images into a new PDF. This is a visual-copy workflow, not a lossless document optimiser. The output loses searchable and selectable text, links, form fields, accessibility tags and digital signatures. Keep the original PDF. Use this tool only when an image-only copy is appropriate for the intended destination, and inspect the result carefully before sharing or replacing any working copy.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Select one PDF and choose a low, medium or high compression preset.</li>
+    <li>Adjust the image quality used when rebuilding the pages.</li>
+    <li>Compare original size, generated size and the reported saving.</li>
+    <li>Preserve page dimensions while creating a new downloadable image-only PDF.</li>
+</ul>
+  <h2>Benefits</h2>
+  <p>A visual copy can be useful when a destination only needs to display pages and an image-heavy source is too large. Compression presets trade image detail against storage, so small writing, diagrams and fine lines need particular attention. For a text-first document, rebuilding every page as an image can actually increase size while reducing functionality. Compare both size and usefulness rather than treating any generated PDF as an improvement over the original.</p>
+  <h2>How to use</h2>
+  <ol>
+    <li>Read the image-only-output warning and confirm that this conversion suits your purpose.</li>
+    <li>Choose the PDF, select a compression preset and adjust quality if needed.</li>
+    <li>Select Compress PDF and wait while pages are rendered and rebuilt.</li>
+    <li>Download the result, compare file sizes and inspect representative pages at normal and enlarged zoom.</li>
+</ol>
+  <h2>Examples and limitations</h2>
+  <p>For example, a scan-heavy handout may tolerate a lower image quality than a drawing containing fine dimension lines. Start with a setting that preserves readability and lower quality only when the result remains acceptable. The browser applies file, page and pixel limits, so a large or high-resolution document may need to be split first. Repeated compression can compound visible artefacts; return to the original when trying another setting.</p>
+  <h2>Frequently asked questions</h2>
+  <div class="easytools-faq">
+    <h3>Will I still be able to search or copy the text?</h3>
+    <p>No. This compressor produces image-only pages. Text that was selectable in the source becomes part of an image in the output. Keep the original for searching, copying and text-based workflows.</p>
+    <h3>Are accessibility tags preserved?</h3>
+    <p>No. The rebuilt document does not retain the source&#x27;s accessibility tags. If accessible reading order and text are required, keep the original and choose a workflow that explicitly preserves those features.</p>
+    <h3>Does High compression guarantee the smallest useful result?</h3>
+    <p>It prioritises smaller output through its settings, but usefulness depends on the document. Check small text, diagrams and images before deciding that a stronger compression level is acceptable.</p>
+    <h3>Why can the output be larger than the original?</h3>
+    <p>An efficient text or vector PDF can be smaller than images of its pages. Rendering replaces that efficient content with pixels, so the file size may increase despite image compression.</p>
+    <h3>What happens to forms, links and signatures?</h3>
+    <p>They are not retained as those interactive or signed features in the rebuilt PDF. A visual appearance on a page is not equivalent to an active link, editable field or valid digital signature.</p>
+  </div>
+  <h2>Related tools</h2>
+  <p>Continue your workflow with these EasyTools utilities:</p>
+  <ul class="easytools-related">
+    <li><a href="merge-pdf.html">Merge PDF</a></li>
+    <li><a href="split-pdf.html">Split PDF</a></li>
+    <li><a href="pdf-to-jpg.html">PDF to JPG</a></li>
+  </ul>
+</section>
+<p id="tool-accessibility-status" class="easytools-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </main>
 
 

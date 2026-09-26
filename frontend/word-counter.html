@@ -253,10 +253,63 @@
 
 <!-- Advertising stays blocked until a certified CMP is configured and verified. -->
 <script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
+
+<link rel="stylesheet" href="css/tool-guide.css">
+<script src="js/tool-accessibility.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://easytools-app.netlify.app/word-counter.html#application",
+  "name": "Word Counter",
+  "url": "https://easytools-app.netlify.app/word-counter.html",
+  "description": "The EasyTools Word Counter measures text as you type or paste it into the input area.",
+  "applicationCategory": "ProductivityApplication",
+  "operatingSystem": "Any operating system with a supported web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "featureList": [
+    "See word and character counts update while editing the text.",
+    "Compare the complete character count with the count excluding whitespace.",
+    "Review sentence and paragraph totals alongside an estimated reading time.",
+    "Copy the passage for reuse or clear the text area before checking another draft."
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://easytools-app.netlify.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://easytools-app.netlify.app/all-tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Word Counter",
+      "item": "https://easytools-app.netlify.app/word-counter.html"
+    }
+  ]
+}
+</script>
 </head>
 
 
-<body>
+<body data-easytools-tool="word-counter">
 
 
 <!-- =========================
@@ -520,6 +573,51 @@
 
     </div>
 
+
+<section class="easytools-guide" id="tool-guide" aria-label="Word Counter guide">
+  <nav class="easytools-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="all-tools.html">All Tools</a></li><li aria-current="page">Word Counter</li></ol></nav>
+  <h2>What is this tool?</h2>
+  <p>The EasyTools Word Counter measures text as you type or paste it into the input area. It displays words, characters, characters without spaces, sentences, paragraphs and an estimated reading time. This makes it useful for checking a draft against a writing limit or comparing the length of two versions. Counts are computed from the text supplied to the page; the tool does not open a document attachment or determine which parts of an assignment should count under an external set of rules.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>See word and character counts update while editing the text.</li>
+    <li>Compare the complete character count with the count excluding whitespace.</li>
+    <li>Review sentence and paragraph totals alongside an estimated reading time.</li>
+    <li>Copy the passage for reuse or clear the text area before checking another draft.</li>
+</ul>
+  <h2>Benefits</h2>
+  <p>Different writing tasks impose different limits. A short form may count characters, while an article brief may specify words. Looking at both helps you choose the right measure rather than shortening a draft against the wrong target. For example, a heading with several long words may satisfy a word limit but exceed a character allowance. Use the tool during revision to see the effect of a change, then check the final text in the destination system when it enforces its own counting rules.</p>
+  <h2>How to use</h2>
+  <ol>
+    <li>Paste or type the passage into the labelled text area.</li>
+    <li>Read the statistic matching your requirement, such as Words or Characters.</li>
+    <li>Edit the passage and let the displayed counts update.</li>
+    <li>Use Copy Text for the final version, or Clear Text before measuring an unrelated passage.</li>
+</ol>
+  <h2>Examples and limitations</h2>
+  <p>Reading time uses an estimate of 200 words per minute. A 400-word passage therefore represents roughly two minutes under that assumption, not a promise about an individual reader. Technical material, unfamiliar language and diagrams can change actual reading speed. Paragraph counting treats blank-line-separated blocks as paragraphs, so a single line break inside a block is not necessarily a new paragraph. Check the formatting of pasted text when that total seems unexpected.</p>
+  <h2>Frequently asked questions</h2>
+  <div class="easytools-faq">
+    <h3>Why might another editor report a different word count?</h3>
+    <p>Applications can use different rules for punctuation, hyphens and languages without spaces. This tool uses browser text segmentation when available, with a fallback for other environments. The receiving application&#x27;s count may be the one that matters.</p>
+    <h3>What is excluded from Characters Without Spaces?</h3>
+    <p>The calculation removes whitespace before counting the remaining text. That includes more than ordinary visible spaces, so line breaks and other whitespace can affect the difference between the two character totals.</p>
+    <h3>Do emoji always count as a single character?</h3>
+    <p>Modern browser segmentation can treat a displayed multi-part character as one unit, while fallback behavior can differ. Character limits in another service may use a different definition, so verify text containing complex emoji there.</p>
+    <h3>Are sentence and paragraph counts always exact linguistic analysis?</h3>
+    <p>No. They follow text-segmentation and formatting rules. Abbreviations, unusual punctuation and pasted line breaks can affect the totals, so use them as aids rather than as an editorial judgement about the passage.</p>
+    <h3>Can I measure just part of a document?</h3>
+    <p>Yes. Paste only the section you want to count. This is useful when a requirement excludes headings, references or captions; the tool cannot infer those exclusions from a larger passage automatically.</p>
+  </div>
+  <h2>Related tools</h2>
+  <p>Continue your workflow with these EasyTools utilities:</p>
+  <ul class="easytools-related">
+    <li><a href="case-converter.html">Case Converter</a></li>
+    <li><a href="ai-rewriter.html">AI Text Rewriter</a></li>
+    <li><a href="resume-builder.html">Resume Builder</a></li>
+  </ul>
+</section>
+<p id="tool-accessibility-status" class="easytools-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </main>
 
 

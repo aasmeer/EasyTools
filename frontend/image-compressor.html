@@ -688,10 +688,63 @@
 
 <!-- Advertising stays blocked until a certified CMP is configured and verified. -->
 <script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
+
+<link rel="stylesheet" href="css/tool-guide.css">
+<script src="js/tool-accessibility.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://easytools-app.netlify.app/image-compressor.html#application",
+  "name": "Image Compressor",
+  "url": "https://easytools-app.netlify.app/image-compressor.html",
+  "description": "The EasyTools Image Compressor prepares smaller image files by combining output-format selection, quality settings and optional resizing.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any operating system with a supported web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "featureList": [
+    "Process several JPG, PNG or WEBP images in one batch.",
+    "Choose JPG, PNG, WEBP or PDF output according to the next step in your workflow.",
+    "Adjust quality, target file size and image dimensions while optionally maintaining proportions.",
+    "Download the generated collection as a ZIP and review original and packaged sizes."
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://easytools-app.netlify.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://easytools-app.netlify.app/all-tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Image Compressor",
+      "item": "https://easytools-app.netlify.app/image-compressor.html"
+    }
+  ]
+}
+</script>
 </head>
 
 
-<body>
+<body data-easytools-tool="image-compressor">
 
 
 <!-- HEADER -->
@@ -708,7 +761,7 @@
             Home
         </a>
 
-        <a href="index.html#tools">
+        <a href="all-tools.html">
             All Tools
         </a>
 
@@ -750,6 +803,7 @@
             <h1>
                 Image Compressor
             </h1>
+            <h2 class="easytools-sr-only">Image Compressor controls and results</h2>
 
             <p>
                 Compress, resize and convert multiple images at once.
@@ -1073,35 +1127,7 @@
                     ⬇️ Download ZIP
 
                 </a>
-                 <section class="tool-guide">
 
-        <h2>Compress Images Online for Free</h2>
-
-        <p>
-            EasyTools Image Compressor helps you reduce image size
-            without installing any software. Compress JPG, PNG and
-            WEBP images quickly while maintaining good quality.
-        </p>
-
-        <h3>How to Use</h3>
-
-        <ol>
-            <li>Select your image.</li>
-            <li>Choose settings.</li>
-            <li>Click Generate.</li>
-            <li>Download the compressed image.</li>
-        </ol>
-
-        <h3>Benefits</h3>
-
-        <ul>
-            <li>Reduce image size.</li>
-            <li>Faster uploads.</li>
-            <li>Save storage.</li>
-            <li>Works on mobile.</li>
-        </ul>
-
-    </section>
 
 
             </div>
@@ -1111,6 +1137,51 @@
 
     </div>
 
+
+<section class="easytools-guide" id="tool-guide" aria-label="Image Compressor guide">
+  <nav class="easytools-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="all-tools.html">All Tools</a></li><li aria-current="page">Image Compressor</li></ol></nav>
+  <h2>What is this tool?</h2>
+  <p>The EasyTools Image Compressor prepares smaller image files by combining output-format selection, quality settings and optional resizing. It accepts multiple images and packages the generated results in a ZIP download. This makes it useful when a collection of photographs needs to fit an upload allowance or when oversized images slow down a publishing workflow. Compression is a tradeoff: the smallest file is not always the most useful image. Compare the result at its intended viewing size and keep the original photographs for future editing.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Process several JPG, PNG or WEBP images in one batch.</li>
+    <li>Choose JPG, PNG, WEBP or PDF output according to the next step in your workflow.</li>
+    <li>Adjust quality, target file size and image dimensions while optionally maintaining proportions.</li>
+    <li>Download the generated collection as a ZIP and review original and packaged sizes.</li>
+</ul>
+  <h2>Benefits</h2>
+  <p>A camera photograph may contain far more pixels than a small website placement requires. Reducing dimensions as well as adjusting encoding quality can make a substantial difference without changing the intended display size. Batch processing helps apply a consistent choice to related images, such as a product gallery. A target size is useful as a goal, but detailed scenes, noise and fine textures can need more data than simple graphics at the same dimensions.</p>
+  <h2>How to use</h2>
+  <ol>
+    <li>Choose the images to process and review the selected-file previews.</li>
+    <li>Select an output format, then set quality and an optional target size.</li>
+    <li>Enter dimensions if resizing is needed, keeping aspect ratio enabled to avoid distortion.</li>
+    <li>Select Generate All, wait for completion and download the ZIP to inspect its contents.</li>
+</ol>
+  <h2>Examples and limitations</h2>
+  <p>Target-size optimisation is available for supported lossy image outputs; PNG and PDF do not use that target-size search. Even with JPG or WEBP, the available quality range may not reach the requested size. Shared upload safeguards limit a selection to 100 files, 25 MB per file and 100 MB combined; pixel and output budgets can require a smaller batch. The ZIP size is packaging information, not a promise that every individual image meets a target.</p>
+  <h2>Frequently asked questions</h2>
+  <div class="easytools-faq">
+    <h3>Will compression always make an image smaller?</h3>
+    <p>No. An already efficient image or a different output format can produce a file of similar or greater size. Inspect the generated files and compare quality as well as bytes.</p>
+    <h3>What happens if my target size cannot be reached?</h3>
+    <p>The tool may report that the available settings cannot achieve the target. Try smaller dimensions or another suitable format, and inspect the result rather than assuming the requested size was guaranteed.</p>
+    <h3>Does the quality slider affect PNG like JPG?</h3>
+    <p>No. PNG is a lossless format and does not respond to a lossy quality setting in the same way. Dimensions and image content are often more important for its resulting size.</p>
+    <h3>Why do I receive a ZIP file?</h3>
+    <p>The primary compressor handles batches, so it groups generated outputs into a single downloadable archive. Extract the archive before uploading an individual image to a service that does not accept ZIP files.</p>
+    <h3>Should I replace my original photographs?</h3>
+    <p>Keep the originals. Smaller dimensions and lossy encoding can discard detail that later editing cannot recover. Treat compressed versions as delivery copies matched to a particular purpose.</p>
+  </div>
+  <h2>Related tools</h2>
+  <p>Continue your workflow with these EasyTools utilities:</p>
+  <ul class="easytools-related">
+    <li><a href="image-resizer.html">Image Resizer</a></li>
+    <li><a href="image-converter.html">Image Converter</a></li>
+    <li><a href="image-cropper.html">Image Cropper</a></li>
+  </ul>
+</section>
+<p id="tool-accessibility-status" class="easytools-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </main>
 
 

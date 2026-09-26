@@ -289,10 +289,63 @@
 
 <!-- Advertising stays blocked until a certified CMP is configured and verified. -->
 <script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
+
+<link rel="stylesheet" href="css/tool-guide.css">
+<script src="js/tool-accessibility.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://easytools-app.netlify.app/qr-generator.html#application",
+  "name": "QR Code Generator",
+  "url": "https://easytools-app.netlify.app/qr-generator.html",
+  "description": "The EasyTools QR Code Generator turns entered text or a website address into a downloadable QR image.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any operating system with a supported web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "featureList": [
+    "Encode a URL or text entered into the labelled input.",
+    "Choose an output size from 256 to 1,024 pixels square.",
+    "Select an error-correction level and custom foreground and background colours.",
+    "Download the generated code as a PNG image for use in another layout."
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://easytools-app.netlify.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://easytools-app.netlify.app/all-tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "QR Code Generator",
+      "item": "https://easytools-app.netlify.app/qr-generator.html"
+    }
+  ]
+}
+</script>
 </head>
 
 
-<body>
+<body data-easytools-tool="qr-generator">
 
 
 <header class="header">
@@ -303,7 +356,7 @@
 
     <nav>
         <a href="index.html">Home</a>
-        <a href="index.html#tools">All Tools</a>
+        <a href="all-tools.html">All Tools</a>
         <a href="ai-rewriter.html">AI Tools</a>
         <a href="all-tools.html#pdf-tools">PDF Tools</a>
         <a href="all-tools.html#image-tools">Image Tools</a>
@@ -325,6 +378,7 @@
             <h1>
                 QR Code Generator
             </h1>
+            <h2 class="easytools-sr-only">QR Code Generator controls and results</h2>
 
             <p>
                 Create a custom QR code for links, text and more.
@@ -503,7 +557,8 @@
 
                 <div class="qr-preview">
 
-                    <canvas id="qrCanvas"></canvas>
+                    <canvas id="qrCanvas" role="img" aria-label="Generated QR code" aria-describedby="qr-accessible-content"></canvas>
+                    <p id="qr-accessible-content" class="easytools-sr-only"></p>
 
                 </div>
 
@@ -522,6 +577,50 @@
 
     </div>
 
+
+<section class="easytools-guide" id="tool-guide" aria-label="QR Code Generator guide">
+  <nav class="easytools-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="all-tools.html">All Tools</a></li><li aria-current="page">QR Code Generator</li></ol></nav>
+  <h2>What is this tool?</h2>
+  <p>The EasyTools QR Code Generator turns entered text or a website address into a downloadable QR image. A compatible scanner reads the pattern and interprets the encoded content. This is useful for placing a link on a printed handout, label or presentation where typing a long address would be inconvenient. The generated code is static: it contains the submitted value rather than a separately managed redirect that can be edited through this page later. Check the text before generation and test the final image before distributing it.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Encode a URL or text entered into the labelled input.</li>
+    <li>Choose an output size from 256 to 1,024 pixels square.</li>
+    <li>Select an error-correction level and custom foreground and background colours.</li>
+    <li>Download the generated code as a PNG image for use in another layout.</li>
+</ul>
+  <h2>Benefits</h2>
+  <p>A QR code provides a bridge between a physical item and a digital destination. For example, a workshop sheet can point readers to supporting material without printing a long link in the main instructions. Keep a readable version of the destination alongside the code so people have another way to access it. A decorative colour choice is only useful if the pattern still scans reliably against its background at the actual printed or displayed size.</p>
+  <h2>How to use</h2>
+  <ol>
+    <li>Enter the complete destination URL or the exact text to encode.</li>
+    <li>Choose the size, error-correction level and contrasting foreground and background colours.</li>
+    <li>Select Generate QR Code and download the PNG when it is ready.</li>
+    <li>Scan the exported image on another device and verify the destination before placing it in a final layout.</li>
+</ol>
+  <h2>Examples and limitations</h2>
+  <p>Longer content and stronger error correction can produce a denser pattern. Scaling a dense code down too far, cropping away its clear border or using similar foreground and background colours can make scanning unreliable. Test the code after inserting it into your final document because layout tools may resize or compress the image. The generator does not check the ongoing availability or suitability of the destination website.</p>
+  <h2>Frequently asked questions</h2>
+  <div class="easytools-faq">
+    <h3>Can I change a code&#x27;s destination after downloading it?</h3>
+    <p>The code itself contains the submitted value and cannot be updated by this page. Generate a new image for a new value. A redirect you manage elsewhere has its own behavior and maintenance requirements.</p>
+    <h3>Does a generated QR code expire?</h3>
+    <p>The image has no built-in expiry set by this generator. A linked page can still be moved, removed or restricted, so a code may remain readable even when its destination no longer works.</p>
+    <h3>What does error correction do?</h3>
+    <p>It adds redundancy that can help a scanner recover encoded data when part of the pattern is obscured or imperfect. It does not guarantee scanning and can increase the complexity of the visible pattern.</p>
+    <h3>Can I choose any colours?</h3>
+    <p>The controls allow custom colours, but scanners need sufficient contrast. A dark pattern on a light background is a practical starting point; always test the actual exported and placed image.</p>
+    <h3>Will the code track who scans it?</h3>
+    <p>This page generates an image rather than a scan-analytics service. A destination website may have its own tracking or access controls, but those are separate from the QR image generated here.</p>
+  </div>
+  <h2>Related tools</h2>
+  <p>Continue your workflow with these EasyTools utilities:</p>
+  <ul class="easytools-related">
+    <li><a href="image-resizer.html">Image Resizer</a></li>
+    <li><a href="image-converter.html">Image Converter</a></li>
+  </ul>
+</section>
+<p id="tool-accessibility-status" class="easytools-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </main>
 
 

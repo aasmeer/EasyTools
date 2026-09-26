@@ -248,9 +248,62 @@
 
 <!-- Advertising stays blocked until a certified CMP is configured and verified. -->
 <script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
+
+<link rel="stylesheet" href="css/tool-guide.css">
+<script src="js/tool-accessibility.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://easytools-app.netlify.app/split-pdf.html#application",
+  "name": "Split PDF",
+  "url": "https://easytools-app.netlify.app/split-pdf.html",
+  "description": "The EasyTools Split PDF tool extracts selected pages into a new PDF.",
+  "applicationCategory": "ProductivityApplication",
+  "operatingSystem": "Any operating system with a supported web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "featureList": [
+    "Upload a readable PDF and specify which pages belong in the output.",
+    "Use single page numbers or ranges in a comma-separated expression.",
+    "Create one new PDF containing the selected pages.",
+    "Download the extracted document without manually printing each page to a separate file."
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://easytools-app.netlify.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://easytools-app.netlify.app/all-tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Split PDF",
+      "item": "https://easytools-app.netlify.app/split-pdf.html"
+    }
+  ]
+}
+</script>
 </head>
 
-<body>
+<body data-easytools-tool="split-pdf">
 
 <header class="header">
 
@@ -273,6 +326,7 @@
             <span class="badge">📄 PDF Tool</span>
 
             <h1>Split PDF</h1>
+            <h2 class="easytools-sr-only">Split PDF controls and results</h2>
 
             <p>
                 Extract selected pages from a PDF and download them as a new PDF.
@@ -296,7 +350,7 @@
                 type="file"
                 id="pdfInput"
                 accept="application/pdf"
-            >
+             aria-label="Choose a PDF">
 
             <div class="file-info" id="fileInfo">
 
@@ -362,6 +416,51 @@
 
     </div>
 
+
+<section class="easytools-guide" id="tool-guide" aria-label="Split PDF guide">
+  <nav class="easytools-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="all-tools.html">All Tools</a></li><li aria-current="page">Split PDF</li></ol></nav>
+  <h2>What is this tool?</h2>
+  <p>The EasyTools Split PDF tool extracts selected pages into a new PDF. It is useful when only a chapter, receipt or supporting section of a larger document needs to be shared. Enter individual page numbers, ranges or a combination separated by commas. The page numbers refer to positions in the uploaded PDF, which can differ from numbers printed on the pages themselves. Keep the original document so the extracted file remains a delivery copy rather than your only version of the source.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Upload a readable PDF and specify which pages belong in the output.</li>
+    <li>Use single page numbers or ranges in a comma-separated expression.</li>
+    <li>Create one new PDF containing the selected pages.</li>
+    <li>Download the extracted document without manually printing each page to a separate file.</li>
+</ul>
+  <h2>Benefits</h2>
+  <p>Sharing only the relevant section can make a document easier to review and avoid sending unnecessary pages. For example, extracting a few pages of instructions lets a recipient focus on the part that applies to their task. Check that the selection still includes enough context, such as titles, legends or continuation pages, to make sense independently. Removing surrounding pages can unintentionally leave an unexplained table or a paragraph that begins halfway through an argument.</p>
+  <h2>How to use</h2>
+  <ol>
+    <li>Upload the PDF and identify the source page positions you want.</li>
+    <li>Enter an expression such as 1,3-5 to request page 1 and pages 3 through 5.</li>
+    <li>Select Split PDF and wait for the extracted document to be generated.</li>
+    <li>Download and open the new PDF, checking that every required page and its context are present.</li>
+</ol>
+  <h2>Examples and limitations</h2>
+  <p>A cover sheet or contents page can shift the relationship between PDF positions and printed numbering. If the printed page labelled &#x27;1&#x27; is the third page in the file, use the file position when selecting it. Review the result instead of assuming the printed number controls extraction. A malformed range or a page beyond the end of the document should be corrected before retrying. File and page limits also apply to browser processing.</p>
+  <h2>Frequently asked questions</h2>
+  <div class="easytools-faq">
+    <h3>How do I request several separate pages?</h3>
+    <p>Enter their page positions separated by commas, such as 2,5,8. You can combine single pages with ranges, such as 2,5-8, when the selected material contains both isolated and consecutive pages.</p>
+    <h3>Does a range include both end pages?</h3>
+    <p>A range such as 3-5 requests pages 3, 4 and 5. Check that both endpoints exist in the uploaded document and use the supported ascending range format.</p>
+    <h3>Will I receive a separate file for every page?</h3>
+    <p>This workflow creates a new PDF containing the selected pages. It is not a batch export that automatically creates an individual PDF for every original page.</p>
+    <h3>Can I use a password-protected PDF?</h3>
+    <p>The interface does not provide a password-unlocking workflow. If the file cannot be read, use a readable source copy that you are authorised to process rather than assuming extraction removes protection.</p>
+    <h3>Are signatures or document-level features guaranteed to survive?</h3>
+    <p>No. Creating a new document is not equivalent to preserving every source feature or digital signature. Inspect the extracted file and keep the original when those features or their verification matter.</p>
+  </div>
+  <h2>Related tools</h2>
+  <p>Continue your workflow with these EasyTools utilities:</p>
+  <ul class="easytools-related">
+    <li><a href="merge-pdf.html">Merge PDF</a></li>
+    <li><a href="pdf-to-jpg.html">PDF to JPG</a></li>
+    <li><a href="pdf-compressor.html">PDF Compressor</a></li>
+  </ul>
+</section>
+<p id="tool-accessibility-status" class="easytools-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </main>
 
 <div class="ad-modal" id="adModal">

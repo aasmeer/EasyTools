@@ -317,9 +317,62 @@
 
 <!-- Advertising stays blocked until a certified CMP is configured and verified. -->
 <script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
+
+<link rel="stylesheet" href="css/tool-guide.css">
+<script src="js/tool-accessibility.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://easytools-app.netlify.app/image-resizer.html#application",
+  "name": "Image Resizer",
+  "url": "https://easytools-app.netlify.app/image-resizer.html",
+  "description": "The EasyTools Image Resizer creates an image with a chosen pixel width and height.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any operating system with a supported web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "featureList": [
+    "Set width and height in pixels instead of relying on a vague size percentage.",
+    "Keep Maintain aspect ratio enabled to preserve the image's proportions.",
+    "Choose JPG, PNG or WEBP for the downloaded result.",
+    "Compare original dimensions, new dimensions and generated file size after resizing."
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://easytools-app.netlify.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://easytools-app.netlify.app/all-tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Image Resizer",
+      "item": "https://easytools-app.netlify.app/image-resizer.html"
+    }
+  ]
+}
+</script>
 </head>
 
-<body>
+<body data-easytools-tool="image-resizer">
 
 <header class="header">
 
@@ -345,6 +398,7 @@
             <span class="badge">🖼️ Image Tool</span>
 
             <h1>Image Resizer</h1>
+            <h2 class="easytools-sr-only">Image Resizer controls and results</h2>
 
             <p>
                 Resize images to custom dimensions and download them instantly.
@@ -522,6 +576,51 @@
 
     </div>
 
+
+<section class="easytools-guide" id="tool-guide" aria-label="Image Resizer guide">
+  <nav class="easytools-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="all-tools.html">All Tools</a></li><li aria-current="page">Image Resizer</li></ol></nav>
+  <h2>What is this tool?</h2>
+  <p>The EasyTools Image Resizer creates an image with a chosen pixel width and height. It helps prepare photographs and graphics for upload forms, document layouts or other destinations with explicit dimension requirements. Resizing changes the entire image rather than removing its edges. You can maintain its aspect ratio to preserve proportions, or enter dimensions independently when that is intentional. The page also offers output-format and quality choices, allowing a resized delivery copy to be prepared in one session.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Set width and height in pixels instead of relying on a vague size percentage.</li>
+    <li>Keep Maintain aspect ratio enabled to preserve the image&#x27;s proportions.</li>
+    <li>Choose JPG, PNG or WEBP for the downloaded result.</li>
+    <li>Compare original dimensions, new dimensions and generated file size after resizing.</li>
+</ul>
+  <h2>Benefits</h2>
+  <p>Using only the pixels needed by the destination can make an image easier to upload and display. For instance, a 4,000-pixel-wide photograph may be unnecessary in a layout that displays it at 800 pixels. Reducing its dimensions can cut file size while retaining sufficient detail for that use. Pixel dimensions and file size are different measurements, however: two images with the same width and height can require very different amounts of storage depending on their content and format.</p>
+  <h2>How to use</h2>
+  <ol>
+    <li>Choose a source image and inspect its starting dimensions.</li>
+    <li>Enter the required width or height, leaving aspect ratio enabled for proportional resizing.</li>
+    <li>Choose the output format and quality suitable for the destination.</li>
+    <li>Select Resize Image, download the file and verify its dimensions before uploading it elsewhere.</li>
+</ol>
+  <h2>Examples and limitations</h2>
+  <p>Increasing dimensions adds pixels through image resampling; it does not recover detail absent from the source. If a destination requires a square but the original is a wide rectangle, crop first instead of stretching the whole picture into a square. Keep the original and export a separate resized copy. The browser&#x27;s file and pixel safeguards may reject extremely large inputs or outputs, so choose dimensions appropriate to the actual use.</p>
+  <h2>Frequently asked questions</h2>
+  <div class="easytools-faq">
+    <h3>Are pixels the same as centimetres or inches?</h3>
+    <p>No. Pixels describe the image grid. A physical print size also depends on the printing resolution and layout settings. This page&#x27;s width and height controls specify pixels rather than a guaranteed printed size.</p>
+    <h3>Why does the other dimension change automatically?</h3>
+    <p>With Maintain aspect ratio enabled, the resizer preserves the original width-to-height relationship. This prevents the subject from becoming unusually wide or narrow when you change one dimension.</p>
+    <h3>Can I make a small photograph sharper by enlarging it?</h3>
+    <p>Enlargement can make the file dimensions larger, but it cannot reconstruct genuine missing detail. Inspect the result at the intended display size and use a larger original when possible.</p>
+    <h3>Does a smaller width guarantee a specific file size?</h3>
+    <p>No. Dimensions, image detail, output format and quality all affect bytes. Use Image Compressor if you want to explore a target-size workflow after choosing suitable dimensions.</p>
+    <h3>What if my required shape differs from the original?</h3>
+    <p>Use Image Cropper to choose a region with suitable proportions, then resize that crop. Disabling aspect ratio and forcing unrelated dimensions can visibly distort people, logos and other subjects.</p>
+  </div>
+  <h2>Related tools</h2>
+  <p>Continue your workflow with these EasyTools utilities:</p>
+  <ul class="easytools-related">
+    <li><a href="image-cropper.html">Image Cropper</a></li>
+    <li><a href="image-compressor.html">Image Compressor</a></li>
+    <li><a href="image-converter.html">Image Converter</a></li>
+  </ul>
+</section>
+<p id="tool-accessibility-status" class="easytools-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </main>
 
 <div

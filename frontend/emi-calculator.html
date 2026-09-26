@@ -194,9 +194,62 @@
 
 <!-- Advertising stays blocked until a certified CMP is configured and verified. -->
 <script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
+
+<link rel="stylesheet" href="css/tool-guide.css">
+<script src="js/tool-accessibility.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://easytools-app.netlify.app/emi-calculator.html#application",
+  "name": "EMI Calculator",
+  "url": "https://easytools-app.netlify.app/emi-calculator.html",
+  "description": "The EasyTools EMI Calculator estimates the regular monthly instalment for a loan using its principal, annual interest rate and tenure.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any operating system with a supported web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "featureList": [
+    "Enter a loan amount in rupees and an annual percentage interest rate.",
+    "Specify the tenure in years or months to match the information you have.",
+    "View monthly EMI, principal, total interest and total payment together.",
+    "Recalculate after changing one assumption to compare repayment scenarios."
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://easytools-app.netlify.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://easytools-app.netlify.app/all-tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "EMI Calculator",
+      "item": "https://easytools-app.netlify.app/emi-calculator.html"
+    }
+  ]
+}
+</script>
 </head>
 
-<body>
+<body data-easytools-tool="emi-calculator">
 
 <header class="header">
 
@@ -378,6 +431,50 @@
 
     </div>
 
+
+<section class="easytools-guide" id="tool-guide" aria-label="EMI Calculator guide">
+  <nav class="easytools-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="all-tools.html">All Tools</a></li><li aria-current="page">EMI Calculator</li></ol></nav>
+  <h2>What is this tool?</h2>
+  <p>The EasyTools EMI Calculator estimates the regular monthly instalment for a loan using its principal, annual interest rate and tenure. It also shows estimated total interest and total repayment, making it easier to compare the monthly payment with the overall cost. The calculation uses a standard reducing-balance formula with a constant rate. It is useful for exploring numerical scenarios before discussing a loan, but the displayed estimate is not a lender&#x27;s quotation or a complete schedule of the charges that a particular agreement may include.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Enter a loan amount in rupees and an annual percentage interest rate.</li>
+    <li>Specify the tenure in years or months to match the information you have.</li>
+    <li>View monthly EMI, principal, total interest and total payment together.</li>
+    <li>Recalculate after changing one assumption to compare repayment scenarios.</li>
+</ul>
+  <h2>Benefits</h2>
+  <p>Looking only at the monthly instalment can hide the effect of a longer repayment period. Comparing total interest alongside EMI shows why a lower monthly payment may still produce a larger overall repayment. Try keeping the loan amount and rate fixed while changing the tenure, then compare both results. This helps you understand the arithmetic of the estimate without implying that any one repayment period is appropriate for your circumstances or available from a lender.</p>
+  <h2>How to use</h2>
+  <ol>
+    <li>Enter the principal amount, excluding any charges you have not chosen to finance.</li>
+    <li>Enter the annual interest percentage rather than a monthly rate.</li>
+    <li>Set the tenure and select Years or Months as appropriate.</li>
+    <li>Select Calculate EMI and compare the monthly instalment with total interest and repayment.</li>
+</ol>
+  <h2>Examples and limitations</h2>
+  <p>For a positive monthly rate r and n monthly payments, the formula is P × r × (1 + r)^n ÷ ((1 + r)^n − 1), where P is principal and r is the annual percentage divided by 1,200. At zero interest, the payment is principal divided by the number of months. Display rounding can make manually multiplying the rounded instalment differ slightly from the displayed total.</p>
+  <h2>Frequently asked questions</h2>
+  <div class="easytools-faq">
+    <h3>Does the calculator include processing fees?</h3>
+    <p>No separate processing-fee input is provided. Fees, insurance, taxes or other lender charges can change the amount you pay. Compare the estimate with the actual terms supplied by the lender.</p>
+    <h3>Should I enter an annual or monthly interest rate?</h3>
+    <p>Enter the annual percentage shown for the scenario. The calculator converts that figure to a monthly rate for the formula, so entering a monthly percentage would represent a different assumption.</p>
+    <h3>Can the interest rate change during repayment?</h3>
+    <p>The estimate assumes a constant rate throughout the selected tenure. It does not model later rate changes, revised instalments or a lender&#x27;s process for changing the repayment period.</p>
+    <h3>Why does a longer tenure change total interest?</h3>
+    <p>The balance remains outstanding over more monthly periods. Under the formula, spreading repayment over longer generally reduces each payment while increasing accumulated interest for the same positive rate.</p>
+    <h3>Is this a full amortisation schedule?</h3>
+    <p>No. The page presents summary amounts rather than a month-by-month table. It also does not model irregular payments, prepayments or differing dates within a monthly repayment cycle.</p>
+  </div>
+  <h2>Related tools</h2>
+  <p>Continue your workflow with these EasyTools utilities:</p>
+  <ul class="easytools-related">
+    <li><a href="percentage-calculator.html">Percentage Calculator</a></li>
+    <li><a href="gst-calculator.html">GST Calculator</a></li>
+  </ul>
+</section>
+<p id="tool-accessibility-status" class="easytools-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </main>
 
 

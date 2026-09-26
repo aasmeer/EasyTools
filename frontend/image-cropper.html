@@ -211,9 +211,62 @@
 
 <!-- Advertising stays blocked until a certified CMP is configured and verified. -->
 <script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
+
+<link rel="stylesheet" href="css/tool-guide.css">
+<script src="js/tool-accessibility.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://easytools-app.netlify.app/image-cropper.html#application",
+  "name": "Image Cropper",
+  "url": "https://easytools-app.netlify.app/image-cropper.html",
+  "description": "The EasyTools Image Cropper creates a new image from a selected rectangular area of an uploaded picture.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any operating system with a supported web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "featureList": [
+    "Upload a JPG, PNG or WEBP image and choose a rectangular selection.",
+    "Inspect the selected area dimensions before generating the cropped file.",
+    "Use pointer controls or keyboard arrows to adjust the selection.",
+    "Choose JPG, PNG or WEBP output and set quality for supported lossy formats."
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://easytools-app.netlify.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://easytools-app.netlify.app/all-tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Image Cropper",
+      "item": "https://easytools-app.netlify.app/image-cropper.html"
+    }
+  ]
+}
+</script>
 </head>
 
-<body>
+<body data-easytools-tool="image-cropper">
 
 <header class="header">
 
@@ -241,6 +294,7 @@
             <h1>
                 Image Cropper
             </h1>
+            <h2 class="easytools-sr-only">Image Cropper controls and results</h2>
 
             <p>
                 Upload an image, drag to select the area you want and download the cropped image.
@@ -275,7 +329,7 @@
                 type="file"
                 id="imageInput"
                 accept="image/jpeg,image/png,image/webp"
-            >
+             aria-label="Choose an image">
 
 
             <div
@@ -329,7 +383,7 @@
                             min="10"
                             max="100"
                             value="90"
-                        >
+                         aria-label="Image quality">
 
                     </div>
 
@@ -403,6 +457,51 @@
 
     </div>
 
+
+<section class="easytools-guide" id="tool-guide" aria-label="Image Cropper guide">
+  <nav class="easytools-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="all-tools.html">All Tools</a></li><li aria-current="page">Image Cropper</li></ol></nav>
+  <h2>What is this tool?</h2>
+  <p>The EasyTools Image Cropper creates a new image from a selected rectangular area of an uploaded picture. Cropping changes the composition by removing material outside the selection; it is different from resizing the whole image. Use it to focus on a subject, remove unwanted edges or prepare a more suitable composition before setting final dimensions. The original file on your device is not replaced by the download, so retain it if you may want a different crop later.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Upload a JPG, PNG or WEBP image and choose a rectangular selection.</li>
+    <li>Inspect the selected area dimensions before generating the cropped file.</li>
+    <li>Use pointer controls or keyboard arrows to adjust the selection.</li>
+    <li>Choose JPG, PNG or WEBP output and set quality for supported lossy formats.</li>
+</ul>
+  <h2>Benefits</h2>
+  <p>A well-chosen crop can make a subject clearer without adding effects or changing its colours. For example, trimming empty space around a photographed document can make its contents easier to place in a report. Start with a generous selection and refine it, checking that important details remain inside the boundary. Cropping removes pixels rather than inventing new ones, so a very small selected area may not contain enough detail for a large final display.</p>
+  <h2>How to use</h2>
+  <ol>
+    <li>Upload an image and drag across the preview to define a selection.</li>
+    <li>For keyboard adjustment, focus the crop canvas; arrows move the selection and Shift plus arrows resize it.</li>
+    <li>Review Selected Area, choose the output format and adjust quality as needed.</li>
+    <li>Select Crop Image, inspect the result and download it; Reset Selection restores the full selection.</li>
+</ol>
+  <h2>Examples and limitations</h2>
+  <p>The editor may display a large source image at a smaller on-screen size. The selected dimensions are mapped back to the original image, so judge the output using the reported size rather than counting screen pixels. After cropping, use Image Resizer if a destination requires an exact width and height. Check faces, text and important edges before export because anything outside the rectangle is omitted from the new file.</p>
+  <h2>Frequently asked questions</h2>
+  <div class="easytools-faq">
+    <h3>Does cropping stretch the selected area?</h3>
+    <p>Cropping extracts the chosen rectangular region. It is not intended to stretch that region into unrelated proportions. Use a separate resizing step if the finished file must match particular dimensions.</p>
+    <h3>Can I use the cropper without dragging?</h3>
+    <p>Yes. The canvas supports keyboard control. Arrow keys move the selection, and holding Shift while pressing an arrow changes its size. The full image is selected initially, providing a starting point.</p>
+    <h3>What does Reset Selection change?</h3>
+    <p>It restores the selection to the whole image. It does not recover pixels from a previously downloaded crop; upload the original again if that is the only version currently open.</p>
+    <h3>Why does a tiny crop look soft when enlarged?</h3>
+    <p>A small area contains fewer source pixels. Enlarging it cannot recreate missing detail. Choose a larger crop or a higher-resolution original when the final image needs to be viewed at a large size.</p>
+    <h3>How should I choose the output format?</h3>
+    <p>Choose PNG or WEBP when supported transparency matters, and JPG for compatible photographic delivery where transparency is unnecessary. Inspect the downloaded result, especially around transparent areas, small text and fine edges.</p>
+  </div>
+  <h2>Related tools</h2>
+  <p>Continue your workflow with these EasyTools utilities:</p>
+  <ul class="easytools-related">
+    <li><a href="image-resizer.html">Image Resizer</a></li>
+    <li><a href="image-converter.html">Image Converter</a></li>
+    <li><a href="image-compressor.html">Image Compressor</a></li>
+  </ul>
+</section>
+<p id="tool-accessibility-status" class="easytools-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </main>
 
 

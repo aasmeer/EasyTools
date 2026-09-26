@@ -355,9 +355,62 @@
 
 <!-- Advertising stays blocked until a certified CMP is configured and verified. -->
 <script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
+
+<link rel="stylesheet" href="css/tool-guide.css">
+<script src="js/tool-accessibility.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://easytools-app.netlify.app/merge-pdf.html#application",
+  "name": "Merge PDF",
+  "url": "https://easytools-app.netlify.app/merge-pdf.html",
+  "description": "The EasyTools Merge PDF tool combines pages from multiple PDF files into one document.",
+  "applicationCategory": "ProductivityApplication",
+  "operatingSystem": "Any operating system with a supported web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "featureList": [
+    "Select two or more PDFs and review the files before merging.",
+    "Reorder the selected documents and remove files that should not be included.",
+    "Inspect the number of merged files, total pages and output size.",
+    "Download one combined PDF instead of sharing several separate attachments."
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://easytools-app.netlify.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://easytools-app.netlify.app/all-tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Merge PDF",
+      "item": "https://easytools-app.netlify.app/merge-pdf.html"
+    }
+  ]
+}
+</script>
 </head>
 
-<body>
+<body data-easytools-tool="merge-pdf">
 
 <header class="header">
 
@@ -388,6 +441,7 @@
             <h1>
                 Merge PDF
             </h1>
+            <h2 class="easytools-sr-only">Merge PDF controls and results</h2>
 
             <p>
                 Combine multiple PDF files into one PDF in the order you choose.
@@ -429,7 +483,7 @@
                 id="pdfInput"
                 accept="application/pdf"
                 multiple
-            >
+             aria-label="Choose a PDF">
 
 
             <div
@@ -558,6 +612,51 @@
 
     </div>
 
+
+<section class="easytools-guide" id="tool-guide" aria-label="Merge PDF guide">
+  <nav class="easytools-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="all-tools.html">All Tools</a></li><li aria-current="page">Merge PDF</li></ol></nav>
+  <h2>What is this tool?</h2>
+  <p>The EasyTools Merge PDF tool combines pages from multiple PDF files into one document. It is useful for assembling a cover sheet, report and supporting attachments into a single file with a deliberate reading order. Select at least two PDFs, review their order and generate the combined result. Merging changes the document container; it does not rewrite paragraphs or automatically remove duplicated pages. Keep the original files so you can rebuild the collection if the order or included material later needs to change.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Select two or more PDFs and review the files before merging.</li>
+    <li>Reorder the selected documents and remove files that should not be included.</li>
+    <li>Inspect the number of merged files, total pages and output size.</li>
+    <li>Download one combined PDF instead of sharing several separate attachments.</li>
+</ul>
+  <h2>Benefits</h2>
+  <p>A combined document can make a handover easier to follow because the recipient does not need to guess which attachment comes first. For example, put a cover note before a report, followed by its appendix. Check that each source file is the correct revision before merging; combining both an old and a new version can be more confusing than sending separate documents. The file list is a planning aid, but the downloaded PDF is the final place to verify every transition.</p>
+  <h2>How to use</h2>
+  <ol>
+    <li>Choose the PDFs that belong in the final document.</li>
+    <li>Review filenames, adjust their order and remove any unintended selection.</li>
+    <li>Select Merge PDFs and wait for the combined output to be prepared.</li>
+    <li>Download the merged PDF, open it and inspect page order, appearance and completeness.</li>
+</ol>
+  <h2>Examples and limitations</h2>
+  <p>Document features beyond visible page content require extra care. Do not assume a merged file preserves the behavior of interactive forms, document-level bookmarks or digital signatures. A signature on an original file is not a guarantee about a newly assembled document. File-size, page-count and browser-memory safeguards can also prevent very large jobs. If a source cannot be read, inspect that original in a PDF reader before trying another merge.</p>
+  <h2>Frequently asked questions</h2>
+  <div class="easytools-faq">
+    <h3>Does merging sort pages by their printed numbers?</h3>
+    <p>No. The tool uses the file order you choose and the page order within each source. Printed page numbers are content, so they do not automatically control how the documents are assembled.</p>
+    <h3>Can I remove only a few pages from one source?</h3>
+    <p>Use Split PDF to extract the pages you want first, then merge that extracted file with the other documents. This is more precise than expecting a file-level merge list to edit individual pages.</p>
+    <h3>Will the combined file be smaller?</h3>
+    <p>Merging is not a size-reduction guarantee. The result contains the selected page content and may remain large. If you consider PDF Compressor afterwards, read its image-only-output limitations before proceeding.</p>
+    <h3>What about password-protected or damaged PDFs?</h3>
+    <p>A protected or unreadable source may not be processed successfully. This page does not provide a password-unlocking workflow. Use a readable copy that you are authorised to work with and check any error message.</p>
+    <h3>How should I check a completed merge?</h3>
+    <p>Open the download and inspect the first and last pages of each source section, the total page count and any forms or links that matter. Preserve the originals until you are satisfied with the result.</p>
+  </div>
+  <h2>Related tools</h2>
+  <p>Continue your workflow with these EasyTools utilities:</p>
+  <ul class="easytools-related">
+    <li><a href="split-pdf.html">Split PDF</a></li>
+    <li><a href="pdf-compressor.html">PDF Compressor</a></li>
+    <li><a href="jpg-to-pdf.html">JPG to PDF Converter</a></li>
+  </ul>
+</section>
+<p id="tool-accessibility-status" class="easytools-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </main>
 
 

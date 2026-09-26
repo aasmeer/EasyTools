@@ -212,7 +212,7 @@
             padding: 35px;
         }
 
-        .template-modern .resume-header h1 {
+        .template-modern .resume-header #previewName {
             font-size: 32px;
             margin-bottom: 8px;
         }
@@ -254,7 +254,7 @@
             margin-bottom: 25px;
         }
 
-        .template-clean .resume-header h1 {
+        .template-clean .resume-header #previewName {
             font-size: 34px;
             color: #111827;
         }
@@ -442,10 +442,63 @@
 
 <!-- Advertising stays blocked until a certified CMP is configured and verified. -->
 <script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
+
+<link rel="stylesheet" href="css/tool-guide.css">
+<script src="js/tool-accessibility.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://easytools-app.netlify.app/resume-builder.html#application",
+  "name": "Resume Builder",
+  "url": "https://easytools-app.netlify.app/resume-builder.html",
+  "description": "The EasyTools Resume Builder turns entered career information into a formatted preview and downloadable PDF.",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any operating system with a supported web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "featureList": [
+    "Enter contact details, a job title and a short professional summary.",
+    "Add education and work-experience information using the available fields.",
+    "Separate skills with commas to create a readable skills list.",
+    "Choose Modern or Clean and generate a PDF from the completed information."
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://easytools-app.netlify.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://easytools-app.netlify.app/all-tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Resume Builder",
+      "item": "https://easytools-app.netlify.app/resume-builder.html"
+    }
+  ]
+}
+</script>
 </head>
 
 
-<body>
+<body data-easytools-tool="resume-builder">
 
 
 <header class="header">
@@ -460,7 +513,7 @@
             Home
         </a>
 
-        <a href="index.html#tools">
+        <a href="all-tools.html">
             All Tools
         </a>
 
@@ -883,9 +936,9 @@
 
                     <div class="resume-header">
 
-                        <h1 id="previewName">
+                        <h2 id="previewName">
                             Your Name
-                        </h1>
+                        </h2>
 
                         <div
                             class="job-title"
@@ -997,6 +1050,51 @@
 
     </div>
 
+
+<section class="easytools-guide" id="tool-guide" aria-label="Resume Builder guide">
+  <nav class="easytools-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="all-tools.html">All Tools</a></li><li aria-current="page">Resume Builder</li></ol></nav>
+  <h2>What is this tool?</h2>
+  <p>The EasyTools Resume Builder turns entered career information into a formatted preview and downloadable PDF. It provides fields for personal details, a professional summary, education, work experience and skills, plus two visual templates. It is useful for creating an initial resume without arranging every heading and paragraph manually. The content still comes from you: the builder does not verify experience, select achievements or guarantee a recruiting outcome. Review the final PDF as carefully as the on-page preview before sharing it.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Enter contact details, a job title and a short professional summary.</li>
+    <li>Add education and work-experience information using the available fields.</li>
+    <li>Separate skills with commas to create a readable skills list.</li>
+    <li>Choose Modern or Clean and generate a PDF from the completed information.</li>
+</ul>
+  <h2>Benefits</h2>
+  <p>A consistent structure makes omissions easier to spot. Start with accurate contact details, then use the summary to explain the kind of work you are prepared to do. In the experience section, describe concrete responsibilities and outcomes rather than filling space with broad claims. The preview helps you assess the balance between sections while editing. A shorter, relevant account is often easier to review than a dense page that repeats the same point under several headings.</p>
+  <h2>How to use</h2>
+  <ol>
+    <li>Enter your name, contact details and job title, checking spelling and links.</li>
+    <li>Write the summary, education and experience information in the provided sections.</li>
+    <li>Enter comma-separated skills and select the template you want to use.</li>
+    <li>Select Generate &amp; Download PDF, then inspect the downloaded pages before sending them.</li>
+</ol>
+  <h2>Examples and limitations</h2>
+  <p>The available form is deliberately limited; it is not a full document editor with arbitrary sections and layout controls. If you need a complex career history, check that the entered material is represented clearly rather than forcing everything into an unsuitable field. Long entries can change page flow. Reopen the exported PDF to check headings, line breaks, contact information and the ending of each section, particularly after making substantial text changes.</p>
+  <h2>Frequently asked questions</h2>
+  <div class="easytools-faq">
+    <h3>Does the builder write my experience for me?</h3>
+    <p>No. You provide the career information in the form. If you use a separate writing tool to revise it, verify that the wording remains accurate and does not introduce achievements or qualifications you do not have.</p>
+    <h3>Can I switch templates without retyping the details?</h3>
+    <p>The template controls change the presentation of the current preview. Review the content and generated PDF after switching, since a different presentation can affect how comfortably longer entries fit.</p>
+    <h3>Does the PDF guarantee compatibility with every recruitment system?</h3>
+    <p>No universal compatibility guarantee is provided. Follow the receiving organisation&#x27;s requested format and inspect how your information appears if its application system offers an upload preview.</p>
+    <h3>What should I put in the skills field?</h3>
+    <p>Enter relevant skills separated by commas, as the form requests. Avoid adding a skill simply to fill space; choose descriptions that you can support with your actual work or study.</p>
+    <h3>Is my resume stored as an online account document?</h3>
+    <p>This page does not provide an account-based resume library or recovery history. Save the exported PDF and keep your underlying text separately so you can update it without relying on the current browser session.</p>
+  </div>
+  <h2>Related tools</h2>
+  <p>Continue your workflow with these EasyTools utilities:</p>
+  <ul class="easytools-related">
+    <li><a href="ai-rewriter.html">AI Text Rewriter</a></li>
+    <li><a href="word-counter.html">Word Counter</a></li>
+    <li><a href="case-converter.html">Case Converter</a></li>
+  </ul>
+</section>
+<p id="tool-accessibility-status" class="easytools-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </main>
 
 

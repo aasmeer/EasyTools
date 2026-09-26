@@ -158,9 +158,62 @@
 
 <!-- Advertising stays blocked until a certified CMP is configured and verified. -->
 <script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
+
+<link rel="stylesheet" href="css/tool-guide.css">
+<script src="js/tool-accessibility.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://easytools-app.netlify.app/unit-converter.html#application",
+  "name": "Unit Converter",
+  "url": "https://easytools-app.netlify.app/unit-converter.html",
+  "description": "The EasyTools Unit Converter changes a numerical value between supported units within a selected category.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any operating system with a supported web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "featureList": [
+    "Choose from length, weight, temperature, speed and data-size categories.",
+    "Select the From and To units separately to make the conversion direction explicit.",
+    "Update the result as inputs change without a separate calculation step.",
+    "Swap the source and destination unit selections with the dedicated control."
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://easytools-app.netlify.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://easytools-app.netlify.app/all-tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Unit Converter",
+      "item": "https://easytools-app.netlify.app/unit-converter.html"
+    }
+  ]
+}
+</script>
 </head>
 
-<body>
+<body data-easytools-tool="unit-converter">
 
 <header class="header">
 
@@ -236,7 +289,7 @@
                     class="swap-btn"
                     id="swapBtn"
                     type="button"
-                >
+                 aria-label="Swap source and destination units">
                     ⇄
                 </button>
 
@@ -261,6 +314,50 @@
 
     </div>
 
+
+<section class="easytools-guide" id="tool-guide" aria-label="Unit Converter guide">
+  <nav class="easytools-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="all-tools.html">All Tools</a></li><li aria-current="page">Unit Converter</li></ol></nav>
+  <h2>What is this tool?</h2>
+  <p>The EasyTools Unit Converter changes a numerical value between supported units within a selected category. It covers length, weight, temperature, speed and data size. Choose a category, enter the value and set the source and destination units to see the conversion. This is useful for checking measurements before copying them into a calculation or document. A number without its unit can be ambiguous, so always review both unit labels alongside the result rather than treating the displayed value as meaningful on its own.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Choose from length, weight, temperature, speed and data-size categories.</li>
+    <li>Select the From and To units separately to make the conversion direction explicit.</li>
+    <li>Update the result as inputs change without a separate calculation step.</li>
+    <li>Swap the source and destination unit selections with the dedicated control.</li>
+</ul>
+  <h2>Benefits</h2>
+  <p>Keeping related units together reduces the chance of mixing incompatible measurements. For example, 1 metre equals 100 centimetres, while 1 kilometre equals 1,000 metres; the different scale factors matter when moving between drawings and real-world distances. Temperature requires more than multiplying by a single factor because some scales have different zero points. The converter handles its supported formulas while leaving you responsible for choosing the right measurement category and interpreting the displayed precision.</p>
+  <h2>How to use</h2>
+  <ol>
+    <li>Select the category that matches the quantity being measured.</li>
+    <li>Enter the numerical value and choose its current unit in From.</li>
+    <li>Choose the required unit in To and read the automatically updated result.</li>
+    <li>Check both labels before copying the figure, especially after using the swap control.</li>
+</ol>
+  <h2>Examples and limitations</h2>
+  <p>Data-size conversions here use factors of 1,024 between the listed byte-based units. Some storage products and services use decimal factors of 1,000, so their displayed values can differ without either calculation being an arithmetic error. For example, this converter treats 1 kilobyte as 1,024 bytes. Use a consistent convention when comparing figures, and record that convention if the distinction matters to the calculation you are preparing.</p>
+  <h2>Frequently asked questions</h2>
+  <div class="easytools-faq">
+    <h3>Can I convert between unrelated categories?</h3>
+    <p>No. A length cannot be converted directly into a weight without additional information such as material and dimensions. Choose units within the category that actually describes the quantity you have.</p>
+    <h3>Why does temperature conversion involve an offset?</h3>
+    <p>Celsius and Fahrenheit place zero at different temperatures and use different degree sizes. For example, 0 degrees Celsius corresponds to 32 degrees Fahrenheit, so multiplying by a scale factor alone is insufficient.</p>
+    <h3>Does the swap button reverse my previous result automatically?</h3>
+    <p>It swaps the selected unit direction. Review the value field as well as both labels before interpreting the next result; changing the unit direction is not the same as supplying a new measured input.</p>
+    <h3>Why does a storage specification disagree with my result?</h3>
+    <p>The page uses binary factors of 1,024 for data units, while some specifications use decimal factors of 1,000. Compare the underlying conventions before concluding that a device or conversion is incorrect.</p>
+    <h3>How much precision should I copy?</h3>
+    <p>Use precision appropriate to the original measurement and your destination. Extra displayed digits do not make an approximate source measurement more accurate, and rounding intermediate values repeatedly can introduce small differences.</p>
+  </div>
+  <h2>Related tools</h2>
+  <p>Continue your workflow with these EasyTools utilities:</p>
+  <ul class="easytools-related">
+    <li><a href="percentage-calculator.html">Percentage Calculator</a></li>
+    <li><a href="age-calculator.html">Age Calculator</a></li>
+  </ul>
+</section>
+<p id="tool-accessibility-status" class="easytools-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </main>
 
 <script src="js/unit-converter.js"></script>

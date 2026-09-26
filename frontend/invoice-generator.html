@@ -233,7 +233,8 @@
             text-align: right;
         }
 
-        .invoice-meta h1 {
+        .invoice-meta .invoice-document-title {
+            font-size: 2em;
             margin: 0 0 10px;
             color: #2563eb;
         }
@@ -378,9 +379,62 @@
 
 <!-- Advertising stays blocked until a certified CMP is configured and verified. -->
 <script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
+
+<link rel="stylesheet" href="css/tool-guide.css">
+<script src="js/tool-accessibility.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://easytools-app.netlify.app/invoice-generator.html#application",
+  "name": "Invoice Generator",
+  "url": "https://easytools-app.netlify.app/invoice-generator.html",
+  "description": "The EasyTools Invoice Generator builds a printable invoice from business details, customer details and a list of items.",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any operating system with a supported web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "featureList": [
+    "Enter business and customer names, contact information and addresses.",
+    "Set an invoice number and date, then add or remove item rows.",
+    "Calculate a subtotal, percentage discount, GST amount and final total.",
+    "Include notes and use the browser print dialog to print or save a PDF."
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://easytools-app.netlify.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://easytools-app.netlify.app/all-tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Invoice Generator",
+      "item": "https://easytools-app.netlify.app/invoice-generator.html"
+    }
+  ]
+}
+</script>
 </head>
 
-<body>
+<body data-easytools-tool="invoice-generator">
 
 <header class="header">
 
@@ -605,7 +659,7 @@
 
                         <div class="invoice-meta">
 
-                            <h1>INVOICE</h1>
+                            <h2 class="invoice-document-title">INVOICE</h2>
 
                             <div>
                                 <strong>No:</strong>
@@ -720,6 +774,50 @@
 
     </div>
 
+
+<section class="easytools-guide" id="tool-guide" aria-label="Invoice Generator guide">
+  <nav class="easytools-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="all-tools.html">All Tools</a></li><li aria-current="page">Invoice Generator</li></ol></nav>
+  <h2>What is this tool?</h2>
+  <p>The EasyTools Invoice Generator builds a printable invoice from business details, customer details and a list of items. A live preview combines the entered information with quantities, rates, discount and GST percentages. It is useful for preparing a clear draft without arranging every line in a document editor. The page provides Print / Save PDF through the browser&#x27;s print workflow. It does not replace bookkeeping software or determine which invoice fields and tax treatment are required for a particular business transaction.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Enter business and customer names, contact information and addresses.</li>
+    <li>Set an invoice number and date, then add or remove item rows.</li>
+    <li>Calculate a subtotal, percentage discount, GST amount and final total.</li>
+    <li>Include notes and use the browser print dialog to print or save a PDF.</li>
+</ul>
+  <h2>Benefits</h2>
+  <p>A structured form makes it easier to review the inputs behind a total. If two items have different quantities, check their individual rates before checking the combined subtotal. A visible preview also helps catch a misspelled customer name, incorrect invoice date or missing payment note before a document is shared. Save the finished document in your own record system, and keep the information needed to reproduce it rather than treating an open browser tab as a permanent invoice archive.</p>
+  <h2>How to use</h2>
+  <ol>
+    <li>Fill in the business and customer information, invoice number and date.</li>
+    <li>Add an item description, quantity and rate for each line; remove unused rows.</li>
+    <li>Enter the intended discount and GST percentages, then review totals and notes.</li>
+    <li>Select Print / Save PDF, inspect the print preview and choose your printer or PDF destination.</li>
+</ol>
+  <h2>Examples and limitations</h2>
+  <p>The calculator applies the percentage discount to the subtotal and calculates GST on the discounted amount. For example, a ₹1,000 subtotal with a 10% discount becomes ₹900 before tax; applying an illustrative 18% produces ₹162 tax and a ₹1,062 total. These are arithmetic examples, not guidance about which tax rate or discount treatment applies. Confirm the transaction details and required document fields separately.</p>
+  <h2>Frequently asked questions</h2>
+  <div class="easytools-faq">
+    <h3>Does Save PDF download a file immediately?</h3>
+    <p>The button opens the browser&#x27;s print workflow. Choose an available PDF destination and confirm the save location. Options such as margins, headers and paper size depend on the browser or operating system.</p>
+    <h3>Can I include several products or services?</h3>
+    <p>Yes. Add separate rows with their descriptions, quantities and rates. Review each row&#x27;s values after editing, especially when similarly named items have different units or prices.</p>
+    <h3>Is the invoice number assigned by a central system?</h3>
+    <p>No central numbering or accounting service is provided by this page. Enter a number consistent with your own records and check it before sharing or saving the finished invoice.</p>
+    <h3>Will this calculate every possible tax arrangement?</h3>
+    <p>No. The form offers a percentage GST input and a particular calculation order. It does not determine applicable rates, multiple tax jurisdictions or specialised invoice requirements.</p>
+    <h3>What should I check before printing?</h3>
+    <p>Verify recipient details, invoice number, date, descriptions, quantities, rates, discount, tax and final total. Also inspect the print preview for clipping or unwanted browser headers before producing the document you intend to send.</p>
+  </div>
+  <h2>Related tools</h2>
+  <p>Continue your workflow with these EasyTools utilities:</p>
+  <ul class="easytools-related">
+    <li><a href="gst-calculator.html">GST Calculator</a></li>
+    <li><a href="percentage-calculator.html">Percentage Calculator</a></li>
+  </ul>
+</section>
+<p id="tool-accessibility-status" class="easytools-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </main>
 
 

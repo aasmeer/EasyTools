@@ -204,9 +204,62 @@
 
 <!-- Advertising stays blocked until a certified CMP is configured and verified. -->
 <script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
+
+<link rel="stylesheet" href="css/tool-guide.css">
+<script src="js/tool-accessibility.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://easytools-app.netlify.app/ai-rewriter.html#application",
+  "name": "AI Text Rewriter",
+  "url": "https://easytools-app.netlify.app/ai-rewriter.html",
+  "description": "The EasyTools AI Text Rewriter produces an alternative version of a passage using your selected tone and length.",
+  "applicationCategory": "ProductivityApplication",
+  "operatingSystem": "Any operating system with a supported web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "featureList": [
+    "Choose Professional, Simple, Friendly or Formal to guide the writing style.",
+    "Request approximately the same length, a shorter version or a longer explanation.",
+    "Submit up to 10,000 characters in a single rewrite, subject to usage limits.",
+    "Copy the generated result after comparing it with the source passage."
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://easytools-app.netlify.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://easytools-app.netlify.app/all-tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "AI Text Rewriter",
+      "item": "https://easytools-app.netlify.app/ai-rewriter.html"
+    }
+  ]
+}
+</script>
 </head>
 
-<body>
+<body data-easytools-tool="ai-rewriter">
 
 <header class="header">
 
@@ -237,6 +290,7 @@
             <h1>
                 AI Text Rewriter
             </h1>
+            <h2 class="easytools-sr-only">AI Text Rewriter controls and results</h2>
 
             <p>
                 Rewrite text in a cleaner, simpler or more professional style.
@@ -338,6 +392,51 @@
 
     </div>
 
+
+<section class="easytools-guide" id="tool-guide" aria-label="AI Text Rewriter guide">
+  <nav class="easytools-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="all-tools.html">All Tools</a></li><li aria-current="page">AI Text Rewriter</li></ol></nav>
+  <h2>What is this tool?</h2>
+  <p>The EasyTools AI Text Rewriter produces an alternative version of a passage using your selected tone and length. It can help you revise an email, simplify an explanation or explore a more formal way to present an idea. Unlike the site&#x27;s local text utilities, rewriting sends the submitted text and settings to the EasyTools server, which uses OpenAI. Treat the result as a draft to review: a fluent sentence can still change a detail, omit a qualification or introduce wording you did not intend.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Choose Professional, Simple, Friendly or Formal to guide the writing style.</li>
+    <li>Request approximately the same length, a shorter version or a longer explanation.</li>
+    <li>Submit up to 10,000 characters in a single rewrite, subject to usage limits.</li>
+    <li>Copy the generated result after comparing it with the source passage.</li>
+</ul>
+  <h2>Benefits</h2>
+  <p>Trying another wording can reveal where a message is too dense or where its main request is buried. For example, a friendly rewrite may make a routine reminder easier to read, while a shorter version can help you identify the central point of a long paragraph. Keep the original alongside the result so names, dates, quantities and commitments can be checked. The tool offers drafting assistance; it does not verify facts or guarantee that the final wording suits a particular audience.</p>
+  <h2>How to use</h2>
+  <ol>
+    <li>Paste a passage into Your Text, leaving out confidential or sensitive personal information.</li>
+    <li>Select the tone that fits the intended reader and choose the desired length.</li>
+    <li>Select Rewrite Text and wait for the generated version to appear.</li>
+    <li>Compare the two versions, correct any changed meaning, then use Copy Result.</li>
+</ol>
+  <h2>Examples and limitations</h2>
+  <p>A useful review asks three questions: does the rewrite say the same thing, does it preserve necessary detail, and does it sound appropriate for the reader? A shorter request can remove context; a longer request can add unnecessary explanation. For important writing, edit the output yourself before sharing it. Read the linked AI processing disclosure to understand how submitted text is handled.</p>
+  <h2>Frequently asked questions</h2>
+  <div class="easytools-faq">
+    <h3>Is rewriting processed entirely on my device?</h3>
+    <p>No. Selecting Rewrite Text sends the passage and chosen settings to the EasyTools server for processing with OpenAI. The local behavior of other EasyTools utilities does not apply to this tool.</p>
+    <h3>Will Same Length preserve the exact word count?</h3>
+    <p>It is a length instruction rather than an exact count guarantee. Check the final text with Word Counter if a form, assignment or publication imposes a specific limit.</p>
+    <h3>Can I rely on the rewritten facts?</h3>
+    <p>Compare factual statements against your original and your sources. Rewriting can alter nuance or introduce an error, so polished wording alone is not evidence that a statement is correct.</p>
+    <h3>Why might a rewrite fail?</h3>
+    <p>An empty or very short passage, a character limit, service availability, usage restrictions or a slow connection can prevent completion. Check the displayed message before trying the request again.</p>
+    <h3>Does this make text original or plagiarism-free?</h3>
+    <p>No such guarantee is provided. Rephrasing someone else&#x27;s work does not remove attribution requirements. Use the tool to improve your own drafts and retain appropriate acknowledgements of source material.</p>
+  </div>
+  <h2>Related tools</h2>
+  <p>Continue your workflow with these EasyTools utilities:</p>
+  <ul class="easytools-related">
+    <li><a href="word-counter.html">Word Counter</a></li>
+    <li><a href="case-converter.html">Case Converter</a></li>
+  </ul>
+  <p><a href="privacy.html#ai-processing">Read the AI processing and privacy disclosure</a>.</p>
+</section>
+<p id="tool-accessibility-status" class="easytools-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </main>
 
 <div

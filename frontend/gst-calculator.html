@@ -225,9 +225,62 @@
 
 <!-- Advertising stays blocked until a certified CMP is configured and verified. -->
 <script type="text/plain" data-easytools-consent="advertising" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5075468607827149" crossorigin="anonymous"></script><script src="js/script.js"></script>
+
+<link rel="stylesheet" href="css/tool-guide.css">
+<script src="js/tool-accessibility.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://easytools-app.netlify.app/gst-calculator.html#application",
+  "name": "GST Calculator",
+  "url": "https://easytools-app.netlify.app/gst-calculator.html",
+  "description": "The EasyTools GST Calculator applies a percentage to an amount or works backwards from a tax-inclusive total.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any operating system with a supported web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "featureList": [
+    "Switch between adding tax to a base value and removing included tax.",
+    "Choose a displayed percentage or enter a custom GST rate.",
+    "Read the base value, tax amount and final amount in one result.",
+    "See an equal CGST and SGST split alongside the complete GST amount."
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://easytools-app.netlify.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://easytools-app.netlify.app/all-tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "GST Calculator",
+      "item": "https://easytools-app.netlify.app/gst-calculator.html"
+    }
+  ]
+}
+</script>
 </head>
 
-<body>
+<body data-easytools-tool="gst-calculator">
 
 <header class="header">
 
@@ -257,6 +310,7 @@
             <h1>
                 GST Calculator
             </h1>
+            <h2 class="easytools-sr-only">GST Calculator controls and results</h2>
 
             <p>
                 Add GST or remove GST from an amount and see the tax breakup instantly.
@@ -447,6 +501,50 @@
 
     </div>
 
+
+<section class="easytools-guide" id="tool-guide" aria-label="GST Calculator guide">
+  <nav class="easytools-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="all-tools.html">All Tools</a></li><li aria-current="page">GST Calculator</li></ol></nav>
+  <h2>What is this tool?</h2>
+  <p>The EasyTools GST Calculator applies a percentage to an amount or works backwards from a tax-inclusive total. Choose Add GST when you know the value before tax, and Remove GST when the entered amount already includes it. The result separates the base amount, GST amount and final total, with an equal CGST and SGST split shown for convenience. This is an arithmetic tool: the selectable percentages are calculation inputs, not a determination of the rate or treatment that applies to a particular transaction.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Switch between adding tax to a base value and removing included tax.</li>
+    <li>Choose a displayed percentage or enter a custom GST rate.</li>
+    <li>Read the base value, tax amount and final amount in one result.</li>
+    <li>See an equal CGST and SGST split alongside the complete GST amount.</li>
+</ul>
+  <h2>Benefits</h2>
+  <p>Separating base and tax can make a price comparison easier to understand. At an illustrative rate of 18%, a base of ₹1,000 produces ₹180 tax and a ₹1,180 total. Starting with that ₹1,180 inclusive total and using Remove GST returns the ₹1,000 base. This distinction matters because subtracting 18% of an inclusive total would not reverse the original addition. The calculator makes the two operations explicit so you can choose the one matching your starting figure.</p>
+  <h2>How to use</h2>
+  <ol>
+    <li>Decide whether the entered amount excludes tax or already includes tax.</li>
+    <li>Select Add GST for an exclusive amount or Remove GST for an inclusive amount.</li>
+    <li>Enter the amount and choose the required percentage, using Custom when appropriate.</li>
+    <li>Select Calculate GST and check the base, tax and final total before copying figures.</li>
+</ol>
+  <h2>Examples and limitations</h2>
+  <p>Adding tax uses base × rate ÷ 100. Removing tax uses inclusive total ÷ (1 + rate ÷ 100) to find the base, then subtracts that base from the total. The equal component split is a display convenience and does not establish whether CGST, SGST or another tax treatment applies. Confirm the applicable rate and transaction details independently before using the numbers in a document.</p>
+  <h2>Frequently asked questions</h2>
+  <div class="easytools-faq">
+    <h3>Which mode should I use for a price including GST?</h3>
+    <p>Choose Remove GST. The amount is treated as the final inclusive figure, and the calculator works backwards to its base and tax portions using the percentage you select.</p>
+    <h3>Does a displayed rate mean it applies to my purchase?</h3>
+    <p>No. The calculator does not identify goods, services, jurisdiction or transaction circumstances. Use the appropriate rate from your own verified information; the tool only performs the associated calculation.</p>
+    <h3>Can I enter a percentage not shown in the list?</h3>
+    <p>Yes. Choose Custom and enter the percentage needed for your example. Double-check the number before calculating, since a valid numeric input does not establish a valid tax rate.</p>
+    <h3>Why are CGST and SGST the same amount?</h3>
+    <p>The interface divides the total GST into two equal components for convenience. It does not determine place of supply or whether that equal split describes the actual transaction.</p>
+    <h3>Will invoice rounding always match this result?</h3>
+    <p>Not necessarily. A document may round at item level or after adding multiple items. Compare the rounding method as well as the percentage when reconciling a displayed total with an invoice.</p>
+  </div>
+  <h2>Related tools</h2>
+  <p>Continue your workflow with these EasyTools utilities:</p>
+  <ul class="easytools-related">
+    <li><a href="invoice-generator.html">Invoice Generator</a></li>
+    <li><a href="percentage-calculator.html">Percentage Calculator</a></li>
+  </ul>
+</section>
+<p id="tool-accessibility-status" class="easytools-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </main>
 
 
