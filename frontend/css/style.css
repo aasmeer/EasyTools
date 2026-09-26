@@ -424,3 +424,83 @@ footer p {
 }
 .easytools-privacy [role="status"]:empty { display: none; }
 @media print { .easytools-privacy { display: none !important; } }
+
+/* The desktop header remains unchanged. */
+.mobile-nav-toggle { display: none; }
+
+@media (max-width: 767px) {
+    body .header.has-mobile-nav {
+        position: relative;
+        gap: 0 12px;
+    }
+    body .header .mobile-nav-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 44px;
+        width: 44px;
+        height: 44px;
+        margin-left: auto;
+        padding: 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #111827;
+        cursor: pointer;
+    }
+    .mobile-nav-toggle span { display: grid; gap: 5px; width: 22px; }
+    .mobile-nav-toggle i {
+        display: block;
+        height: 2px;
+        width: 22px;
+        background: currentColor;
+        transition: transform 200ms ease, opacity 200ms ease;
+    }
+    .mobile-nav-open .mobile-nav-toggle i:first-child { transform: translateY(7px) rotate(45deg); }
+    .mobile-nav-open .mobile-nav-toggle i:nth-child(2) { opacity: 0; }
+    .mobile-nav-open .mobile-nav-toggle i:last-child { transform: translateY(-7px) rotate(-45deg); }
+    body .header.has-mobile-nav nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        gap: 0;
+        padding: 8px 7%;
+        max-height: 70vh;
+        overflow-y: auto;
+        background: #ffffff;
+        border-bottom: 1px solid #e5e7eb;
+        box-shadow: 0 12px 20px #00000014;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        pointer-events: none;
+        transition: opacity 200ms ease, transform 200ms ease, visibility 200ms;
+    }
+    body .header.has-mobile-nav.mobile-nav-open nav {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+    body .header.has-mobile-nav nav a {
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 12px;
+    }
+    .header .mobile-nav-toggle:focus-visible,
+    .header.has-mobile-nav nav a:focus-visible {
+        outline: 3px solid #2563eb;
+        outline-offset: 2px;
+    }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+    body .header.has-mobile-nav nav,
+    .mobile-nav-toggle i { transition: none; }
+}

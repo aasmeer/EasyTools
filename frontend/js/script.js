@@ -1,3 +1,52 @@
+/* Progressive enhancement for the shared header; links work without JavaScript. */
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".header").forEach((header, index) => {
+        const nav = header.querySelector("nav");
+        const logo = header.querySelector(".logo");
+        if (!nav || !logo) return;
+        const mobile = window.matchMedia("(max-width: 767px)");
+        const toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className = "mobile-nav-toggle";
+        if (!nav.id) nav.id = "easytools-navigation-" + index;
+        toggle.setAttribute("aria-controls", nav.id);
+        toggle.innerHTML = '<span aria-hidden="true"><i></i><i></i><i></i></span>';
+        logo.after(toggle);
+        header.classList.add("has-mobile-nav");
+
+        function setOpen(open, restoreFocus = false) {
+            open = mobile.matches && open;
+            toggle.setAttribute("aria-expanded", String(open));
+            toggle.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
+            header.classList.toggle("mobile-nav-open", open);
+            nav.inert = mobile.matches && !open;
+            if (restoreFocus) toggle.focus();
+        }
+        toggle.addEventListener("click", () => {
+            setOpen(toggle.getAttribute("aria-expanded") !== "true");
+        });
+        header.addEventListener("keydown", event => {
+            if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+                event.preventDefault();
+                setOpen(false, true);
+            }
+        });
+        nav.addEventListener("click", event => {
+            if (mobile.matches && event.target.closest("a")) setOpen(false, true);
+        });
+        document.addEventListener("click", event => {
+            if (!header.contains(event.target)) setOpen(false);
+        });
+        mobile.addEventListener("change", () => {
+            const focusInNav = nav.contains(document.activeElement);
+            const focusOnToggle = document.activeElement === toggle;
+            setOpen(false, mobile.matches && focusInNav);
+            if (!mobile.matches && focusOnToggle) nav.querySelector("a")?.focus();
+        });
+        setOpen(false);
+    });
+});
+
 /* Shared safeguards for the existing browser tools. */
 window.EasyTools = (() => {
     let busy = false;
